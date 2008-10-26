@@ -1,0 +1,67 @@
+[[ package gen;
+
+import java.util.*;
+
+import se.rupy.http.*;
+import se.rupy.memory.*;
+import se.rupy.sprout.*;
+
+public class content extends Sprout {
+	public String path() { return "/content"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
+		Object key = event.session().get("key");
+		Iterator it = get("article").iterator(); ]]
+
+    <table>
+
+[[		while(it.hasNext()) {
+			Article article = (Article) it.next();
+			Node user = (Node) article.get(Type.USER).getFirst();
+			boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
+		
+      <tr>
+        <td><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
+        <td>
+
+[[			if(edit) { ]]
+
+          <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
+            <p>[[ i18n("Edit") ]]</p>
+          </div>
+
+[[			} ]]
+
+        </td>
+      </tr>
+      <tr>
+        <td><i>[[ article.time() ]]</i></td>
+        <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.get(Type.COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+
+[[			LinkedList columns = article.columnize();
+			Iterator ite = columns.iterator();
+			while(ite.hasNext()) {
+				String column = (String) ite.next(); ]]
+
+          <div style="float: left; margin: 5px 5px 5px 5px; width: 200px;">
+            [[ column ]]
+          </div>
+
+[[			} ]]
+
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+      </tr>
+
+[[ 		} ]]
+
+    </table>
+
+[[ } 
+} ]]
+

@@ -1,0 +1,73 @@
+[[ package gen;
+
+import se.rupy.http.*;
+import se.rupy.sprout.*;
+
+public class register extends Sprout {
+	public int index() { return 2; }
+	public String path() { return "/register"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output(); ]]
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Sprout</title>
+  <link rel="stylesheet" type="text/css" href="res/sprout.css">
+  <script type="text/javascript" src="res/sprout.js"></script>
+</head>
+<body onLoad="document.forms[0].elements[0].focus();">
+<div id="page" style="padding: 10px 10px 10px 10px;">
+  <table border="0" width="100">
+    <form name="register" action="register" method="post">
+
+[[		if(event.string("error").length() > 0) { ]]
+
+      <tr>
+        <td colspan="2">
+          <font color="red"><i>[[ event.string("error") ]]</i></font>
+        </td>
+      </tr>
+
+[[		} ]]
+
+      <tr>
+        <td>Name&nbsp;&nbsp;</td>
+        <td>
+          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" tabindex="1"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Mail</td>
+        <td>
+          <input type="text" class="small" name="mail" value="[[ event.string("mail") ]]" tabindex="2"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Pass</td>
+        <td>
+          <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="3"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Word</td>
+        <td>
+          <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="4"/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="arrow" onclick="document.register.submit()">
+            <p>[[ i18n("Register") ]]</p>
+          </div>
+        </td>
+      </tr>
+    </form>
+  </table>
+</div>
+</body>
+</html>
+
+[[ } 
+} ]]
+

@@ -1,0 +1,82 @@
+[[ package gen;
+
+import java.util.*;
+
+import se.rupy.http.*;
+import se.rupy.memory.*;
+import se.rupy.sprout.*;
+
+public class edit extends Sprout {
+	public int index() { return 3; }
+	public String path() { return "/article/edit"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
+		Object key = event.session().get("key");
+		Article article = Article.get(key);
+		
+		if(event.string("title").length() == 0 && 
+		   event.string("body").length() == 0) {
+			Article.remove(key);
+			article = null;
+		} ]]
+
+    <table border="0" width="100">
+      <form name="article" action="article/edit" method="post">
+
+[[		if(event.string("error").length() > 0) { ]]
+
+        <tr>
+          <td colspan="2">
+            <font color="red"><i>[[ event.string("error") ]]</i></font>
+          </td>
+        </tr>
+
+[[		} ]]
+
+        <tr>
+          <td>[[ i18n("Title") ]]</td>
+          <td align="right">
+            <input type="text" class="large" name="title" value="[[ event.string("title") ]]" tabindex="1"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <textarea class="large" name="body" rows="5" tabindex="2">[[ event.string("body") ]]</textarea>
+          </td>
+        </tr>
+        
+[[		if(article != null) {
+			Iterator it = article.get(Type.FILE).iterator();
+			while(it.hasNext()) {
+				Node file = (Node) it.next(); ]]
+		
+        <tr>
+          <td colspan="2">[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]</td>
+        </tr>
+
+[[ 			}
+		} ]]
+        
+        <tr>
+          <td colspan="2">
+            <div class="arrow" onclick="document.article.submit()">
+              <p>[[ i18n("Publish") ]]</p>
+            </div>
+          </td>
+        </tr>
+      </form>
+      <form enctype="multipart/form-data" name="upload" action="upload" method="POST">
+        <tr>
+          <td colspan="2">
+            <div class="button overflow">
+              <input name="file" type="file" class="file" onchange="document.upload.submit()"/>
+              <p>[[ i18n("Files") ]]</p>
+            </div>
+          </td>
+        </tr>
+      </form>
+    </table>
+
+[[ } 
+} ]]
+

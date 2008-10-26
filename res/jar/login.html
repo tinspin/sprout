@@ -1,0 +1,63 @@
+[[ package gen;
+
+import se.rupy.http.*;
+import se.rupy.sprout.*;
+
+public class login extends Sprout {
+	public int index() { return 2; }
+	public String path() { return "/login"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output(); ]]
+
+    <form name="login" action="login" method="post">
+      <table border="0" width="100">
+
+      
+[[		if(event.string("error").length() > 0) { ]]
+
+        <tr>
+          <td colspan="2">
+            <font color="red"><i>[[ event.string("error") ]]</i></font>
+          </td>
+        </tr>
+
+[[		} ]]
+
+        <tr>
+          <td colspan="2">
+            <input type="text" class="small" name="name" value="[[ event.string("name") ]]" tabindex="1"/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" onkeypress="return myKeyPressed(event)" tabindex="2"/>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <input type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
+          </td>
+          <td>
+            <div class="arrow" onclick="document.login.submit()">
+              <p>[[ i18n("Login") ]]</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="button" onclick="self.location = '/register'">
+              <p>[[ i18n("Register") ]]</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="right">
+            <a href="feed"><img src="res/feed.gif" border="0"></a>
+          </td>
+        </tr>
+      </table>
+    </form>
+
+[[ } 
+} ]]
+

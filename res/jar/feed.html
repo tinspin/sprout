@@ -1,0 +1,49 @@
+[[ package gen;
+
+import java.util.*;
+
+import se.rupy.http.*;
+import se.rupy.memory.*;
+import se.rupy.sprout.*;
+
+public class feed extends Sprout {
+	public String path() { return "/feed"; }
+	public void filter(Event event) throws Event, Exception {
+		event.reply().type("text/xml");
+		Output out = event.output();
+		Object key = event.session().get("key");
+		LinkedList list = get("article");
+		Iterator it = list.iterator(); ]]
+
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Sprout</title>
+    <link>http://sprout.rupy.se</link>
+    <description>Content Management System</description>
+    
+[[		while(it.hasNext()) {
+			Article article = (Article) it.next();
+			Node user = (Node) article.get(Type.USER).getFirst();
+			boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
+		
+    <item>
+      <title>[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</title>
+      <link>http://sprout.rupy.se/article?id=[[ article.getId() ]]</link>
+      <description>[[ clean(article.get(Type.ARTICLE_BODY).getValue()) ]]</description>
+      <pubDate>[[ article.time() ]]</pubDate>
+    </item>
+
+[[ 		} ]]
+
+  </channel>
+</rss>
+
+[[ } 
+	static String clean(String line) {
+        line = line.replaceAll("<", "&lt;");
+        line = line.replaceAll(">", "&gt;");
+		return line;
+	}
+} ]]
+

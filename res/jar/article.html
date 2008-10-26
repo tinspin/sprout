@@ -1,0 +1,121 @@
+[[ package gen;
+
+import java.util.*;
+
+import se.rupy.http.*;
+import se.rupy.memory.*;
+import se.rupy.sprout.*;
+
+public class article extends Sprout {
+	public String path() { return "/article"; }
+	public void filter(Event event) throws Event, Exception {
+		event.query().parse();
+		Output out = event.output();
+		Object key = event.session().get("key");
+		Article article = get(event.big("id"));
+		Node user = (Node) article.get(Type.USER).getFirst();
+		boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Sprout</title>
+  <link rel="stylesheet" type="text/css" href="res/sprout.css">
+  <script type="text/javascript" src="res/sprout.js"></script>
+</head>
+<body>
+<div id="page" style="padding: 10px 10px 10px 10px;">
+  <div>
+    <table>
+      <tr>
+        <td class="title">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</td>
+        <td>
+
+[[			if(edit) { ]]
+
+          <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
+            <p>[[ i18n("Edit") ]]</p>
+          </div>
+
+[[			} ]]
+
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><i>[[ article.time() ]]</i></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+        
+[[			LinkedList columns = article.columnize();
+			Iterator it = columns.iterator();
+			while(it.hasNext()) {
+				String column = (String) it.next(); ]]
+
+          <div style="float: left; margin: 5px 5px 5px 5px; width: 200px;">
+            [[ column ]]
+          </div>
+
+[[			} ]]
+
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+      </tr>
+      
+[[		LinkedList comments = article.get(Type.COMMENT); ]]
+      
+      <tr>
+        <td colspan="2"><img src="res/comment.gif">&nbsp;<i>[[ comments.size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+      </tr>
+      
+[[		it = comments.iterator();
+		while(it.hasNext()) {
+			Node comment = (Node) it.next(); ]]
+		
+        <tr>
+          <td colspan="2">[[ comment.get(Type.COMMENT_BODY).getValue() ]]</td>
+        </tr>
+
+[[ 		} ]]
+      
+    </table>
+  </div>
+  <div style="float: left; padding-right: 10px; padding-bottom: 10px;">
+    <table border="0" width="100">
+      <form name="comment" action="article/comment/post" method="post">
+        <input type="hidden" name="id" value="[[ article.getId() ]]"/>
+        
+[[		if(event.string("error").length() > 0) { ]]
+
+        <tr>
+          <td colspan="2">
+            <font color="red"><i>[[ event.string("error") ]]</i></font>
+          </td>
+        </tr>
+
+[[		} ]]
+
+        <tr>
+          <td colspan="2">
+            <textarea class="large" name="body" rows="5" tabindex="2">[[ event.string("body") ]]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div class="arrow" onclick="document.comment.submit()">
+              <p>[[ i18n("Post") ]]</p>
+            </div>
+          </td>
+        </tr>
+      </form>
+    </table>
+  </div>
+</div>
+</body>
+</html>
+
+[[ } 
+} ]]
+
