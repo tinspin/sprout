@@ -1,0 +1,43 @@
+[[ package gen;
+
+import se.rupy.http.*;
+import se.rupy.sprout.*;
+
+public class index extends Sprout {
+	public int index() { return 1; }
+	public String path() { return "/"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output(); ]]
+		
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Sprout</title>
+  <link rel="stylesheet" type="text/css" href="res/sprout.css">
+  <script type="text/javascript" src="res/sprout.js"></script>
+</head>
+<body onLoad="document.forms[0].elements[0].focus();">
+<div id="page" style="padding: 10px 10px 10px 10px;">
+  <div style="float: right; margin-left: 10px">
+
+[[ String key = (String) event.session().get("key");
+if(key == null) {
+	event.daemon().chain("/login").filter(event);
+}
+else {
+	event.daemon().chain("/article/edit").filter(event);
+} ]]
+
+  </div>
+  <div>
+
+[[ event.daemon().chain("/content").filter(event); ]]
+
+  </div>
+</div>
+</body>
+</html>
+
+[[ } 
+} ]]
+

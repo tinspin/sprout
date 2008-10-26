@@ -1,0 +1,1 @@
+java -classpath "lib/activation.jar;lib/http.jar;lib/json.jar;lib/mail.jar;lib/util.jar;lib/mysql.jar" se.rupy.http.Daemon -threads 1 -delay 60 -timeout 300 -port 9000 -pass secret

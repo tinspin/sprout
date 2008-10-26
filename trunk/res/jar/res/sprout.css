@@ -1,0 +1,82 @@
+a, td, select, input, textarea { font-family: 'lucida sans unicode', 'lucida grande'; }
+a:link, a:hover, a:active, a:visited { color: #000; }
+select, input, textarea { font-size: 1.0em; }
+input.tiny { width: 45px; }
+input.small { width: 100px; }
+input.large { width: 145px; }
+select.large { width: 150px; }
+textarea.large { width: 175px; }
+td { font-size: 0.6em; }
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity: 0;
+	filter: alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+
+.title, a:link.title, a:hover.title, a:active.title, a:visited.title {
+	font-family: 'georgia';
+	font-size: 7em;
+	letter-spacing: -0.04em;
+	color: #76A700;
+	text-decoration: none;
+}
+
+.arrow {
+	background: url(left.gif) top left no-repeat;
+	text-transform: uppercase;
+/*	padding: 0px 0px 0px 15px; */
+	padding-left: 15px;
+	height: 25px;
+	position: relative;
+	cursor: pointer;
+	float: right;
+	text-align: right;
+	margin-left: 4px;
+}
+
+.arrow p {
+	background: url(arrow.gif) top right no-repeat;
+/*	padding: 0px 20px 0px 0px; */
+	padding-right: 20px;
+	height: 25px;
+	line-height: 24px;
+	cursor: pointer;
+	margin: 0;
+}
+
+.button {
+	background: url(left.gif) top left no-repeat;
+	text-transform: uppercase;
+/*	padding: 0px 0px 0px 15px; */
+	padding-left: 15px;
+	height: 25px;
+	position: relative;
+	cursor: pointer;
+	text-align: right;
+	float: right;
+}
+
+.button p {
+	background: url(right.gif) top right no-repeat;
+/*	padding: 0px 15px 0px 0px; */
+	padding-right: 15px;
+	height: 25px;
+	line-height: 24px;
+	cursor: pointer;
+	margin: 0;
+}
+
+.button.overflow {
+	overflow: hidden;
+}
+
+.button .file {
+	position: absolute;
+	right: 0;
+	height: 25px;
+	cursor: pointer !important;
+}
