@@ -61,7 +61,7 @@
 	
 	<target name="create" depends="check-create" unless="create-required">
 		<delete dir="src/se/rupy/memory" quiet="yes"/>
-		<java fork="yes" classname="se.rupy.memory.Origin" classpath="../memory/bin/memory.jar">
+		<java fork="yes" classname="se.rupy.memory.Origin" classpath="lib/memory.jar">
 			<arg line="${db}"/>
 			<arg line="res/sprout.xml"/>
 			<arg line="."/>
