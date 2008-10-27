@@ -10,6 +10,7 @@ public class feed extends Sprout {
 	public String path() { return "/feed"; }
 	public void filter(Event event) throws Event, Exception {
 		event.reply().type("text/xml");
+		String host = event.query().header("host");
 		Output out = event.output();
 		Object key = event.session().get("key");
 		LinkedList list = get("article");
@@ -29,7 +30,7 @@ public class feed extends Sprout {
 		
     <item>
       <title>[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</title>
-      <link>http://sprout.rupy.se/article?id=[[ article.getId() ]]</link>
+      <link>http://[[ host ]]/article?id=[[ article.getId() ]]</link>
       <description>[[ clean(article.get(Type.ARTICLE_BODY).getValue()) ]]</description>
       <pubDate>[[ article.time() ]]</pubDate>
     </item>
