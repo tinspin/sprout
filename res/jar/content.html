@@ -11,57 +11,68 @@ public class content extends Sprout {
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 		Object key = event.session().get("key");
-		Iterator it = get("article").iterator(); ]]
-
-    <table>
-
-[[		while(it.hasNext()) {
-			Article article = (Article) it.next();
+		Iterator articles = get("article").iterator();
+		while(articles.hasNext()) {
+			Article article = (Article) articles.next();
 			Node user = (Node) article.get(Type.USER).getFirst();
 			boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
-		
-      <tr>
-        <td><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
-        <td>
+
+    <div style="float: left;">
+      <table>		
+        <tr>
+          <td><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
+          <td>
 
 [[			if(edit) { ]]
 
-          <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
-            <p>[[ i18n("Edit") ]]</p>
-          </div>
+            <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
+              <p>[[ i18n("Edit") ]]</p>
+            </div>
 
 [[			} ]]
 
-        </td>
-      </tr>
-      <tr>
-        <td><i>[[ article.time() ]]</i></td>
-        <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.get(Type.COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
-      </tr>
-      <tr>
-        <td colspan="2">
+          </td>
+        </tr>
+        <tr>
+          <td><i>[[ article.time() ]]</i></td>
+          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.get(Type.COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+        </tr>
+        <tr>
+          <td colspan="2">
 
-[[			LinkedList columns = article.columnize();
-			Iterator ite = columns.iterator();
-			while(ite.hasNext()) {
-				String column = (String) ite.next(); ]]
+[[ print(article, out); ]]
 
-          <div style="float: left; margin: 5px 5px 5px 5px; width: 200px;">
-            [[ column ]]
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+        </tr>
+      </table>
+    </div>
+
+[[ 		}
+	}
+	static void print(Article article, Output out) throws Exception {
+		Iterator it = article.get(Type.FILE).iterator();
+		if(it.hasNext()) {
+			Node file = (Node) it.next(); ]]
+
+          <div>
+            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]"/>
           </div>
 
-[[			} ]]
+[[ 		}
 
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">/[[ user.get(Type.USER_NAME).getValue() ]]</td>
-      </tr>
+		LinkedList columns = article.columnize();
+		it = columns.iterator();
+		if(it.hasNext()) {
+			String column = (String) it.next(); ]]
 
-[[ 		} ]]
+          <div style="width: 200px;">
+            [[ column + "..." ]]
+          </div>
 
-    </table>
-
-[[ } 
+[[		}
+	}
 } ]]
 

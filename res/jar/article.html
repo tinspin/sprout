@@ -47,8 +47,18 @@ public class article extends Sprout {
       <tr>
         <td colspan="2">
         
-[[			LinkedList columns = article.columnize();
-			Iterator it = columns.iterator();
+[[			Iterator it = article.get(Type.FILE).iterator();
+			while(it.hasNext()) {
+				Node file = (Node) it.next(); ]]
+
+          <div style="float: left; margin: 5px 5px 5px 5px; width: 200px;">
+            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]"/>
+          </div>
+
+[[ 			}
+
+			LinkedList columns = article.columnize();
+			it = columns.iterator();
 			while(it.hasNext()) {
 				String column = (String) it.next(); ]]
 

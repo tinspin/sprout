@@ -23,7 +23,7 @@ public class User extends Node {
 		if(user == null) {
 			user = new User();
 			user.query(Type.USER_KEY, key);
-			user.load();			
+			user.meta();			
 			user.cache.put(key, user);
 		}
 		
@@ -43,7 +43,7 @@ public class User extends Node {
 				if(name.length() > 0 && pass.length() > 0) {
 					User user = new User();
 					if(user.query(USER_NAME, name)) {
-						user.load();
+						user.meta();
 						
 						if(user.get(USER_PASS).getValue().equals(pass)) {
 							save(event.session(), user);

@@ -94,7 +94,7 @@ public abstract class Sprout extends Service {
 
 			db.update(Base.SELECT, old);
 
-			old.load();
+			old.meta();
 			old.link(Type.ALL);
 			
 			cache.put(new Long(id), old);
@@ -124,13 +124,13 @@ public abstract class Sprout extends Service {
 				Node article = new Article();
 				
 				article.copy(node);
-				article.load();
+				article.meta();
 				article.link(Type.ALL);
 
 				cache.put(new Long(article.getId()), article);
 				
 				Node user = (Node) article.get(Type.USER).getFirst();
-				user.load();
+				user.meta();
 				
 				old.set(index++, article);
 			}

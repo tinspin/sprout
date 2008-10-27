@@ -1,13 +1,26 @@
 package se.rupy.sprout;
 
-import java.io.*;
-import java.util.Random;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
-import se.rupy.http.*;
+import javax.imageio.ImageIO;
+
+import se.rupy.http.Event;
+import se.rupy.http.Input;
+import se.rupy.http.Query;
+
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /*
  * This service only supports one file at the time.
- * TODO: enable dynamic static content in rupy ...
  */
 public class Upload extends Sprout {
 	public static int SIZE = 1024;
@@ -17,10 +30,13 @@ public class Upload extends Sprout {
 	public void filter(Event event) throws Event, Exception {
 		if(event.query().method() == Query.POST) {
 			Node file = new Node(Type.FILE);
-			
 			Item item = new Item();
 			item.path = File.separator + "upload" + File.separator + file.date();
 			item = save(event, item);
+			
+			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg")) {
+				resize(item, 200);
+			}
 			
 			file.add(Type.FILE_PATH, item.path.replace('\\', '/'));
 			file.add(Type.FILE_NAME, item.name);
@@ -44,6 +60,27 @@ public class Upload extends Sprout {
 		Sprout.redirect(event, "/");
 	}
 
+	static void resize(Item item, int width) throws IOException {
+		BufferedImage image = ImageIO.read(item.file);
+		Image small = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
+		int height = small.getHeight(null);
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+		Graphics g = image.createGraphics();
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, width, height);
+		g.drawImage(small, 0, 0, null);
+		g.dispose();
+		
+		FileOutputStream out = new FileOutputStream(item.file);
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+        JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image);
+        param.setQuality(1, true);
+        encoder.setJPEGEncodeParam(param);
+        encoder.encode(image);
+        out.close();
+	}
+	
 	public static Item save(Event event, Item item) throws Event, IOException {
 		String type = event.query().header("content-type");
 		String boundary = "--" + unquote(type.substring(type.indexOf("boundary=") + 9));
@@ -102,7 +139,8 @@ public class Upload extends Sprout {
 					path.mkdirs();
 				}
 				
-				FileOutputStream out = new FileOutputStream(new File(root + item.path + File.separator + item.name));
+				item.file = new File(root + item.path + File.separator + item.name);
+				FileOutputStream out = new FileOutputStream(item.file);
 
 				/*
 				 * stream data
@@ -165,6 +203,7 @@ public class Upload extends Sprout {
 		String name;
 		String path;
 		String type;
+		File file;
 	}
 	
 	/*
@@ -174,7 +213,7 @@ public class Upload extends Sprout {
 	 * 
 	 * TODO: An alternative way is to write everything from headers onwards 
 	 * to a file and then search for the boundary starting at the end of the 
-	 * file, and crop the boundary. Only works for one file though.
+	 * file, and crop the boundary.
 	 */
 	public static class Boundary {
 		byte[] value;
