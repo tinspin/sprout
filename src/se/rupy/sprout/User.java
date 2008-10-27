@@ -34,9 +34,9 @@ public class User extends Node {
 		public int index() { return 1; }
 		public String path() { return "/login"; }
 		public void filter(Event event) throws Event, Exception {
-			event.query().parse();
-
 			if(event.query().method() == Query.POST) {
+				event.query().parse();
+				
 				String name = event.string("name");
 				String pass = event.string("pass");
 
