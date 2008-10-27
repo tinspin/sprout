@@ -122,7 +122,6 @@ public class Node extends NodeBean implements Type {
 		}
 
 		Sprout.update(action, this, connection);
-
 		Iterator it = meta.iterator();
 
 		while(it.hasNext()) {
@@ -153,7 +152,6 @@ public class Node extends NodeBean implements Type {
 		link.setParent(this);
 		link.setChild(node);
 		link.setType((short) (getType() | node.getType()));
-
 		Sprout.update(action, link, connection);
 	}
 
@@ -183,7 +181,6 @@ public class Node extends NodeBean implements Type {
 			meta.setNode(-1);
 			meta.setData(data);
 			meta.setType(data.getType());
-
 			Sprout.update(Base.SELECT, meta);
 
 			if(meta.size() == 1) {
@@ -198,6 +195,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Find children nodes. Call {@link #query(short, Object)} or {@link #query(DataBean)} first.
+	 * Only fetches data from the database the first time.
 	 * @param type
 	 * @return
 	 * @throws SQLException
@@ -207,45 +205,45 @@ public class Node extends NodeBean implements Type {
 			throw new SQLException("Query node first!");
 		}
 
-		link = new LinkBean();
-		link.setParent(this);
-		link.setType(type);
-		link.setChild(-1);
+		if(link.size() == 0) {
+			link.setParent(this);
+			link.setType(type);
+			link.setChild(-1);
 
-		if(Sprout.update(Base.SELECT, link)) {
-			for(int i = 0; i < link.size(); i++) {
-				NodeBean bean = (NodeBean) link.get(i);
-				Node node = new Node();
-				node.copy(bean);
-				link.set(i, node);
+			if(Sprout.update(Base.SELECT, link)) {
+				for(int i = 0; i < link.size(); i++) {
+					NodeBean bean = (NodeBean) link.get(i);
+					Node node = new Node();
+					node.copy(bean);
+					link.set(i, node);
+				}
+
+				return true;
 			}
-
-			return true;
 		}
 
 		return false;
 	}
 
 	/**
-	 * Load meta-data. Call {@link #query(short, Object)} or {@link #query(DataBean)} first. Only fetches data from the database the first time.
+	 * Load meta-data. Call {@link #query(short, Object)} or {@link #query(DataBean)} first. 
+	 * Only fetches data from the database the first time.
 	 * @throws SQLException
 	 */
-	public void load() throws SQLException {
+	public void meta() throws SQLException {
 		if(id == 0) {
 			throw new SQLException("Query node first!");
 		}
-		
+
 		if(meta.size() == 0) {
-			meta = new MetaBean();
 			meta.setNode(this);
 			meta.setData(-1);
-
 			Sprout.update(Base.SELECT, meta);
 		}
 	}
 
 	/**
-	 * Get meta-data.
+	 * Get meta-data. Call {@link meta()} first.
 	 * @param type
 	 * @return
 	 */
@@ -266,7 +264,7 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Get child nodes. Call {@link 
+	 * Get child nodes. Call {@link link(int)} first.
 	 * @param type
 	 * @return
 	 */
@@ -280,7 +278,7 @@ public class Node extends NodeBean implements Type {
 			// TODO: look for date if version
 
 			if(node.getType() == type) {
-				node.load();
+				node.meta();
 				result.add(node);
 			}
 		}

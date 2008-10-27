@@ -20,7 +20,7 @@ public class feed extends Sprout {
 <rss version="2.0">
   <channel>
     <title>Sprout</title>
-    <link>http://sprout.rupy.se</link>
+    <link>http://[[ host ]]</link>
     <description>Content Management System</description>
     
 [[		while(it.hasNext()) {
@@ -31,7 +31,7 @@ public class feed extends Sprout {
     <item>
       <title>[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</title>
       <link>http://[[ host ]]/article?id=[[ article.getId() ]]</link>
-      <description>[[ clean(article.get(Type.ARTICLE_BODY).getValue()) ]]</description>
+      <description>[[ print(host, article, out); ]]</description>
       <pubDate>[[ article.time() ]]</pubDate>
     </item>
 
@@ -45,6 +45,20 @@ public class feed extends Sprout {
         line = line.replaceAll("<", "&lt;");
         line = line.replaceAll(">", "&gt;");
 		return line;
+	}
+	static void print(String host, Article article, Output out) throws Exception {
+		Iterator it = article.get(Type.FILE).iterator();
+		if(it.hasNext()) {
+			Node file = (Node) it.next();
+            out.println(clean("<img src=\"http://" + host + file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() + "\" align=\"right\"/>"));
+		}
+
+		LinkedList columns = article.columnize();
+		it = columns.iterator();
+		if(it.hasNext()) {
+			String column = (String) it.next();
+            out.println(clean(column) + "...");
+		}
 	}
 } ]]
 
