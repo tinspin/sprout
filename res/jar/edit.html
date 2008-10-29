@@ -51,7 +51,7 @@ public class edit extends Sprout {
 				Node file = (Node) it.next(); ]]
 		
         <tr>
-          <td colspan="2">[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]</td>
+          <td colspan="2"><img src="[[ file.get(Type.FILE_PATH).getValue() + "/TINY_" + file.get(Type.FILE_NAME).getValue() ]]"/></td>
         </tr>
 
 [[ 			}
@@ -75,6 +75,11 @@ public class edit extends Sprout {
           </td>
         </tr>
       </form>
+      <tr>
+        <td colspan="2" align="right">
+          <a href="feed"><img src="res/feed.gif" border="0"></a>
+        </td>
+      </tr>
     </table>
 
 [[ } 

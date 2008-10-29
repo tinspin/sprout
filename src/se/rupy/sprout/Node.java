@@ -53,28 +53,17 @@ public class Node extends NodeBean implements Type {
 		DataBean data = new DataBean();
 		data.setType(type);
 		data.setValue(value);
-		meta.add(data);
+		add(data);
 	}
 
-	/**
-	 * Set meta-data. Does not update the database, call {@link #update()} to persist.
-	 * @param type
-	 * @param value
-	 * @throws SQLException
-	 */
-	public void set(short type, String value) throws SQLException {
-		DataBean data = get(type);
-		data.setType(type);
-		data.setValue(value);
-	}
-
-	/**
-	 * Add meta-data. Does not insert to the database, call {@link #update()} to persist. 
-	 * Additions can only be made prior to the {@link #update()} call.
-	 * @param data
-	 * @throws SQLException
-	 */
-	public void add(DataBean data) throws SQLException {
+	void add(DataBean data) throws SQLException {
+		DataBean old = get(data.getType());
+		
+		if(old != null) {
+			meta.remove(old);
+			data.setId(old.getId());
+		}
+		
 		meta.add(data);
 	}
 
@@ -114,6 +103,27 @@ public class Node extends NodeBean implements Type {
 		}
 	}
 
+	/**
+	 * Delete the child node.
+	 * @param node
+	 * @throws SQLException
+	 */
+	public void delete(Node node) throws SQLException {
+		Connection connection = Sprout.connection(true);
+
+		try {
+			delete(node, connection);
+			connection.commit();
+		}
+		catch(SQLException e) {
+			connection.rollback();
+			throw e;
+		}
+		finally {
+			connection.close();
+		}
+	}
+	
 	void update(Connection connection) throws SQLException {
 		byte action = Base.UPDATE;
 
@@ -151,7 +161,7 @@ public class Node extends NodeBean implements Type {
 
 		link.setParent(this);
 		link.setChild(node);
-		link.setType((short) (getType() | node.getType()));
+		link.setType(getType() | node.getType());
 		Sprout.update(action, link, connection);
 	}
 
@@ -169,13 +179,7 @@ public class Node extends NodeBean implements Type {
 		return query(data);
 	}
 
-	/**
-	 * Find data/node meta relation that matches and populate this node.
-	 * @param data
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean query(DataBean data) throws SQLException {
+	boolean query(DataBean data) throws SQLException {
 		if(Sprout.update(Base.SELECT, data)) {
 			MetaBean meta = new MetaBean();
 			meta.setNode(-1);
@@ -201,11 +205,7 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public boolean link(int type) throws SQLException {
-		if(id == 0) {
-			throw new SQLException("Query node first!");
-		}
-
-		if(link.size() == 0) {
+		if(id > 0 && link.size() == 0) {
 			link.setParent(this);
 			link.setType(type);
 			link.setChild(-1);
@@ -231,11 +231,7 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public void meta() throws SQLException {
-		if(id == 0) {
-			throw new SQLException("Query node first!");
-		}
-
-		if(meta.size() == 0) {
+		if(id > 0 && meta.size() == 0) {
 			meta.setNode(this);
 			meta.setData(-1);
 			Sprout.update(Base.SELECT, meta);
@@ -266,6 +262,7 @@ public class Node extends NodeBean implements Type {
 	/**
 	 * Get child nodes. Call {@link link(int)} first.
 	 * @param type
+	 * @param fill
 	 * @return
 	 */
 	public LinkedList get(int type) throws SQLException {
@@ -286,6 +283,35 @@ public class Node extends NodeBean implements Type {
 		return result;
 	}
 
+	/**
+	 * Get child node. Call {@link link(int)} first.
+	 * @param id
+	 * @return
+	 */
+	public Node get(long id) throws SQLException {
+		Iterator it = link.iterator();
+
+		while(it.hasNext()) {
+			Node node = (Node) it.next();
+			
+			if(node.getId() == id) {
+				return node;
+			}
+		}
+
+		return null;
+	}
+	
+	void delete(Node node, Connection connection) throws SQLException {
+		link.setParent(this);
+		link.setChild(node);
+		link.setType(getType() | node.getType());
+		Sprout.update(Base.DELETE, link, connection);
+		
+		// TODO: Verify link for other references.
+		Sprout.update(Base.DELETE, node, connection);
+	}
+	
 	public String date() {
 		return date.format(new Date(getDate()));
 	}

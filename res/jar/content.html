@@ -20,18 +20,7 @@ public class content extends Sprout {
     <div style="float: left;">
       <table>		
         <tr>
-          <td><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
-          <td>
-
-[[			if(edit) { ]]
-
-            <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
-              <p>[[ i18n("Edit") ]]</p>
-            </div>
-
-[[			} ]]
-
-          </td>
+          <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
@@ -45,7 +34,18 @@ public class content extends Sprout {
           </td>
         </tr>
         <tr>
-          <td colspan="2">/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+          <td>/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+          <td>
+
+[[			if(edit) { ]]
+
+            <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
+              <p>[[ i18n("Edit") ]]</p>
+            </div>
+
+[[			} ]]
+
+          </td>
         </tr>
       </table>
     </div>
@@ -58,7 +58,7 @@ public class content extends Sprout {
 			Node file = (Node) it.next(); ]]
 
           <div>
-            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]"/>
+            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.get(Type.FILE_PATH).getValue() + "/SMALL_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/></a>
           </div>
 
 [[ 		}

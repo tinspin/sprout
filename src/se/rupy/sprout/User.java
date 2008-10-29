@@ -82,6 +82,7 @@ public class User extends Node {
 							user.add(USER_MAIL, mail);
 							user.add(USER_PASS, pass);
 							user.add(Sprout.generate(USER_KEY, 16));
+							user.add(USER_IP, event.remote());
 							user.update();
 
 							save(event.session(), user);

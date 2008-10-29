@@ -50,7 +50,7 @@ public class feed extends Sprout {
 		Iterator it = article.get(Type.FILE).iterator();
 		if(it.hasNext()) {
 			Node file = (Node) it.next();
-            out.println(clean("<img src=\"http://" + host + file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() + "\" align=\"right\"/>"));
+            out.println(clean("<img src=\"http://" + host + file.get(Type.FILE_PATH).getValue() + "/SMALL_" + file.get(Type.FILE_NAME).getValue() + "\" align=\"right\"/>"));
 		}
 
 		LinkedList columns = article.columnize();
