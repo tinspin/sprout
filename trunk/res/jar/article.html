@@ -28,18 +28,7 @@ public class article extends Sprout {
   <div>
     <table>
       <tr>
-        <td class="title">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</td>
-        <td>
-
-[[			if(edit) { ]]
-
-          <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
-            <p>[[ i18n("Edit") ]]</p>
-          </div>
-
-[[			} ]]
-
-        </td>
+        <td colspan="2" class="title">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</td>
       </tr>
       <tr>
         <td colspan="2"><i>[[ article.time() ]]</i></td>
@@ -51,8 +40,8 @@ public class article extends Sprout {
 			while(it.hasNext()) {
 				Node file = (Node) it.next(); ]]
 
-          <div style="float: left; margin: 5px 5px 5px 5px; width: 200px;">
-            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]"/>
+          <div style="float: left; margin: 10px 10px 10px 10px; width: 400px;">
+            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/BIG_" + file.get(Type.FILE_NAME).getValue() ]]"/>
           </div>
 
 [[ 			}

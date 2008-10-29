@@ -24,7 +24,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  */
 public class Upload extends Sprout {
 	public static int SIZE = 1024;
-
+	public static String root = "app" + File.separator + "content";
 	public int index() { return 2; }
 	public String path() { return "/upload"; }
 	public void filter(Event event) throws Event, Exception {
@@ -35,7 +35,7 @@ public class Upload extends Sprout {
 			item = save(event, item);
 			
 			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg")) {
-				resize(item, 200);
+				resize(item, 50);
 			}
 			
 			file.add(Type.FILE_PATH, item.path.replace('\\', '/'));
@@ -62,23 +62,56 @@ public class Upload extends Sprout {
 
 	static void resize(Item item, int width) throws IOException {
 		BufferedImage image = ImageIO.read(item.file);
-		Image small = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
-		int height = small.getHeight(null);
-		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		
+		Image tiny = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
+		save(tiny, new File(root + item.path + File.separator + "TINY_" + item.name));
+		
+		Image small = image.getScaledInstance(width * 4, -1, Image.SCALE_AREA_AVERAGING);
+		save(small, new File(root + item.path + File.separator + "SMALL_" + item.name));
+		
+		Image big = image.getScaledInstance(width * 8, -1, Image.SCALE_AREA_AVERAGING);
+		save(big, new File(root + item.path + File.separator + "BIG_" + item.name));
+	}
 
+	static void save(Image small, File file) throws IOException {
+		int width = small.getWidth(null);
+		int height = small.getHeight(null);
+		
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.createGraphics();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, width, height);
 		g.drawImage(small, 0, 0, null);
 		g.dispose();
 		
-		FileOutputStream out = new FileOutputStream(item.file);
+		FileOutputStream out = new FileOutputStream(file);
         JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
         JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image);
         param.setQuality(1, true);
         encoder.setJPEGEncodeParam(param);
         encoder.encode(image);
         out.close();
+	}
+	
+	public static class Delete extends Sprout {
+		public String path() { return "/upload/delete"; }
+		public void filter(Event event) throws Event, Exception {
+			if(event.query().method() == Query.POST) {
+				event.query().parse();
+				
+				Article article = get(event.big("id"));
+				Node file = article.get(event.big("file"));
+				
+				if(article != null && file != null) {
+					// TODO: Delete actual content on disk.
+					
+					article.delete(file);
+					Sprout.invalidate("article", article);
+				}
+
+				Sprout.redirect(event);
+			}
+		}
 	}
 	
 	public static Item save(Event event, Item item) throws Event, IOException {
@@ -130,8 +163,6 @@ public class Upload extends Sprout {
 				/*
 				 * create path and file
 				 */
-
-				String root = "app" + File.separator + "content";
 				
 				File path = new File(root + item.path);
 

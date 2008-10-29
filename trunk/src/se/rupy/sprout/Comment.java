@@ -27,6 +27,7 @@ public class Comment extends Node {
 					}
 
 					comment.add(COMMENT_BODY, body);
+					comment.add(COMMENT_IP, event.remote());
 					article.add(comment);
 					article.update();
 					

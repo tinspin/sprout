@@ -103,16 +103,9 @@ public class Article extends Node {
 						Article.cache.put(key, article);
 					}
 
-					if(article.getId() == 0) {
-						article.add(ARTICLE_TITLE, title);
-						article.add(ARTICLE_BODY, body);
-						article.add(user);
-					}
-					else {
-						article.set(ARTICLE_TITLE, title);
-						article.set(ARTICLE_BODY, body);
-					}
-
+					article.add(ARTICLE_TITLE, title);
+					article.add(ARTICLE_BODY, body);
+					article.add(user);
 					article.update();
 
 					Sprout.invalidate("article", article);
