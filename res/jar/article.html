@@ -6,6 +6,8 @@ import se.rupy.http.*;
 import se.rupy.memory.*;
 import se.rupy.sprout.*;
 
+import se.rupy.util.*;
+
 public class article extends Sprout {
 	public String path() { return "/article"; }
 	public void filter(Event event) throws Event, Exception {
@@ -41,7 +43,9 @@ public class article extends Sprout {
 				Node file = (Node) it.next(); ]]
 
           <div style="float: left; margin: 10px 10px 10px 10px; width: 400px;">
-            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/BIG_" + file.get(Type.FILE_NAME).getValue() ]]"/>
+            <a href="[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]">
+            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/BIG_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/>
+            </a>
           </div>
 
 [[ 			}
@@ -74,7 +78,7 @@ public class article extends Sprout {
 			Node comment = (Node) it.next(); ]]
 		
         <tr>
-          <td colspan="2">[[ comment.get(Type.COMMENT_BODY).getValue() ]]</td>
+          <td colspan="2">[[ comment.get(Type.COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(comment.get(Type.COMMENT_IP).getValue()) ]] --></td>
         </tr>
 
 [[ 		} ]]

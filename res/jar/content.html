@@ -17,7 +17,7 @@ public class content extends Sprout {
 			Node user = (Node) article.get(Type.USER).getFirst();
 			boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
 
-    <div style="float: left;">
+    <div style="float: left; padding: 5px 5px 5px 5px;">
       <table>		
         <tr>
           <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
@@ -69,7 +69,10 @@ public class content extends Sprout {
 			String column = (String) it.next(); ]]
 
           <div style="width: 200px;">
-            [[ column + "..." ]]
+            [[ column ]]
+            [[ if(columns.size() > 1) { ]]
+            [[ "..." ]]
+			[[ } ]]
           </div>
 
 [[		}
