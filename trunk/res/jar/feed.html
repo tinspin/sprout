@@ -10,7 +10,7 @@ public class feed extends Sprout {
 	public String path() { return "/feed"; }
 	public void filter(Event event) throws Event, Exception {
 		event.reply().type("text/xml");
-		String host = event.query().header("host");
+		String host = "sprout.rupy.se"; // event.query().header("host");
 		Output out = event.output();
 		Object key = event.session().get("key");
 		LinkedList list = get("article");
@@ -57,7 +57,13 @@ public class feed extends Sprout {
 		it = columns.iterator();
 		if(it.hasNext()) {
 			String column = (String) it.next();
-            out.println(clean(column) + "...");
+            out.print(clean(column));
+			if(columns.size() > 1) {
+				out.println("...");
+			}
+			else {
+				out.println("");
+			}
 		}
 	}
 } ]]

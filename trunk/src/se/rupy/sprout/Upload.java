@@ -52,8 +52,10 @@ public class Upload extends Sprout {
 				article.add(Type.ARTICLE_BODY, i18n("Body"));
 			}
 			
-			article.add(file);
-
+			if(!article.contains(Type.FILE, Type.FILE_NAME, item.name)) {
+				article.add(file);
+			}
+			
 			Sprout.redirect(event, "/edit?id=" + article.getId());
 		}
 		
