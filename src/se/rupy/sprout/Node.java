@@ -284,6 +284,32 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
+	 * Checks if any of the children contains the meta-data.
+	 * @param type
+	 * @param meta
+	 * @param value
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean contains(int type, short meta, String value) throws SQLException {
+		Iterator it = link.iterator();
+
+		while(it.hasNext()) {
+			Node node = (Node) it.next();
+			
+			if(node.getType() == type) {
+				node.meta();
+				
+				if(node.get(meta).getValue().equals(value)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	
+	/**
 	 * Get child node. Call {@link link(int)} first.
 	 * @param id
 	 * @return
