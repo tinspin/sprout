@@ -66,6 +66,12 @@ public class Node extends NodeBean implements Type {
 			meta.remove(old);
 			data.setId(old.getId());
 		}
+		else if(id > 0) {
+			meta.setNode(this);
+			meta.setData(data);
+			meta.setType(data.getType());
+			Sprout.update(Base.INSERT, meta);
+		}
 		
 		meta.add(data);
 	}
@@ -294,7 +300,7 @@ public class Node extends NodeBean implements Type {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean contains(int type, short meta, String value) throws SQLException {
+	public Node contains(int type, short meta, String value) throws SQLException {
 		Iterator it = link.iterator();
 
 		while(it.hasNext()) {
@@ -304,12 +310,12 @@ public class Node extends NodeBean implements Type {
 				node.meta();
 				
 				if(node.get(meta).getValue().equals(value)) {
-					return true;
+					return node;
 				}
 			}
 		}
 
-		return false;
+		return null;
 	}
 	
 	/**
