@@ -51,7 +51,7 @@ public class edit extends Sprout {
 				Node file = (Node) it.next(); ]]
 		
         <tr>
-          <td colspan="2"><img src="[[ file.get(Type.FILE_PATH).getValue() + "/TINY_" + file.get(Type.FILE_NAME).getValue() ]]"/></td>
+          <td colspan="2"><img src="[[ file.path() + "TINY_" + file.get(Type.FILE_NAME).getValue() ]]"/></td>
         </tr>
 
 [[ 			}

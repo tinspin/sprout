@@ -1,5 +1,8 @@
 package se.rupy.sprout;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.*;
 import java.util.*;
@@ -10,7 +13,7 @@ import se.rupy.pool.*;
 public class Node extends NodeBean implements Type {
 	static Format time = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
-
+	
 	private LinkBean link;
 	private MetaBean meta;
 
@@ -336,6 +339,14 @@ public class Node extends NodeBean implements Type {
 		
 		// TODO: Verify link for other references.
 		Sprout.update(Base.DELETE, node, connection);
+	}
+	
+	public String path() {
+		return "/upload/" + date() + "/";
+	}
+
+	public String encoded() throws UnsupportedEncodingException {
+		return URLEncoder.encode(path(), "UTF-8");
 	}
 	
 	public String date() {

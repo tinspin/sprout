@@ -54,14 +54,18 @@ public class content extends Sprout {
 	}
 	static void print(Article article, Output out) throws Exception {
 		Iterator it = article.get(Type.FILE).iterator();
-		if(it.hasNext()) {
-			Node file = (Node) it.next(); ]]
+		while(it.hasNext()) {
+			Node file = (Node) it.next(); 
+			
+			if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) { ]]
 
           <div>
-            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.get(Type.FILE_PATH).getValue() + "/SMALL_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/></a>
+            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/></a>
           </div>
 
-[[ 		}
+[[ 				break;
+			}
+		}
 
 		LinkedList columns = article.columnize();
 		it = columns.iterator();
