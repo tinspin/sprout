@@ -31,6 +31,14 @@ public class Upload extends Sprout {
 			item.path = File.separator + "upload" + File.separator + file.date();
 			item = save(event, item);
 
+			Object key = event.session().get("key");
+			Article article = Article.get(key);
+			Node old = article.contains(Type.FILE, Type.FILE_NAME, item.name);
+			
+			if(old != null) {
+				file = old;
+			}
+			
 			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg")) {
 				resize(item, 50);
 				file.add(Type.FILE_TYPE, "IMAGE");
@@ -47,8 +55,6 @@ public class Upload extends Sprout {
 			}
 
 			file.add(Type.FILE_NAME, item.name);
-			Object key = event.session().get("key");
-			Article article = Article.get(key);
 
 			if(article.get(Type.ARTICLE_TITLE) == null) {
 				article.add(Type.ARTICLE_TITLE, i18n("Title"));
@@ -58,10 +64,13 @@ public class Upload extends Sprout {
 				article.add(Type.ARTICLE_BODY, i18n("Body"));
 			}
 
-			if(!article.contains(Type.FILE, Type.FILE_NAME, item.name)) {
+			if(old == null) {
 				article.add(file);
 			}
-
+			else {
+				file.update();
+			}
+			
 			Sprout.redirect(event, "/edit?id=" + article.getId());
 		}
 
