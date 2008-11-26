@@ -40,15 +40,32 @@ public class article extends Sprout {
         
 [[			Iterator it = article.get(Type.FILE).iterator();
 			while(it.hasNext()) {
-				Node file = (Node) it.next(); ]]
+				Node file = (Node) it.next(); 
+				
+				if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) { ]]
 
           <div style="float: left; margin: 10px 10px 10px 10px; width: 400px;">
-            <a href="[[ file.get(Type.FILE_PATH).getValue() + "/" + file.get(Type.FILE_NAME).getValue() ]]">
-            <img src="[[ file.get(Type.FILE_PATH).getValue() + "/BIG_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/>
+            <a href="[[ file.path() + file.get(Type.FILE_NAME).getValue() ]]">
+            <img src="[[ file.path() + "BIG_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/>
             </a>
           </div>
 
-[[ 			}
+[[ 				}
+				else if(file.get(Type.FILE_TYPE).getValue().equals("VIDEO")) {
+					String name = file.get(Type.FILE_NAME).getValue();
+					name = name.substring(0, name.indexOf('.')); ]]
+
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
+            <param name="allowScriptAccess" value="sameDomain" />
+            <param name="allowFullScreen" value="true" />
+            <param name="movie" value="res/player.swf?source=[[ file.encoded() + name + ".flv" ]]" />
+            <param name="quality" value="high" />
+            <param name="bgcolor" value="#ffffff" />
+            <embed src="res/player.swf?source=[[ file.encoded() + name + ".flv" ]]" quality="high" bgcolor="#ffffff" width="320" height="280" name="player" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+          </object>
+
+[[				}
+			}
 
 			LinkedList columns = article.columnize();
 			it = columns.iterator();

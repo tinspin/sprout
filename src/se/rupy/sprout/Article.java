@@ -130,13 +130,9 @@ public class Article extends Node {
 			Object key = event.session().get("key");
 
 			if(key != null) {
-				Article article = (Article) Article.cache.get(key);
+				Article article = (Article) Article.get(key);
 
-				if(article == null) {
-					article = new Article();
-				}
-
-				if(article.getId() != id) {
+				if(id > 0 && article.getId() != id) {
 					article.setId(id);
 					Sprout.update(Base.SELECT, article); // select date
 					article.meta();
