@@ -66,18 +66,16 @@ public class Node extends NodeBean implements Type {
 			meta.remove(old);
 			data.setId(old.getId());
 		}
-		else if(id > 0) {
-			meta.setNode(this);
-			meta.setData(data);
-			meta.setType(data.getType());
-			Sprout.update(Base.INSERT, meta);
+		
+		if(id > 0 && data.getId() == 0) {
+			meta(Base.INSERT, data, Sprout.connection(false));
 		}
 		
 		meta.add(data);
 	}
 
 	/**
-	 * Inserts or updates the node, it's meta-data and children nodes.
+	 * Inserts or updates the node, it's meta-data and children nodes recursively.
 	 * @throws SQLException
 	 */
 	public void update() throws SQLException {
@@ -100,7 +98,7 @@ public class Node extends NodeBean implements Type {
 		Connection connection = Sprout.connection(true);
 
 		try {
-			update(Base.INSERT, node, connection);
+			link(Base.INSERT, node, connection);
 			connection.commit();
 		}
 		catch(SQLException e) {
@@ -148,10 +146,7 @@ public class Node extends NodeBean implements Type {
 			Sprout.update(action, data, connection);
 
 			if(action == Base.INSERT) {
-				meta.setNode(this);
-				meta.setData(data);
-				meta.setType(data.getType());
-				Sprout.update(action, meta, connection);
+				meta(action, data, connection);
 			}
 		}
 
@@ -159,11 +154,11 @@ public class Node extends NodeBean implements Type {
 
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
-			update(action, node, connection);
+			link(action, node, connection);
 		}
 	}
 
-	void update(byte action, Node node, Connection connection) throws SQLException {
+	void link(byte action, Node node, Connection connection) throws SQLException {
 		if(node.getId() == 0) {
 			node.update(connection);
 		}
@@ -174,6 +169,17 @@ public class Node extends NodeBean implements Type {
 		Sprout.update(action, link, connection);
 	}
 
+	void meta(byte action, DataBean data, Connection connection) throws SQLException {
+		if(data.getId() == 0) {
+			Sprout.update(action, data, connection);
+		}
+		
+		meta.setNode(this);
+		meta.setData(data);
+		meta.setType(data.getType());
+		Sprout.update(action, meta, connection);
+	}
+	
 	/**
 	 * Find data/node meta relation where type = value and populate this node.
 	 * @param type
@@ -293,20 +299,20 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Checks if any of the children contains the meta-data.
-	 * @param type
+	 * Checks if any of the children contains the meta-data. Call {@link link(int)} first.
+	 * @param link
 	 * @param meta
 	 * @param value
 	 * @return
 	 * @throws SQLException
 	 */
-	public Node contains(int type, short meta, String value) throws SQLException {
-		Iterator it = link.iterator();
+	public Node get(int link, short meta, String value) throws SQLException {
+		Iterator it = this.link.iterator();
 
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
 			
-			if(node.getType() == type) {
+			if(node.getType() == link) {
 				node.meta();
 				
 				if(node.get(meta).getValue().equals(value)) {

@@ -33,7 +33,7 @@ public class Upload extends Sprout {
 
 			Object key = event.session().get("key");
 			Article article = Article.get(key);
-			Node old = article.contains(Type.FILE, Type.FILE_NAME, item.name);
+			Node old = article.get(Type.FILE, Type.FILE_NAME, item.name);
 			
 			if(old != null) {
 				file = old;
