@@ -42,6 +42,7 @@ public class feed extends Sprout {
 
 [[ } 
 	static String clean(String line) {
+        line = line.replaceAll("&", "&amp;");
         line = line.replaceAll("<", "&lt;");
         line = line.replaceAll(">", "&gt;");
 		return line;
@@ -52,7 +53,7 @@ public class feed extends Sprout {
 			Node file = (Node) it.next();
 			
 			if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) {
-				out.println(clean("<img src=\"http://" + host + file.path() + "/SMALL_" + file.get(Type.FILE_NAME).getValue() + "\" align=\"right\"/>"));
+				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.get(Type.FILE_NAME).getValue() + "\" align=\"right\"/>"));
 				break;
 			}
 		}

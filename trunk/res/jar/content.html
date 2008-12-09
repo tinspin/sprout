@@ -39,9 +39,9 @@ public class content extends Sprout {
 
 [[			if(edit) { ]]
 
-            <div class="button" onclick="javascript:self.location = '/edit?id=[[ article.getId() ]]'">
-              <p>[[ i18n("Edit") ]]</p>
-            </div>
+            <a href="/edit?id=[[ article.getId() ]]" class="button">
+              <span>[[ i18n("Edit") ]]</span>
+            </a>
 
 [[			} ]]
 

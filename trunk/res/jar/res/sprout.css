@@ -25,49 +25,42 @@ input.file {
 	text-decoration: none;
 }
 
-.arrow {
-	background: url(left.gif) top left no-repeat;
-	text-transform: uppercase;
-/*	padding: 0px 0px 0px 15px; */
-	padding-left: 15px;
-	height: 25px;
-	position: relative;
-	cursor: pointer;
-	float: right;
-	text-align: right;
-	margin-left: 4px;
-}
-
-.arrow p {
-	background: url(arrow.gif) top right no-repeat;
-/*	padding: 0px 20px 0px 0px; */
-	padding-right: 20px;
-	height: 25px;
-	line-height: 24px;
-	cursor: pointer;
-	margin: 0;
-}
-
 .button {
-	background: url(left.gif) top left no-repeat;
-	text-transform: uppercase;
-/*	padding: 0px 0px 0px 15px; */
-	padding-left: 15px;
-	height: 25px;
-	position: relative;
-	cursor: pointer;
-	text-align: right;
 	float: right;
+	display: block;
+	cursor: pointer;
+	text-decoration: none;
+	background-image: url(left.gif);
+	background-repeat: no-repeat;
 }
 
-.button p {
-	background: url(right.gif) top right no-repeat;
-/*	padding: 0px 15px 0px 0px; */
-	padding-right: 15px;
-	height: 25px;
-	line-height: 24px;
+.button span {
+	display: block;
+	padding: 5px 10px 6px 10px;
+	line-height: 14px;
+	text-transform: uppercase;
+	background-image: url(right.gif);
+	background-position: top right;
+	background-repeat: no-repeat;
+}
+
+.arrow {
+	float: right;
+	display: block;
 	cursor: pointer;
-	margin: 0;
+	text-decoration: none;
+	background-image: url(left.gif);
+	background-repeat: no-repeat;
+}
+
+.arrow span {
+	display: block;
+	padding: 5px 18px 6px 10px;
+	line-height: 14px;
+	text-transform: uppercase;
+	background-image: url(arrow.gif);
+	background-position: top right;
+	background-repeat: no-repeat;
 }
 
 .button.overflow {

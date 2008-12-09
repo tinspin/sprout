@@ -1,5 +1,6 @@
 package se.rupy.sprout;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -110,7 +111,7 @@ public class User extends Node {
 	}
 	
 	public static class Timeout extends Service {
-		public String path() { return "/:/login:/register:/article/edit:/upload:/edit"; }
+		public String path() { return "/:/login:/register:/article/edit:/upload:/edit:/admin"; }
 		public void session(Session session, int type) throws Exception {
 			String key = (String) session.get("key");
 
@@ -145,19 +146,28 @@ public class User extends Node {
 
 	public static class Identify extends Service {
 		public int index() { return 1; }
-		public String path() { return "/article/edit:/upload:/edit"; }
+		public String path() { return "/article/edit:/upload:/edit:/admin"; }
 		public void filter(Event event) throws Event, Exception {
 			String key = (String) event.session().get("key");
-
-			if(key != null) {
+			
+			if(key == null) {
+				unauthorized(event);
+			}
+			else {
 				User user = (User) cache.get(key);
 				
-				if(user != null) {
-					return;
+				if(user == null) {
+					//System.out.println(event.query().path());
+					//unauthorized(event);
 				}
 			}
 			
 			//Sprout.redirect(event, "/login");
+		}
+		
+		void unauthorized(Event event) throws Event, IOException {
+			event.output().println("<pre>unauthorized</pre>");
+			throw event;
 		}
 	}
 }

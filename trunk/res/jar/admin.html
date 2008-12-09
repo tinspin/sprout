@@ -1,0 +1,18 @@
+[[ package gen;
+
+import java.util.*;
+
+import se.rupy.http.*;
+import se.rupy.memory.*;
+import se.rupy.sprout.*;
+
+public class admin extends Sprout {
+	public int index() { return 3; }
+	public String path() { return "/admin"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output(); ]]
+
+<h1>admin</h1>
+
+[[	} 
+} ]]

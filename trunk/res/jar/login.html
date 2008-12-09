@@ -37,16 +37,16 @@ public class login extends Sprout {
             <input type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
           </td>
           <td>
-            <div class="arrow" onclick="document.login.submit()">
-              <p>[[ i18n("Login") ]]</p>
-            </div>
+            <a href="" class="arrow" onclick="document.login.submit(); return false;">
+              <span>[[ i18n("Login") ]]</span>
+            </a>
           </td>
         </tr>
         <tr>
           <td colspan="2">
-            <div class="button" onclick="self.location = '/register'">
-              <p>[[ i18n("Register") ]]</p>
-            </div>
+            <a href="/register" class="button">
+              <span>[[ i18n("Register") ]]</span>
+            </a>
           </td>
         </tr>
         <tr>

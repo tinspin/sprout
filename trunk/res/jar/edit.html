@@ -48,30 +48,41 @@ public class edit extends Sprout {
 [[		if(article != null) {
 			Iterator it = article.get(Type.FILE).iterator();
 			while(it.hasNext()) {
-				Node file = (Node) it.next(); ]]
-		
+				Node file = (Node) it.next();
+				if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) { ]]
+
         <tr>
-          <td colspan="2"><img src="[[ file.path() + "TINY_" + file.get(Type.FILE_NAME).getValue() ]]"/></td>
+          <td colspan="2"><img src="[[ file.path() + "TINY_" + file.get(Type.FILE_NAME).getValue() ]]" alt="[[ file.path() + file.get(Type.FILE_NAME).getValue() ]]"/></td>
         </tr>
 
-[[ 			}
+[[ 				}
+				else if(file.get(Type.FILE_TYPE).getValue().equals("VIDEO")) {
+					String name = file.get(Type.FILE_NAME).getValue();
+					name = name.substring(0, name.indexOf('.')); ]]
+
+        <tr>
+          <td colspan="2"><img src="res/flash.gif" alt="[[ file.path() + name + ".flv" ]]"/></td>
+        </tr>
+
+[[				}
+ 			}
 		} ]]
         
         <tr>
           <td colspan="2">
-            <div class="arrow" onclick="document.article.submit()">
-              <p>[[ i18n("Publish") ]]</p>
-            </div>
+            <a href="" class="arrow" onclick="document.article.submit(); return false;">
+              <span>[[ i18n("Publish") ]]</span>
+            </a>
           </td>
         </tr>
       </form>
       <form enctype="multipart/form-data" name="upload" action="upload" method="POST">
         <tr>
           <td colspan="2">
-            <div class="button overflow">
+            <a class="button overflow">
               <input name="file" type="file" class="file" onchange="document.upload.submit()"/>
-              <p>[[ i18n("Files") ]]</p>
-            </div>
+              <span>[[ i18n("Files") ]]</span>
+            </a>
           </td>
         </tr>
       </form>
