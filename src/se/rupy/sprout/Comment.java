@@ -22,12 +22,14 @@ public class Comment extends Node {
 					Comment comment = new Comment();
 					User user = User.get(key);
 
-					if(user != null) {
+					if(user == null) {
+						comment.add(COMMENT_IP, event.remote());
+					}
+					else {
 						comment.add(user);
 					}
-
+					
 					comment.add(COMMENT_BODY, body);
-					comment.add(COMMENT_IP, event.remote());
 					article.add(comment);
 					article.update();
 					

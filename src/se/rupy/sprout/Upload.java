@@ -20,20 +20,21 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  * This service only supports one file at the time.
  */
 public class Upload extends Sprout {
-	public static int SIZE = 1024;
-	public static String root = "app" + File.separator + "content";
+	private static int SIZE = 1024;
+	private static String root = "app" + java.io.File.separator + "content";
+	
 	public int index() { return 2; }
 	public String path() { return "/upload"; }
 	public void filter(Event event) throws Event, Exception {
 		if(event.query().method() == Query.POST) {
-			Node file = new Node(Type.FILE);
+			Node file = new File();
 			Item item = new Item();
-			item.path = File.separator + "upload" + File.separator + file.date();
+			item.path = java.io.File.separator + "upload" + java.io.File.separator + file.date();
 			item = save(event, item);
 
 			Object key = event.session().get("key");
 			Article article = Article.get(key);
-			Node old = article.get(Type.FILE, Type.FILE_NAME, item.name);
+			Node old = article.get(FILE, FILE_NAME, item.name);
 			
 			if(old != null) {
 				file = old;
@@ -41,27 +42,27 @@ public class Upload extends Sprout {
 			
 			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg")) {
 				resize(item, 50);
-				file.add(Type.FILE_TYPE, "IMAGE");
+				file.add(File.type("IMAGE"));
 			}
 
 			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv")) {
 				encode(item);
-				file.add(Type.FILE_TYPE, "VIDEO");
+				file.add(File.type("VIDEO"));
 			}
 
 			if(item.name.endsWith(".mp3")) {
 				// TODO: Add audio player
-				file.add(Type.FILE_TYPE, "AUDIO");
+				file.add(File.type("AUDIO"));
 			}
 
-			file.add(Type.FILE_NAME, item.name);
+			file.add(FILE_NAME, item.name);
 
-			if(article.get(Type.ARTICLE_TITLE) == null) {
-				article.add(Type.ARTICLE_TITLE, i18n("Title"));
+			if(article.get(ARTICLE_TITLE) == null) {
+				article.add(ARTICLE_TITLE, i18n("Title"));
 			}
 
-			if(article.get(Type.ARTICLE_BODY) == null) {
-				article.add(Type.ARTICLE_BODY, i18n("Body"));
+			if(article.get(ARTICLE_BODY) == null) {
+				article.add(ARTICLE_BODY, i18n("Body"));
 			}
 
 			if(old == null) {
@@ -81,16 +82,16 @@ public class Upload extends Sprout {
 		BufferedImage image = ImageIO.read(item.file);
 
 		Image tiny = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
-		save(tiny, new File(root + item.path + File.separator + "TINY_" + item.name));
+		save(tiny, new java.io.File(root + item.path + java.io.File.separator + "TINY_" + item.name));
 
 		Image small = image.getScaledInstance(width * 4, -1, Image.SCALE_AREA_AVERAGING);
-		save(small, new File(root + item.path + File.separator + "SMALL_" + item.name));
+		save(small, new java.io.File(root + item.path + java.io.File.separator + "SMALL_" + item.name));
 
 		Image big = image.getScaledInstance(width * 8, -1, Image.SCALE_AREA_AVERAGING);
-		save(big, new File(root + item.path + File.separator + "BIG_" + item.name));
+		save(big, new java.io.File(root + item.path + java.io.File.separator + "BIG_" + item.name));
 	}
 
-	static void save(Image small, File file) throws IOException {
+	static void save(Image small, java.io.File file) throws IOException {
 		int width = small.getWidth(null);
 		int height = small.getHeight(null);
 
@@ -113,14 +114,13 @@ public class Upload extends Sprout {
 	static void encode(Item item) {
 		try {
 			String line;
-			String path = "app" + File.separator + "content" + File.separator + item.path.replace('\\', '/') + File.separator;
+			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
 			System.out.println(item.path + item.name);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + path + item.name.substring(0, item.name.indexOf('.')) + ".flv");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
 				System.out.println(line);
 			}
-			System.out.println("done.");
 			input.close();
 		}
 		catch(Exception e) {
@@ -140,7 +140,7 @@ public class Upload extends Sprout {
 				if(article != null && file != null) {
 					// TODO: Delete actual content on disk.
 
-					article.delete(file);
+					article.remove(file);
 					Sprout.invalidate("article", article);
 				}
 
@@ -199,13 +199,13 @@ public class Upload extends Sprout {
 				 * create path and file
 				 */
 
-				File path = new File(root + item.path);
+				java.io.File path = new java.io.File(root + item.path);
 
 				if(!path.exists()) {
 					path.mkdirs();
 				}
 
-				item.file = new File(root + item.path + File.separator + item.name);
+				item.file = new java.io.File(root + item.path + java.io.File.separator + item.name);
 				FileOutputStream out = new FileOutputStream(item.file);
 
 				/*
@@ -269,7 +269,7 @@ public class Upload extends Sprout {
 		String name;
 		String path;
 		String type;
-		File file;
+		java.io.File file;
 	}
 
 	/*
@@ -314,6 +314,22 @@ public class Upload extends Sprout {
 			public EOB(int index) {
 				this.index = index;
 			}
+		}
+	}
+	
+	public static class File extends Node {
+		private static String type[] = {"IMAGE", "VIDEO", "AUDIO"};
+
+		static {
+			Data.cache(FILE, FILE_TYPE, type);
+		}
+		
+		public File() {
+			super(FILE);
+		}
+		
+		static Data type(String value) {
+			return Data.cache(FILE, value);
 		}
 	}
 }

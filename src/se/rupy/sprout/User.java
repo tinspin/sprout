@@ -1,15 +1,18 @@
 package se.rupy.sprout;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import se.rupy.http.*;
+import se.rupy.memory.Base;
+import se.rupy.memory.DataBean;
 
 public class User extends Node {
 	private static HashMap cache = new HashMap();
-
+	
 	public User() {
 		super(USER);
 	}
@@ -23,8 +26,8 @@ public class User extends Node {
 		
 		if(user == null) {
 			user = new User();
-			user.query(Type.USER_KEY, key);
-			user.meta();			
+			user.query(USER_KEY, key);
+			user.meta();
 			user.cache.put(key, user);
 		}
 		
@@ -44,7 +47,7 @@ public class User extends Node {
 				if(name.length() > 0 && pass.length() > 0) {
 					User user = new User();
 					if(user.query(USER_NAME, name)) {
-						user.meta();
+						user.fill(true);
 						
 						if(user.get(USER_PASS).getValue().equals(pass)) {
 							save(event.session(), user);
@@ -63,6 +66,16 @@ public class User extends Node {
 		}
 	}
 
+	public static class Logout extends Service {
+		public String path() { return "/logout"; }
+		public void filter(Event event) throws Event, Exception {
+			Session session = event.session();
+			kill(session.get("key"));
+			session.put("key", null);
+			Sprout.redirect(event);
+		}
+	}
+	
 	public static class Register extends Service {
 		public int index() { return 1; }
 		public String path() { return "/register"; }
@@ -84,6 +97,14 @@ public class User extends Node {
 							user.add(USER_PASS, pass);
 							user.add(Sprout.generate(USER_KEY, 16));
 							user.add(USER_IP, event.remote());
+							
+							if(Sprout.value("SELECT count(*) FROM node") > 0) {
+								user.add(Group.name("USER"));
+							}
+							else {
+								user.add(Group.name("ADMIN"));
+							}
+							
 							user.update();
 
 							save(event.session(), user);
@@ -110,6 +131,11 @@ public class User extends Node {
 		cache.put(key, user);
 	}
 	
+	static void kill(Object key) {
+		User.cache.remove(key);
+		Article.remove(key);
+	}
+	
 	public static class Timeout extends Service {
 		public String path() { return "/:/login:/register:/article/edit:/upload:/edit:/admin"; }
 		public void session(Session session, int type) throws Exception {
@@ -118,8 +144,7 @@ public class User extends Node {
 			switch(type) {
 			case Service.CREATE: break;
 			case Service.TIMEOUT: 
-				User.cache.remove(key);
-				Article.remove(key);
+				kill(key);
 				break;
 			}
 		}
@@ -151,23 +176,55 @@ public class User extends Node {
 			String key = (String) event.session().get("key");
 			
 			if(key == null) {
-				unauthorized(event);
+				event.output().println("<pre>unauthorized</pre>");
+				throw event;
 			}
-			else {
-				User user = (User) cache.get(key);
-				
-				if(user == null) {
-					//System.out.println(event.query().path());
-					//unauthorized(event);
-				}
+		}
+	}
+	
+	public static class Group extends Node {
+		private static String type[] = {"READ", "WRITE"};
+		private static String name[] = {"USER", "ADMIN"};
+		
+		static {
+			Data.cache(GROUP, GROUP_TYPE, type);
+			if(!Node.cache(GROUP, GROUP_NAME, name)) {
+				create("USER", "READ");
+				create("ADMIN", "WRITE");
 			}
-			
-			//Sprout.redirect(event, "/login");
 		}
 		
-		void unauthorized(Event event) throws Event, IOException {
-			event.output().println("<pre>unauthorized</pre>");
-			throw event;
+		public Group() {
+			super(GROUP);
+		}
+
+		static void create(String name, String type) {			
+			try {
+				Group group = new Group();
+				group.add(GROUP_NAME, name);
+				group.add(type(type));
+				group.update();
+				
+				HashMap hash = (HashMap) Node.cache.get(new Integer(GROUP));
+				
+				if(hash == null) {
+					hash = new HashMap();
+					Node.cache.put(new Integer(GROUP), hash);
+				}
+				
+				hash.put(name, group);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		static Data type(String type) {
+			return Data.cache(GROUP, type);
+		}
+		
+		static Node name(String name) {
+			return Node.cache(GROUP, GROUP_NAME, name);
 		}
 	}
 }

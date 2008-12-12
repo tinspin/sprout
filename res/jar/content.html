@@ -14,17 +14,17 @@ public class content extends Sprout {
 		Iterator articles = get("article").iterator();
 		while(articles.hasNext()) {
 			Article article = (Article) articles.next();
-			Node user = (Node) article.get(Type.USER).getFirst();
-			boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
+			Node user = (Node) article.get(USER).getFirst();
+			boolean edit = user.get(USER_KEY).getValue().equals(key); ]]
 
     <div style="float: left; padding: 5px 5px 5px 5px;">
       <table>		
         <tr>
-          <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</a></td>
+          <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(ARTICLE_TITLE).getValue() ]]</a></td>
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
-          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.get(Type.COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.get(COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
         </tr>
         <tr>
           <td colspan="2">
@@ -34,7 +34,7 @@ public class content extends Sprout {
           </td>
         </tr>
         <tr>
-          <td>/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+          <td>/[[ user.get(USER_NAME).getValue() ]]</td>
           <td>
 
 [[			if(edit) { ]]
@@ -53,14 +53,14 @@ public class content extends Sprout {
 [[ 		}
 	}
 	static void print(Article article, Output out) throws Exception {
-		Iterator it = article.get(Type.FILE).iterator();
+		Iterator it = article.get(FILE).iterator();
 		while(it.hasNext()) {
 			Node file = (Node) it.next(); 
 			
-			if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) { ]]
+			if(file.get(FILE_TYPE).getValue().equals("IMAGE")) { ]]
 
           <div>
-            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/></a>
+            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + file.get(FILE_NAME).getValue() ]]" border="0"/></a>
           </div>
 
 [[ 				break;

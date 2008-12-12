@@ -26,6 +26,7 @@ public interface Type {
 	public final static short COMMENT_IP		= 301;
 	public final static short CATEGORY_NAME		= 400;
 	public final static short GROUP_NAME		= 500;
+	public final static short GROUP_TYPE		= 501;
 	public final static short FILE_NAME			= 600;
 	public final static short FILE_TYPE			= 601;
 }

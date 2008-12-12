@@ -15,8 +15,8 @@ public class article extends Sprout {
 		Output out = event.output();
 		Object key = event.session().get("key");
 		Article article = get(event.big("id"));
-		Node user = (Node) article.get(Type.USER).getFirst();
-		boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
+		Node user = (Node) article.get(USER).getFirst();
+		boolean edit = user.get(USER_KEY).getValue().equals(key); ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -30,7 +30,7 @@ public class article extends Sprout {
   <div>
     <table>
       <tr>
-        <td colspan="2" class="title">[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</td>
+        <td colspan="2" class="title">[[ article.get(ARTICLE_TITLE).getValue() ]]</td>
       </tr>
       <tr>
         <td colspan="2"><i>[[ article.time() ]]</i></td>
@@ -38,21 +38,21 @@ public class article extends Sprout {
       <tr>
         <td colspan="2">
         
-[[			Iterator it = article.get(Type.FILE).iterator();
+[[			Iterator it = article.get(FILE).iterator();
 			while(it.hasNext()) {
 				Node file = (Node) it.next(); 
 				
-				if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) { ]]
+				if(file.get(FILE_TYPE).getValue().equals("IMAGE")) { ]]
 
           <div style="float: left; margin: 10px 10px 10px 10px; width: 400px;">
-            <a href="[[ file.path() + file.get(Type.FILE_NAME).getValue() ]]">
-            <img src="[[ file.path() + "BIG_" + file.get(Type.FILE_NAME).getValue() ]]" border="0"/>
+            <a href="[[ file.path() + file.get(FILE_NAME).getValue() ]]">
+            <img src="[[ file.path() + "BIG_" + file.get(FILE_NAME).getValue() ]]" border="0"/>
             </a>
           </div>
 
 [[ 				}
-				else if(file.get(Type.FILE_TYPE).getValue().equals("VIDEO")) {
-					String name = file.get(Type.FILE_NAME).getValue();
+				else if(file.get(FILE_TYPE).getValue().equals("VIDEO")) {
+					String name = file.get(FILE_NAME).getValue();
 					name = name.substring(0, name.indexOf('.')); ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
@@ -81,10 +81,10 @@ public class article extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2">/[[ user.get(Type.USER_NAME).getValue() ]]</td>
+        <td colspan="2">/[[ user.get(USER_NAME).getValue() ]]</td>
       </tr>
       
-[[		LinkedList comments = article.get(Type.COMMENT); ]]
+[[		LinkedList comments = article.get(COMMENT); ]]
       
       <tr>
         <td colspan="2"><img src="res/comment.gif">&nbsp;<i>[[ comments.size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
@@ -95,7 +95,7 @@ public class article extends Sprout {
 			Node comment = (Node) it.next(); ]]
 		
         <tr>
-          <td colspan="2">[[ comment.get(Type.COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(comment.get(Type.COMMENT_IP).getValue()) ]] --></td>
+          <td colspan="2">[[ comment.get(COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(comment.get(COMMENT_IP).getValue()) ]] --></td>
         </tr>
 
 [[ 		} ]]
