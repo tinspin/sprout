@@ -6,7 +6,6 @@ drop table if exists meta;
 create table link (
 	parent                  	BIGINT	NOT NULL	DEFAULT 0,
 	child                   	BIGINT	NOT NULL	DEFAULT 0,
-	value                   	DOUBLE PRECISION	NOT NULL	DEFAULT 0,
 	type                    	INTEGER	NOT NULL	DEFAULT 0,
 	date                    	BIGINT	NOT NULL	DEFAULT 0,
 	primary key (parent,child)

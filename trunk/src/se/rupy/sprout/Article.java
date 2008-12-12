@@ -135,8 +135,7 @@ public class Article extends Node {
 				if(id > 0 && article.getId() != id) {
 					article.setId(id);
 					Sprout.update(Base.SELECT, article); // select date
-					article.meta();
-					article.link(ALL);
+					article.fill(false);
 				}
 
 				if(article.get(ARTICLE_TITLE) != null) {
@@ -153,6 +152,12 @@ public class Article extends Node {
 			}
 
 			Sprout.redirect(event, "/");
+		}
+	}
+	
+	public class Category extends Node {
+		public Category() {
+			super(CATEGORY);
 		}
 	}
 }

@@ -10,13 +10,18 @@ import java.util.*;
 import se.rupy.memory.*;
 import se.rupy.pool.*;
 
+/**
+ * The node is the atomic persistence object.
+ * TODO: require {@link update()} call for post insert adds.
+ * @author Marc
+ */
 public class Node extends NodeBean implements Type {
 	static Format time = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
 	
 	private LinkBean link;
 	private MetaBean meta;
-
+	
 	/**
 	 * The node type should be a bit identifiable integer
 	 * this limits the number of node types to 32.
@@ -46,21 +51,32 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Add meta-data. Does not insert to the database, call {@link #update()} to persist. 
-	 * Additions can only be made prior to the {@link #update()} call.
+	 * Remove the child node.
+	 * @param node
+	 * @throws SQLException
+	 */
+	public void remove(Node node) throws SQLException {
+		link.setParent(this);
+		link.setChild(node);
+		link.setType(getType() | node.getType());
+		Sprout.update(Base.DELETE, link);
+	}
+	
+	/**
+	 * Add meta-data.
 	 * @param type
 	 * @param value
 	 * @throws SQLException
 	 */
 	public void add(short type, String value) throws SQLException {
-		DataBean data = new DataBean();
+		Data data = new Data();
 		data.setType(type);
 		data.setValue(value);
 		add(data);
 	}
 
-	void add(DataBean data) throws SQLException {
-		DataBean old = get(data.getType());
+	void add(Data data) throws SQLException {
+		Data old = get(data.getType());
 		
 		if(old != null) {
 			meta.remove(old);
@@ -109,27 +125,6 @@ public class Node extends NodeBean implements Type {
 			connection.close();
 		}
 	}
-
-	/**
-	 * Delete the child node.
-	 * @param node
-	 * @throws SQLException
-	 */
-	public void delete(Node node) throws SQLException {
-		Connection connection = Sprout.connection(true);
-
-		try {
-			delete(node, connection);
-			connection.commit();
-		}
-		catch(SQLException e) {
-			connection.rollback();
-			throw e;
-		}
-		finally {
-			connection.close();
-		}
-	}
 	
 	void update(Connection connection) throws SQLException {
 		byte action = Base.UPDATE;
@@ -142,9 +137,12 @@ public class Node extends NodeBean implements Type {
 		Iterator it = meta.iterator();
 
 		while(it.hasNext()) {
-			DataBean data = (DataBean) it.next();
-			Sprout.update(action, data, connection);
-
+			Data data = (Data) it.next();
+			
+			if(data.getId() == 0 || action == Base.UPDATE) {
+				Sprout.update(action, data, connection);
+			}
+			
 			if(action == Base.INSERT) {
 				meta(action, data, connection);
 			}
@@ -163,13 +161,14 @@ public class Node extends NodeBean implements Type {
 			node.update(connection);
 		}
 
+		link.setType(getType() | node.getType());			
 		link.setParent(this);
 		link.setChild(node);
-		link.setType(getType() | node.getType());
+		
 		Sprout.update(action, link, connection);
 	}
 
-	void meta(byte action, DataBean data, Connection connection) throws SQLException {
+	void meta(byte action, Data data, Connection connection) throws SQLException {
 		if(data.getId() == 0) {
 			Sprout.update(action, data, connection);
 		}
@@ -177,6 +176,7 @@ public class Node extends NodeBean implements Type {
 		meta.setNode(this);
 		meta.setData(data);
 		meta.setType(data.getType());
+		
 		Sprout.update(action, meta, connection);
 	}
 	
@@ -188,13 +188,13 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public boolean query(short type, Object value) throws SQLException {
-		DataBean data = new DataBean();
+		Data data = new Data();
 		data.setType(type);
 		data.setValue(value.toString()); // TODO: TEXT or BLOB
 		return query(data);
 	}
 
-	boolean query(DataBean data) throws SQLException {
+	boolean query(Data data) throws SQLException {
 		if(Sprout.update(Base.SELECT, data)) {
 			MetaBean meta = new MetaBean();
 			meta.setNode(-1);
@@ -211,15 +211,43 @@ public class Node extends NodeBean implements Type {
 
 		return false;
 	}
-
+	
 	/**
-	 * Find children nodes. Call {@link #query(short, Object)} or {@link #query(DataBean)} first.
+	 * Fills the node with meta-data and children nodes.
+	 * Call {@link #query(short, Object)} or {@link #query(DataBean)} first.
 	 * Only fetches data from the database the first time.
-	 * @param type
+	 * @param recursively Fill all children nodes recursively.
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean link(int type) throws SQLException {
+	public boolean fill(boolean recursively) throws SQLException {
+		boolean link = link();
+		boolean meta = meta();
+		
+		if(recursively) {
+			Iterator it = this.link.iterator();
+
+			while(it.hasNext()) {
+				Node node = (Node) it.next();
+				link = node.fill(true);
+			}
+		}
+		
+		return link && meta;
+	}
+	
+	/**
+	 * Fills the node with children nodes.
+	 * Call {@link #query(short, Object)} or {@link #query(DataBean)} first.
+	 * Only fetches data from the database the first time.
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean link() throws SQLException {
+		return link(ALL);
+	}
+	
+	boolean link(int type) throws SQLException {
 		if(id > 0 && link.size() == 0) {
 			link.setParent(this);
 			link.setType(type);
@@ -241,28 +269,42 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Load meta-data. Call {@link #query(short, Object)} or {@link #query(DataBean)} first. 
+	 * Fills the node with meta-data.
+	 * Call {@link #query(short, Object)} or {@link #query(DataBean)} first. 
 	 * Only fetches data from the database the first time.
+	 * @return
 	 * @throws SQLException
 	 */
-	public void meta() throws SQLException {
+	public boolean meta() throws SQLException {
 		if(id > 0 && meta.size() == 0) {
 			meta.setNode(this);
 			meta.setData(-1);
-			Sprout.update(Base.SELECT, meta);
+
+			if(Sprout.update(Base.SELECT, meta)) {
+				for(int i = 0; i < meta.size(); i++) {
+					DataBean bean = (DataBean) meta.get(i);
+					Data data = new Data();
+					data.copy(bean);
+					meta.set(i, data);
+				}
+
+				return true;
+			}
 		}
+		
+		return false;
 	}
 
 	/**
-	 * Get meta-data. Call {@link meta()} first.
+	 * Get meta-data. Call {@link fill()} or {@link meta()} first.
 	 * @param type
 	 * @return
 	 */
-	public DataBean get(short type) {
+	public Data get(short type) {
 		Iterator it = meta.iterator();
 
 		while(it.hasNext()) {
-			DataBean data = (DataBean) it.next();
+			Data data = (Data) it.next();
 
 			// TODO: look for date if version
 
@@ -275,9 +317,9 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Get child nodes. Call {@link link(int)} first.
+	 * Get child nodes of a certain type.
+	 * Call {@link fill()} or {@link link()} first.
 	 * @param type
-	 * @param fill
 	 * @return
 	 */
 	public LinkedList get(int type) throws SQLException {
@@ -299,9 +341,10 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Checks if any of the children contains the meta-data. Call {@link link(int)} first.
-	 * @param link
-	 * @param meta
+	 * Return the first child that contains the meta-data.
+	 * Call {@link fill()} or {@link link()} first.
+	 * @param link The node type.
+	 * @param meta The data type.
 	 * @param value
 	 * @return
 	 * @throws SQLException
@@ -325,7 +368,7 @@ public class Node extends NodeBean implements Type {
 	}
 	
 	/**
-	 * Get child node. Call {@link link(int)} first.
+	 * Get child node. Call {@link fill()} or {@link link()} first.
 	 * @param id
 	 * @return
 	 */
@@ -343,16 +386,6 @@ public class Node extends NodeBean implements Type {
 		return null;
 	}
 	
-	void delete(Node node, Connection connection) throws SQLException {
-		link.setParent(this);
-		link.setChild(node);
-		link.setType(getType() | node.getType());
-		Sprout.update(Base.DELETE, link, connection);
-		
-		// TODO: Verify link for other references.
-		Sprout.update(Base.DELETE, node, connection);
-	}
-	
 	public String path() {
 		return "/upload/" + date() + "/";
 	}
@@ -367,5 +400,76 @@ public class Node extends NodeBean implements Type {
 
 	public String time() {
 		return time.format(new Date(getDate()));
+	}
+	
+	static HashMap cache = new HashMap();
+	
+	static boolean cache(int link, short meta, String[] name) {
+		HashMap hash = new HashMap();
+		
+		try {
+			for(int i = 0; i < name.length; i++) {
+				Node node = new Node(link);
+				
+				if(node.query(meta, name[i])) {
+					node.fill(false);
+					hash.put(name[i], node);
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		cache.put(new Integer(link), hash);
+		
+		return true;
+	}
+	
+	static Node cache(int link, short meta, String name) {
+		HashMap node = (HashMap) cache.get(new Integer(link));
+		return (Node) node.get(name);
+	}
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		print(buffer, 0);
+		return buffer.toString();
+	}
+	
+	void print(StringBuffer buffer, int level) {
+		for(int i = 0; i < level; i++) {
+			buffer.append("    ");
+		}
+		
+		buffer.append("<node id=\"" + getId() + "\" type=\"" + getType() + "\">\n");
+		
+		Iterator it = meta.iterator();
+
+		while(it.hasNext()) {
+			Data data = (Data) it.next();
+			
+			for(int i = 0; i < level + 1; i++) {
+				buffer.append("    ");
+			}
+			
+			buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\" value=\"" + data.getValue() + "\"/>\n");
+		}
+
+		it = link.iterator();
+
+		while(it.hasNext()) {
+			Node node = (Node) it.next();
+			node.print(buffer, level + 1);
+		}
+		
+		for(int i = 0; i < level; i++) {
+			buffer.append("    ");
+		}
+		
+		buffer.append("</node>\n");
 	}
 }

@@ -20,7 +20,7 @@ import se.rupy.pool.Pool;
 import se.rupy.pool.Settings;
 import se.rupy.util.Log;
 
-public abstract class Sprout extends Service {
+public abstract class Sprout extends Service implements Type {
 	private static Base db;
 	private static HashMap cache = new HashMap();
 	
@@ -40,8 +40,8 @@ public abstract class Sprout extends Service {
 		return text;
 	}
 	
-	static DataBean generate(short type, int length) throws Exception {
-		DataBean data = new DataBean();
+	static Data generate(short type, int length) throws Exception {
+		Data data = new Data();
 		data.setType(type);
 		data.setValue(Event.random(length));
 
@@ -63,6 +63,10 @@ public abstract class Sprout extends Service {
 		else {
 			return db.update(type, bean, connection);
 		}
+	}
+	
+	static long value(String sql) throws SQLException {
+		return db.value(sql);
 	}
 	
 	static Connection connection(boolean transaction) throws SQLException {
@@ -94,8 +98,7 @@ public abstract class Sprout extends Service {
 
 			db.update(Base.SELECT, old);
 
-			old.meta();
-			old.link(Type.ALL);
+			old.fill(false);
 			
 			cache.put(new Long(id), old);
 		}
@@ -112,7 +115,7 @@ public abstract class Sprout extends Service {
 		
 		if(old.invalid) {
 			old = new Cache(false);
-			old.setType(Type.ARTICLE | Type.USER);
+			old.setType(ARTICLE | USER);
 			old.setParent(-1);
 			db.update(Base.SELECT, old);
 			
@@ -124,12 +127,11 @@ public abstract class Sprout extends Service {
 				Node article = new Article();
 				
 				article.copy(node);
-				article.meta();
-				article.link(Type.ALL);
+				article.fill(false);
 
 				cache.put(new Long(article.getId()), article);
 				
-				Node user = (Node) article.get(Type.USER).getFirst();
+				Node user = (Node) article.get(USER).getFirst();
 				user.meta();
 				
 				old.set(index++, article);

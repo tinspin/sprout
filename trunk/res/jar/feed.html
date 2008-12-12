@@ -25,11 +25,11 @@ public class feed extends Sprout {
     
 [[		while(it.hasNext()) {
 			Article article = (Article) it.next();
-			Node user = (Node) article.get(Type.USER).getFirst();
-			boolean edit = user.get(Type.USER_KEY).getValue().equals(key); ]]
+			Node user = (Node) article.get(USER).getFirst();
+			boolean edit = user.get(USER_KEY).getValue().equals(key); ]]
 		
     <item>
-      <title>[[ article.get(Type.ARTICLE_TITLE).getValue() ]]</title>
+      <title>[[ article.get(ARTICLE_TITLE).getValue() ]]</title>
       <link>http://[[ host ]]/article?id=[[ article.getId() ]]</link>
       <description>[[ print(host, article, out); ]]</description>
       <pubDate>[[ article.time() ]]</pubDate>
@@ -48,12 +48,12 @@ public class feed extends Sprout {
 		return line;
 	}
 	static void print(String host, Article article, Output out) throws Exception {
-		Iterator it = article.get(Type.FILE).iterator();
+		Iterator it = article.get(FILE).iterator();
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
 			
-			if(file.get(Type.FILE_TYPE).getValue().equals("IMAGE")) {
-				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.get(Type.FILE_NAME).getValue() + "\" align=\"right\"/>"));
+			if(file.get(FILE_TYPE).getValue().equals("IMAGE")) {
+				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.get(FILE_NAME).getValue() + "\" align=\"right\"/>"));
 				break;
 			}
 		}
