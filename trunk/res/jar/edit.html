@@ -13,6 +13,7 @@ public class edit extends Sprout {
 		Output out = event.output();
 		Object key = event.session().get("key");
 		Article article = Article.get(key);
+		User user = User.get(key);
 		
 		if(event.string("title").length() == 0 && 
 		   event.string("body").length() == 0) {
@@ -24,6 +25,15 @@ public class edit extends Sprout {
       <form name="article" action="article/edit" method="post">
         <tr>
           <td colspan="2">
+          
+[[		if(user != null && user.permit("ADMIN")) { ]]
+
+            <a href="/admin" class="button">
+              <span>[[ i18n("Admin") ]]</span>
+            </a>
+
+[[		} ]]
+          
             <a href="/logout" class="button">
               <span>[[ i18n("Logout") ]]</span>
             </a>

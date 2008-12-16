@@ -92,10 +92,15 @@ public class article extends Sprout {
       
 [[		it = comments.iterator();
 		while(it.hasNext()) {
-			Node comment = (Node) it.next(); ]]
+			Node comment = (Node) it.next();
+			Data ip = comment.get(COMMENT_IP);
+            
+            if(ip == null) {
+            	ip = ((Node) comment.get(USER).getFirst()).get(USER_IP);
+            } ]]
 		
         <tr>
-          <td colspan="2">[[ comment.get(COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(comment.get(COMMENT_IP).getValue()) ]] --></td>
+          <td colspan="2">[[ comment.get(COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(ip.getValue()) ]] --></td>
         </tr>
 
 [[ 		} ]]

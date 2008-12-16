@@ -12,7 +12,6 @@ import java.util.Iterator;
 import se.rupy.http.Event;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
-import se.rupy.memory.DataBean;
 import se.rupy.memory.LinkBean;
 import se.rupy.memory.NodeBean;
 import se.rupy.pool.Connection;
@@ -38,6 +37,13 @@ public abstract class Sprout extends Service implements Type {
 	
 	protected static String i18n(String text) {
 		return text;
+	}
+	
+	public static String clean(String line) {
+		line = line.replaceAll("&", "&amp;");
+		line = line.replaceAll("<", "&lt;");
+		line = line.replaceAll(">", "&gt;");
+		return line;
 	}
 	
 	static Data generate(short type, int length) throws Exception {
@@ -98,7 +104,7 @@ public abstract class Sprout extends Service implements Type {
 
 			db.update(Base.SELECT, old);
 
-			old.fill(false);
+			old.fill(true);
 			
 			cache.put(new Long(id), old);
 		}
@@ -127,7 +133,7 @@ public abstract class Sprout extends Service implements Type {
 				Node article = new Article();
 				
 				article.copy(node);
-				article.fill(false);
+				article.fill(true);
 
 				cache.put(new Long(article.getId()), article);
 				

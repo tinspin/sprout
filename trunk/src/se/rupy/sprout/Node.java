@@ -1,6 +1,5 @@
 package se.rupy.sprout;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
@@ -156,18 +155,6 @@ public class Node extends NodeBean implements Type {
 		}
 	}
 
-	void link(byte action, Node node, Connection connection) throws SQLException {
-		if(node.getId() == 0) {
-			node.update(connection);
-		}
-
-		link.setType(getType() | node.getType());			
-		link.setParent(this);
-		link.setChild(node);
-		
-		Sprout.update(action, link, connection);
-	}
-
 	void meta(byte action, Data data, Connection connection) throws SQLException {
 		if(data.getId() == 0) {
 			Sprout.update(action, data, connection);
@@ -178,6 +165,18 @@ public class Node extends NodeBean implements Type {
 		meta.setType(data.getType());
 		
 		Sprout.update(action, meta, connection);
+	}
+
+	void link(byte action, Node node, Connection connection) throws SQLException {
+		if(node.getId() == 0) {
+			node.update(connection);
+		}
+
+		link.setType(getType() | node.getType());			
+		link.setParent(this);
+		link.setChild(node);
+		
+		Sprout.update(action, link, connection);
 	}
 	
 	/**
@@ -214,7 +213,7 @@ public class Node extends NodeBean implements Type {
 	
 	/**
 	 * Fills the node with meta-data and children nodes.
-	 * Call {@link #query(short, Object)} or {@link #query(DataBean)} first.
+	 * Call {@link #query(short, Object)} or {@link #query(Data)} first.
 	 * Only fetches data from the database the first time.
 	 * @param recursively Fill all children nodes recursively.
 	 * @return
@@ -229,6 +228,9 @@ public class Node extends NodeBean implements Type {
 
 			while(it.hasNext()) {
 				Node node = (Node) it.next();
+				
+				// TODO: Cache
+				
 				link = node.fill(true);
 			}
 		}
@@ -238,7 +240,7 @@ public class Node extends NodeBean implements Type {
 	
 	/**
 	 * Fills the node with children nodes.
-	 * Call {@link #query(short, Object)} or {@link #query(DataBean)} first.
+	 * Call {@link #query(short, Object)} or {@link #query(Data)} first.
 	 * Only fetches data from the database the first time.
 	 * @return
 	 * @throws SQLException
@@ -270,7 +272,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Fills the node with meta-data.
-	 * Call {@link #query(short, Object)} or {@link #query(DataBean)} first. 
+	 * Call {@link #query(short, Object)} or {@link #query(Data)} first. 
 	 * Only fetches data from the database the first time.
 	 * @return
 	 * @throws SQLException
@@ -296,7 +298,8 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Get meta-data. Call {@link fill()} or {@link meta()} first.
+	 * Get meta-data.
+	 * Call {@link #fill(boolean)} or {@link #meta()} first.
 	 * @param type
 	 * @return
 	 */
@@ -318,7 +321,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Get child nodes of a certain type.
-	 * Call {@link fill()} or {@link link()} first.
+	 * Call {@link #fill(boolean)} or {@link #link()} first.
 	 * @param type
 	 * @return
 	 */
@@ -342,7 +345,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Return the first child that contains the meta-data.
-	 * Call {@link fill()} or {@link link()} first.
+	 * Call {@link #fill(boolean)} or {@link #link()} first.
 	 * @param link The node type.
 	 * @param meta The data type.
 	 * @param value
@@ -368,7 +371,8 @@ public class Node extends NodeBean implements Type {
 	}
 	
 	/**
-	 * Get child node. Call {@link fill()} or {@link link()} first.
+	 * Get child node.
+	 * Call {@link #fill(boolean)} or {@link #link()} first.
 	 * @param id
 	 * @return
 	 */
@@ -440,25 +444,34 @@ public class Node extends NodeBean implements Type {
 		return buffer.toString();
 	}
 	
-	void print(StringBuffer buffer, int level) {
+	void padding(StringBuffer buffer, int level) {
 		for(int i = 0; i < level; i++) {
 			buffer.append("    ");
 		}
-		
+	}
+	
+	void print(StringBuffer buffer, int level) {
+		padding(buffer, level);
 		buffer.append("<node id=\"" + getId() + "\" type=\"" + getType() + "\">\n");
 		
 		Iterator it = meta.iterator();
 
 		while(it.hasNext()) {
 			Data data = (Data) it.next();
-			
-			for(int i = 0; i < level + 1; i++) {
-				buffer.append("    ");
-			}
-			
-			buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\" value=\"" + data.getValue() + "\"/>\n");
-		}
 
+			padding(buffer, level + 1);
+			if(data.getValue().length() > 100) {
+				buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\">\n");
+				padding(buffer, level + 1);
+				buffer.append(data.getValue() + "\n");
+				padding(buffer, level + 1);
+				buffer.append("</meta>\n");
+			}
+			else {
+				buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\" value=\"" + data.getValue() + "\"/>\n");
+			}
+		}
+		
 		it = link.iterator();
 
 		while(it.hasNext()) {
@@ -466,10 +479,7 @@ public class Node extends NodeBean implements Type {
 			node.print(buffer, level + 1);
 		}
 		
-		for(int i = 0; i < level; i++) {
-			buffer.append("    ");
-		}
-		
+		padding(buffer, level);
 		buffer.append("</node>\n");
 	}
 }

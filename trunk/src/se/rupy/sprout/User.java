@@ -1,20 +1,30 @@
 package se.rupy.sprout;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import se.rupy.http.*;
-import se.rupy.memory.Base;
-import se.rupy.memory.DataBean;
 
 public class User extends Node {
 	private static HashMap cache = new HashMap();
 	
 	public User() {
 		super(USER);
+	}
+	
+	public boolean permit(String group) throws SQLException {
+		Iterator it = get(GROUP).iterator();
+		
+		while(it.hasNext()) {
+			Node node = (Node) it.next();
+			
+			if(node.get(GROUP_NAME).getValue().equals(group)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public static User get(Object key) throws SQLException {
@@ -27,7 +37,7 @@ public class User extends Node {
 		if(user == null) {
 			user = new User();
 			user.query(USER_KEY, key);
-			user.meta();
+			user.fill(true);
 			user.cache.put(key, user);
 		}
 		
@@ -137,7 +147,7 @@ public class User extends Node {
 	}
 	
 	public static class Timeout extends Service {
-		public String path() { return "/:/login:/register:/article/edit:/upload:/edit:/admin"; }
+		public String path() { return "/:/login:/register:/article/edit:/upload:/edit:/admin:/search"; }
 		public void session(Session session, int type) throws Exception {
 			String key = (String) session.get("key");
 
@@ -171,7 +181,7 @@ public class User extends Node {
 
 	public static class Identify extends Service {
 		public int index() { return 1; }
-		public String path() { return "/article/edit:/upload:/edit:/admin"; }
+		public String path() { return "/article/edit:/upload:/edit:/admin:/search"; }
 		public void filter(Event event) throws Event, Exception {
 			String key = (String) event.session().get("key");
 			

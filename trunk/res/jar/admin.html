@@ -10,7 +10,18 @@ public class admin extends Sprout {
 	public int index() { return 3; }
 	public String path() { return "/admin"; }
 	public void filter(Event event) throws Event, Exception {
-		Output out = event.output(); ]]
+		Output out = event.output();
+		
+		User user = User.get(event.session().get("key"));
+		Object key = user.get(USER_KEY).getValue();
+		
+		int link = event.query().medium("link");
+		short meta = event.query().small("meta");
+		String value = event.query().string("value");
+		
+		if(value == null) {
+			value = "";
+		} ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -19,12 +30,55 @@ public class admin extends Sprout {
   <link rel="stylesheet" type="text/css" href="res/sprout.css">
   <script type="text/javascript" src="res/sprout.js"></script>
 </head>
-<body onLoad="document.forms[0].elements[0].focus();">
-<div id="page" style="padding: 10px 10px 10px 10px;">
+<body>
+  <table border="0" cellpadding="0" cellspacing="5">
+    <form name="search" action="/search" method="post">
+      <tr>
+        <td>Node</td>
+        <td>
+          <select name="link" class="small">
+            <option value="0"[[ link == 0 ? " selected" : "" ]]></option>
+            <option value="1"[[ link == 1 ? " selected" : "" ]]>User</option>
+            <option value="2"[[ link == 2 ? " selected" : "" ]]>Article</option>
+            <option value="4"[[ link == 4 ? " selected" : "" ]]>Comment</option>
+            <option value="8"[[ link == 8 ? " selected" : "" ]]>Category</option>
+            <option value="16"[[ link == 16 ? " selected" : "" ]]>Group</option>
+            <option value="32"[[ link == 32 ? " selected" : "" ]]>File</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Data</td>
+        <td>
+          <select name="meta" class="small">
+            <option value="0"[[ meta == 0 ? " selected" : "" ]]></option>
+            <option value="100"[[ meta == 100 ? " selected" : "" ]]>Name</option>
+            <option value="200"[[ meta == 200 ? " selected" : "" ]]>Name</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Value&nbsp;</td>
+        <td>
+          <input name="value" value="[[ value ]]" class="small">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <a href="" class="arrow" onclick="document.search.submit(); return false;">
+            <span>[[ i18n("Search") ]]</span>
+          </a>
+        </td>
+      </tr>
+    </form>
+  </table>
 
+[[	Node node = (Node) Admin.get(key);
+	if(node != null) { ]]
+  <pre>[[ clean(node.toString()) ]]</pre>
+[[	} ]]
 
-
-</div>
 </body>
 </html>
 

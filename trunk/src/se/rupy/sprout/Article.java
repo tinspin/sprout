@@ -135,7 +135,7 @@ public class Article extends Node {
 				if(id > 0 && article.getId() != id) {
 					article.setId(id);
 					Sprout.update(Base.SELECT, article); // select date
-					article.fill(false);
+					article.fill(true);
 				}
 
 				if(article.get(ARTICLE_TITLE) != null) {
