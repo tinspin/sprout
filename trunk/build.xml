@@ -124,7 +124,7 @@
 	</target>
 	
 	<target name="doc">
-		<javadoc sourcepath="src" destdir="doc" stylesheetfile="sheet.css"/>
+		<javadoc sourcepath="src" destdir="doc"/>
 	</target>
 	
 </project>
