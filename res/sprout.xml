@@ -1,36 +1,36 @@
 <logic>
   <element size="19">
-    <data id="1" node="1" type="0" open="true" x="236" y="78">
-      <id id="2" node="0" type="1">*</id>
-      <value id="3" node="0" type="0"></value>
-      <type id="4" node="0" type="3"></type>
-      <date id="5" node="0" type="1"></date>
-    </data>
-    <node id="6" node="1" type="0" open="true" x="41" y="78">
-      <id id="7" node="0" type="1">*</id>
-      <type id="8" node="0" type="2"></type>
-      <date id="9" node="0" type="1"></date>
-    </node>
-    <meta id="10" node="1" type="1" open="true" x="142" y="137">
-      <node id="11" node="0" type="1">*</node>
-      <data id="12" node="0" type="1">*</data>
-      <type id="13" node="0" type="3">~</type>
-      <date id="14" node="0" type="1">~</date>
-    </meta>
-    <link id="15" node="1" type="1" open="true" x="142" y="22">
-      <parent id="16" node="0" type="1">*</parent>
-      <child id="17" node="0" type="1">*</child>
-      <type id="18" node="0" type="2">~</type>
-      <date id="19" node="0" type="1">~</date>
+    <link id="1" node="1" type="1" open="true" x="142" y="21">
+      <parent id="2" node="0" type="1">*</parent>
+      <child id="3" node="0" type="1">*</child>
+      <type id="4" node="0" type="2">~</type>
+      <date id="5" node="0" type="1">~</date>
     </link>
+    <data id="6" node="1" type="0" open="true" x="236" y="78">
+      <id id="7" node="0" type="1">*</id>
+      <value id="8" node="0" type="0"></value>
+      <type id="9" node="0" type="3"></type>
+      <date id="10" node="0" type="1"></date>
+    </data>
+    <node id="11" node="1" type="0" open="true" x="41" y="78">
+      <id id="12" node="0" type="1">*</id>
+      <type id="13" node="0" type="2"></type>
+      <date id="14" node="0" type="1"></date>
+    </node>
+    <meta id="15" node="1" type="1" open="true" x="142" y="137">
+      <node id="16" node="0" type="1">*</node>
+      <data id="17" node="0" type="1">*</data>
+      <type id="18" node="0" type="3">~</type>
+      <date id="19" node="0" type="1">~</date>
+    </meta>
   </element>
   <relation>
-    <element id="6">
-      <link id="15"/>
-      <link id="10"/>
-    </element>
-    <element id="10">
+    <element id="11">
       <link id="1"/>
+      <link id="15"/>
+    </element>
+    <element id="15">
+      <link id="6"/>
     </element>
   </relation>
 </logic>

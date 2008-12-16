@@ -41,12 +41,6 @@ public class feed extends Sprout {
 </rss>
 
 [[ } 
-	static String clean(String line) {
-        line = line.replaceAll("&", "&amp;");
-        line = line.replaceAll("<", "&lt;");
-        line = line.replaceAll(">", "&gt;");
-		return line;
-	}
 	static void print(String host, Article article, Output out) throws Exception {
 		Iterator it = article.get(FILE).iterator();
 		while(it.hasNext()) {

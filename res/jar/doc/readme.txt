@@ -7,8 +7,9 @@ Sprout is a simple base from which you can
 build any CMS in Java.
 
 You will need Mysql 4.0 or later and Java 1.4 or later 
-added to the path to run Sprout and Ant installed and 
-added to the path build Sprout.
+added to the path to run Sprout.
+
+You need Ant added to the path to build Sprout.
 
 Run the server with run.bat or run.sh depending 
 on your OS and build sprout with ant:

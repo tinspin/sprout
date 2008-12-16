@@ -123,4 +123,8 @@
 		</exec>
 	</target>
 	
+	<target name="doc">
+		<javadoc sourcepath="src" destdir="doc" stylesheetfile="sheet.css"/>
+	</target>
+	
 </project>

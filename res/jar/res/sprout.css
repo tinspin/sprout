@@ -4,7 +4,7 @@ select, input, textarea { font-size: 1.0em; }
 input.tiny { width: 45px; }
 input.small { width: 100px; }
 input.large { width: 145px; }
-select.large { width: 150px; }
+select.small { width: 106px; }
 textarea.large { width: 175px; }
 td { font-size: 0.6em; }
 
@@ -29,6 +29,7 @@ input.file {
 	float: right;
 	display: block;
 	cursor: pointer;
+	margin-left: 5px;
 	text-decoration: none;
 	background-image: url(left.gif);
 	background-repeat: no-repeat;
@@ -48,6 +49,7 @@ input.file {
 	float: right;
 	display: block;
 	cursor: pointer;
+	margin-left: 5px;
 	text-decoration: none;
 	background-image: url(left.gif);
 	background-repeat: no-repeat;
