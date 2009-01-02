@@ -318,10 +318,10 @@ public class Upload extends Sprout {
 	}
 	
 	public static class File extends Node {
-		private static String type[] = {"IMAGE", "VIDEO", "AUDIO"};
-
 		static {
-			Data.cache(FILE, FILE_TYPE, type);
+			Data.cache(FILE, new Data(FILE_TYPE, "IMAGE"));
+			Data.cache(FILE, new Data(FILE_TYPE, "VIDEO"));
+			Data.cache(FILE, new Data(FILE_TYPE, "AUDIO"));
 		}
 		
 		public File() {

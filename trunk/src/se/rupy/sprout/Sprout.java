@@ -58,16 +58,16 @@ public abstract class Sprout extends Service implements Type {
 		return data;
 	}
 	
-	static boolean update(byte type, Object o) throws SQLException {
+	public static boolean update(byte type, Object o) throws SQLException {
 		return update(type, o, null);
 	}
 
-	static boolean update(byte type, Object bean, Connection connection) throws SQLException {
+	public static boolean update(byte type, Object o, Connection connection) throws SQLException {
 		if(connection == null) {
-			return db.update(type, bean);
+			return db.update(type, o);
 		}
 		else {
-			return db.update(type, bean, connection);
+			return db.update(type, o, connection);
 		}
 	}
 	
@@ -104,7 +104,7 @@ public abstract class Sprout extends Service implements Type {
 
 			db.update(Base.SELECT, old);
 
-			old.fill(true);
+			old.fill(10, 0, 10);
 			
 			cache.put(new Long(id), old);
 		}
@@ -133,7 +133,7 @@ public abstract class Sprout extends Service implements Type {
 				Node article = new Article();
 				
 				article.copy(node);
-				article.fill(true);
+				article.fill(10, 0, 10);
 
 				cache.put(new Long(article.getId()), article);
 				

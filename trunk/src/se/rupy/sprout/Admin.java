@@ -53,7 +53,7 @@ public abstract class Admin extends Sprout {
 			if(link > 0 && meta > 0 && value.length() > 0) {
 				Node node = new Node(link);
 				node.query(meta, value);
-				node.fill(true);
+				node.fill(10, 0, 10);
 				cache.put(key, node);
 			}
 			

@@ -55,15 +55,19 @@ public class content extends Sprout {
 	static void print(Article article, Output out) throws Exception {
 		Iterator it = article.get(FILE).iterator();
 		while(it.hasNext()) {
-			Node file = (Node) it.next(); 
-			
-			if(file.get(FILE_TYPE).getValue().equals("IMAGE")) { ]]
+			Node file = (Node) it.next();
+			Data name = file.get(FILE_NAME);
+			Data type = file.get(FILE_TYPE);
+				
+			if(type != null) {
+				if(type.getValue().equals("IMAGE")) { ]]
 
           <div>
-            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + file.get(FILE_NAME).getValue() ]]" border="0"/></a>
+            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + name.getValue() ]]" border="0"/></a>
           </div>
 
-[[ 				break;
+[[ 					break;
+				}
 			}
 		}
 

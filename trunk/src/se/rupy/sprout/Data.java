@@ -6,33 +6,43 @@ import se.rupy.memory.Base;
 import se.rupy.memory.DataBean;
 
 public class Data extends DataBean implements Type {
-	static HashMap cache = new HashMap();
-	
-	static void cache(int link, short meta, String[] type) {
-		HashMap hash = new HashMap();
-		
+	public static HashMap cache = new HashMap();
+
+	public static void cache(int link, Data data) {
+		HashMap hash = (HashMap) cache.get(new Integer(link));
+
+		if(hash == null) {
+			hash = new HashMap();
+		}
+
 		try {
-			for(int i = 0; i < type.length; i++) {
-				Data data = new Data();
-				data.setValue(type[i]);
-				data.setType(meta);
-				
-				if(!Sprout.update(Base.SELECT, data)) {
-					Sprout.update(Base.INSERT, data);
-				}
-				
-				hash.put(type[i], data);
+			if(!Sprout.update(Base.SELECT, data)) {
+				Sprout.update(Base.INSERT, data);
 			}
+
+			hash.put(data.getValue(), data);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		cache.put(new Integer(link), hash);
 	}
+
+	public static Data cache(int link, String name) {
+		HashMap hash = (HashMap) cache.get(new Integer(link));
+		
+		if(hash == null) {
+			System.out.println("Data cache is empty for " + name + ". (" + link + ")");
+		}
+		
+		return (Data) hash.get(name);
+	}
+
+	public Data() {}
 	
-	static Data cache(int link, String type) {
-		HashMap data = (HashMap) cache.get(new Integer(link));
-		return (Data) data.get(type);
+	public Data(short type, String value) {
+		setType(type);
+		setValue(value);
 	}
 }

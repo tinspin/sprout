@@ -37,7 +37,7 @@ public class User extends Node {
 		if(user == null) {
 			user = new User();
 			user.query(USER_KEY, key);
-			user.fill(true);
+			user.fill(10, 0, 10);
 			user.cache.put(key, user);
 		}
 		
@@ -57,7 +57,7 @@ public class User extends Node {
 				if(name.length() > 0 && pass.length() > 0) {
 					User user = new User();
 					if(user.query(USER_NAME, name)) {
-						user.fill(true);
+						user.fill(10, 0, 10);
 						
 						if(user.get(USER_PASS).getValue().equals(pass)) {
 							save(event.session(), user);
@@ -108,10 +108,7 @@ public class User extends Node {
 							user.add(Sprout.generate(USER_KEY, 16));
 							user.add(USER_IP, event.remote());
 							
-							if(Sprout.value("SELECT count(*) FROM node") > 0) {
-								user.add(Group.name("USER"));
-							}
-							else {
+							if(Sprout.value("SELECT count(*) FROM node WHERE type = " + Type.USER) == 0) {
 								user.add(Group.name("ADMIN"));
 							}
 							
@@ -193,48 +190,19 @@ public class User extends Node {
 	}
 	
 	public static class Group extends Node {
-		private static String type[] = {"READ", "WRITE"};
-		private static String name[] = {"USER", "ADMIN"};
-		
 		static {
-			Data.cache(GROUP, GROUP_TYPE, type);
-			if(!Node.cache(GROUP, GROUP_NAME, name)) {
-				create("USER", "READ");
-				create("ADMIN", "WRITE");
-			}
+			Data admin = new Data(GROUP_NAME, "ADMIN");
+			
+			Data.cache(GROUP, admin);
+			Node.cache(GROUP, admin);
 		}
 		
 		public Group() {
 			super(GROUP);
 		}
-
-		static void create(String name, String type) {			
-			try {
-				Group group = new Group();
-				group.add(GROUP_NAME, name);
-				group.add(type(type));
-				group.update();
-				
-				HashMap hash = (HashMap) Node.cache.get(new Integer(GROUP));
-				
-				if(hash == null) {
-					hash = new HashMap();
-					Node.cache.put(new Integer(GROUP), hash);
-				}
-				
-				hash.put(name, group);
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		static Data type(String type) {
-			return Data.cache(GROUP, type);
-		}
 		
 		static Node name(String name) {
-			return Node.cache(GROUP, GROUP_NAME, name);
+			return Node.cache(GROUP, name);
 		}
 	}
 }

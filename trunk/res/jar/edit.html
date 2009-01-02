@@ -66,19 +66,29 @@ public class edit extends Sprout {
 			Iterator it = article.get(FILE).iterator();
 			while(it.hasNext()) {
 				Node file = (Node) it.next();
-				if(file.get(FILE_TYPE).getValue().equals("IMAGE")) { ]]
+				Data name = file.get(FILE_NAME);
+				Data type = file.get(FILE_TYPE);
+				
+				if(type != null) {
+					if(type.getValue().equals("IMAGE")) { ]]
 
         <tr>
-          <td colspan="2"><img src="[[ file.path() + "TINY_" + file.get(FILE_NAME).getValue() ]]" alt="[[ file.path() + file.get(FILE_NAME).getValue() ]]"/></td>
+          <td colspan="2"><img src="[[ file.path() + "TINY_" + name.getValue() ]]" alt="[[ file.path() + name.getValue() ]]"/></td>
         </tr>
 
-[[ 				}
-				else if(file.get(FILE_TYPE).getValue().equals("VIDEO")) {
-					String name = file.get(FILE_NAME).getValue();
-					name = name.substring(0, name.indexOf('.')); ]]
+[[ 					}
+					else if(type.getValue().equals("VIDEO")) { ]]
 
         <tr>
-          <td colspan="2"><img src="res/flash.gif" alt="[[ file.path() + name + ".flv" ]]"/></td>
+          <td colspan="2"><img src="res/flash.gif" alt="[[ file.path() + name.getValue() ]]"/></td>
+        </tr>
+
+[[					}
+				}
+				else { ]]
+
+        <tr>
+          <td colspan="2">[[ file.path() + name.getValue() ]]</td>
         </tr>
 
 [[				}
@@ -98,7 +108,7 @@ public class edit extends Sprout {
           <td colspan="2">
             <a class="button overflow">
               <input name="file" type="file" class="file" onchange="document.upload.submit()"/>
-              <span>[[ i18n("Files") ]]</span>
+              <span>[[ i18n("Upload") ]]</span>
             </a>
           </td>
         </tr>
