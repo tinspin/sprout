@@ -1,0 +1,1 @@
+alter table data add index FIND (type, value(20));
