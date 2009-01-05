@@ -64,6 +64,7 @@ public class Node extends NodeBean implements Type {
 		link.setParent(this);
 		link.setChild(node);
 		link.setType(getType() | node.getType());
+		
 		Sprout.update(Base.DELETE, link);
 	}
 
@@ -190,8 +191,8 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Find data/node meta relation where type = value 
-	 * and if the result is unique populate this node.
+	 * Find data/node meta relation where type = value.
+	 * You can only query for unique results.
 	 * @param type
 	 * @param value
 	 * @return
@@ -205,9 +206,8 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
-	 * Find data/node meta relation where type = value 
-	 * and populate this node. You can only query for 
-	 * unique results.
+	 * Find data/node meta relation where type = value.
+	 * You can only query for unique results.
 	 * @param data
 	 * @return
 	 * @throws SQLException
@@ -219,6 +219,7 @@ public class Node extends NodeBean implements Type {
 			meta.setData(data);
 			meta.setType(data.getType());
 			meta.setLimit(1);
+			
 			Sprout.update(Base.SELECT, meta);
 
 			if(meta.size() == 1) {
@@ -231,8 +232,31 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
+	 * Find parent node. You can only query for unique results.
+	 * @param node
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean query(Node node) throws SQLException {
+		LinkBean link = new LinkBean();
+		link.setType(getType() | node.getType());
+		link.setParent(-1);
+		link.setChild(node);
+		link.setLimit(1);
+		
+		Sprout.update(Base.SELECT, link);
+		
+		if(link.size() == 1) {
+			copy((NodeBean) link.getFirst());
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Fills the node with meta-data and children nodes.
-	 * Call {@link #query(short, Object)} or {@link #query(Data)} first.
+	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
 	 * Only fetches data from the database the first time.
 	 * @param depth
 	 * @param start
@@ -261,7 +285,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Fills the node with children nodes.
-	 * Call {@link #query(short, Object)} or {@link #query(Data)} first.
+	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
 	 * Only fetches data from the database the first time.
 	 * @param start
 	 * @param limit
@@ -297,7 +321,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Fills the node with meta-data.
-	 * Call {@link #query(short, Object)} or {@link #query(Data)} first. 
+	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
 	 * Only fetches data from the database the first time.
 	 * @return
 	 * @throws SQLException
@@ -324,7 +348,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Get meta-data.
-	 * Call {@link #fill(boolean)} or {@link #meta()} first.
+	 * Call {@link #fill(int, int, int)} or {@link #meta()} first.
 	 * @param type
 	 * @return
 	 */
@@ -346,7 +370,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Get child nodes of a certain type.
-	 * Call {@link #fill(boolean)} or {@link #link()} first.
+	 * Call {@link #fill(int, int, int)} or {@link #link(int, int)} first.
 	 * @param type
 	 * @return
 	 */
@@ -374,7 +398,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Return the first child that contains the meta-data.
-	 * Call {@link #fill(boolean)} or {@link #link()} first.
+	 * Call {@link #fill(int, int, int)} or {@link #link(int, int)} first.
 	 * @param link The node type.
 	 * @param meta The data type.
 	 * @param value
@@ -401,7 +425,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Get child node.
-	 * Call {@link #fill(boolean)} or {@link #link()} first.
+	 * Call {@link #fill(int, int, int)} or {@link #link(int, int)} first.
 	 * @param id
 	 * @return
 	 */
