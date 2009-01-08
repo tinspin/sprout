@@ -60,7 +60,7 @@ public class User extends Node {
 						user.fill(10, 0, 10);
 						
 						if(user.get(USER_PASS).getValue().equals(pass)) {
-							save(event.session(), user);
+							save(event.session(), user, event.bit("remember"));
 						}
 						else {
 							event.query().put("error", "Wrong password!");
@@ -114,7 +114,7 @@ public class User extends Node {
 							
 							user.update();
 
-							save(event.session(), user);
+							save(event.session(), user, false);
 							
 							Sprout.redirect(event, "/");
 						}
@@ -132,14 +132,19 @@ public class User extends Node {
 		}
 	}
 
-	static void save(Session session, User user) {
+	static void save(Session session, User user, boolean remember) {
 		String key = user.get(USER_KEY).getValue();
 		session.put("key", key);
 		cache.put(key, user);
+		
+		if(remember) {
+			long time = (long) 1000 * 60 * 60 * 24 * 365;
+			session.key(key, "localhost", System.currentTimeMillis() + time);
+		}
 	}
 	
 	static void kill(Object key) {
-		User.cache.remove(key);
+		cache.remove(key);
 		Article.remove(key);
 	}
 	
@@ -149,7 +154,10 @@ public class User extends Node {
 			String key = (String) session.get("key");
 
 			switch(type) {
-			case Service.CREATE: break;
+			case Service.CREATE: 
+				if(session.key() != null && session.key().length() == 16) {
+					save(session, get(key), true);
+				}
 			case Service.TIMEOUT: 
 				kill(key);
 				break;
