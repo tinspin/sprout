@@ -75,6 +75,10 @@ public abstract class Sprout extends Service implements Type {
 		return db.value(sql);
 	}
 	
+	static void find(String sql) throws SQLException {
+		db.find(sql, connection(false), true);
+	}
+	
 	static Connection connection(boolean transaction) throws SQLException {
 		return db.connection(transaction);
 	}
