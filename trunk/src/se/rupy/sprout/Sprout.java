@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import se.rupy.http.Event;
 import se.rupy.http.Service;
@@ -21,7 +22,6 @@ import se.rupy.util.Log;
 
 public abstract class Sprout extends Service implements Type {
 	private static Base db;
-	private static HashMap cache = new HashMap();
 	
 	static {
 		db = new Base();
@@ -35,7 +35,7 @@ public abstract class Sprout extends Service implements Type {
 		}
 	}
 	
-	protected static String i18n(String text) {
+	public static String i18n(String text) {
 		return text;
 	}
 	
@@ -46,7 +46,7 @@ public abstract class Sprout extends Service implements Type {
 		return line;
 	}
 	
-	static Data generate(short type, int length) throws Exception {
+	public static Data generate(short type, int length) throws Exception {
 		Data data = new Data();
 		data.setType(type);
 		data.setValue(Event.random(length));
@@ -71,11 +71,19 @@ public abstract class Sprout extends Service implements Type {
 		}
 	}
 	
-	static long value(String sql) throws SQLException {
+	public static LinkedList from(String name, String sql) throws SQLException {
+		return db.query(Base.FROM, name, sql);
+	}
+	
+	public static LinkedList where(String name, String sql) throws SQLException {
+		return db.query(Base.WHERE, name, sql);
+	}
+	
+	public static long value(String sql) throws SQLException {
 		return db.value(sql);
 	}
 	
-	static void find(String sql) throws SQLException {
+	public static void find(String sql) throws SQLException {
 		db.find(sql, connection(false), true);
 	}
 	
@@ -83,84 +91,14 @@ public abstract class Sprout extends Service implements Type {
 		return db.connection(transaction);
 	}
 	
-	protected static void invalidate(String type, Article article) {
-		Cache old = (Cache) cache.get(type);
-		
-		if(old != null) {
-			old.invalid = true;
-		}
-		
-		article.invalidate();
-		
-		cache.put(new Long(article.getId()), article);
-	}
-	
-	protected static Article get(long id) throws SQLException {
-		if(id == 0) {
-			return null;
-		}
-		
-		Article old = (Article) cache.get(new Long(id));
-
-		if(old == null) {
-			old = new Article();
-			old.setId(id);
-
-			db.update(Base.SELECT, old);
-
-			old.fill(10, 0, 10);
-			
-			cache.put(new Long(id), old);
-		}
-		
-		return old;
-	}
-	
-	protected static Cache get(String type) throws SQLException {
-		Cache old = (Cache) cache.get(type);
-				
-		if(old == null) {
-			old = new Cache(true);
-		}
-		
-		if(old.invalid) {
-			old = new Cache(false);
-			old.setType(ARTICLE | USER);
-			old.setParent(-1);
-			db.update(Base.SELECT, old);
-			
-			int index = 0;
-			Iterator it = old.iterator();
-			
-			while(it.hasNext()) {
-				NodeBean node = (NodeBean) it.next();
-				Node article = new Article();
-				
-				article.copy(node);
-				article.fill(10, 0, 10);
-
-				cache.put(new Long(article.getId()), article);
-				
-				Node user = (Node) article.get(USER).getFirst();
-				user.meta();
-				
-				old.set(index++, article);
-			}
-			
-			cache.put(type, old);
-		}
-		
-		return old;
-	}
-	
-	protected static void redirect(Event event) throws IOException, Event {
+	public static void redirect(Event event) throws IOException, Event {
 		HashMap query = (HashMap) event.query().clone();
 		event.session().put("post", query);
 		String referer = event.query().header("referer");
 		redirect(event, referer == null ? "/" : referer);
 	}
 	
-	protected static void redirect(Event event, String path) throws IOException, Event {
+	public static void redirect(Event event, String path) throws IOException, Event {
 		event.reply().header("Location", path);
 		event.reply().code("302 Found");
 		throw event;

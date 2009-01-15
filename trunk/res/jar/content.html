@@ -5,13 +5,14 @@ import java.util.*;
 import se.rupy.http.*;
 import se.rupy.memory.*;
 import se.rupy.sprout.*;
+import se.rupy.content.*;
 
 public class content extends Sprout {
 	public String path() { return "/content"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 		Object key = event.session().get("key");
-		Iterator articles = get("article").iterator();
+		Iterator articles = Article.get("article").iterator();
 		while(articles.hasNext()) {
 			Article article = (Article) articles.next();
 			Node user = (Node) article.get(USER).getFirst();

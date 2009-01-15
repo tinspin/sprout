@@ -1,7 +1,10 @@
-package se.rupy.sprout;
+package se.rupy.content;
 
 import se.rupy.http.Event;
 import se.rupy.http.Query;
+import se.rupy.sprout.Node;
+import se.rupy.sprout.Sprout;
+import se.rupy.sprout.User;
 
 public class Comment extends Node {
 	public Comment() {
@@ -16,7 +19,7 @@ public class Comment extends Node {
 				
 				String body = event.string("body");
 				Object key = event.session().get("key");
-				Article article = get(event.big("id"));
+				Article article = Article.find(event.big("id"));
 				
 				if(article != null && body.length() > 0) {
 					Comment comment = new Comment();
@@ -33,7 +36,7 @@ public class Comment extends Node {
 					article.add(comment);
 					article.update();
 					
-					Sprout.invalidate("article", article);
+					Article.invalidate("article", article);
 				}
 
 				Sprout.redirect(event);

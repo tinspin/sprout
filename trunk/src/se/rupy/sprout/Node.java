@@ -47,25 +47,32 @@ public class Node extends NodeBean implements Type {
 		if(node == null) {
 			throw new NullPointerException("Can't add node.");
 		}
-		
+
 		if(id > 0 && (node.getId() == 0 || get(node.getId()) == null)) {
 			update(node);
 		}
-		
+
 		link.add(0, node);
 	}
 
 	/**
 	 * Remove the child node.
 	 * @param node
+	 * @return
 	 * @throws SQLException
 	 */
-	public void remove(Node node) throws SQLException {
-		link.setParent(this);
-		link.setChild(node);
-		link.setType(getType() | node.getType());
-		
-		Sprout.update(Base.DELETE, link);
+	public boolean remove(Node node) throws SQLException {
+		if(link.contains(node)) {
+			link.setParent(this);
+			link.setChild(node);
+			link.setType(getType() | node.getType());
+
+			Sprout.update(Base.DELETE, link);
+			
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -85,12 +92,21 @@ public class Node extends NodeBean implements Type {
 		if(data == null) {
 			throw new NullPointerException("Can't add data.");
 		}
-		
+
 		Data old = get(data.getType());
 
 		if(old != null) {
 			meta.remove(old);
-			data.setId(old.getId());
+
+			Data cache = Data.cache(type, data.getValue());
+
+			if(cache != null) {
+				remove(old);
+				meta(Base.INSERT, data, Sprout.connection(false));
+			}
+			else {
+				data.setId(old.getId());
+			}
 		}
 
 		if(id > 0 && data.getId() == 0) {
@@ -98,6 +114,26 @@ public class Node extends NodeBean implements Type {
 		}
 
 		meta.add(data);
+	}
+
+	/**
+	 * Remove meta-data.
+	 * @param data
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean remove(Data data) throws SQLException {
+		if(meta.contains(data)) {
+			meta.setNode(this);
+			meta.setData(data);
+			meta.setType(data.getType());
+
+			Sprout.update(Base.DELETE, meta);
+			
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -191,6 +227,24 @@ public class Node extends NodeBean implements Type {
 	}
 
 	/**
+	 * Find node.
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean query(long id) throws SQLException {
+		NodeBean node = new NodeBean();
+		node.setId(id);
+
+		if(Sprout.update(Base.SELECT, node)) {
+			copy(node);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Find data/node meta relation where type = value.
 	 * You can only query for unique results.
 	 * @param type
@@ -219,7 +273,7 @@ public class Node extends NodeBean implements Type {
 			meta.setData(data);
 			meta.setType(data.getType());
 			meta.setLimit(1);
-			
+
 			Sprout.update(Base.SELECT, meta);
 
 			if(meta.size() == 1) {
@@ -243,17 +297,17 @@ public class Node extends NodeBean implements Type {
 		link.setParent(-1);
 		link.setChild(node);
 		link.setLimit(1);
-		
+
 		Sprout.update(Base.SELECT, link);
-		
+
 		if(link.size() == 1) {
 			copy((NodeBean) link.getFirst());
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Fills the node with meta-data and children nodes.
 	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
@@ -475,7 +529,7 @@ public class Node extends NodeBean implements Type {
 				node.add(name);
 				node.update();
 			}
-			
+
 			hash.put(name.getValue(), node);
 			return true;
 		}
@@ -484,14 +538,14 @@ public class Node extends NodeBean implements Type {
 			return false;
 		}
 	}
-	
+
 	protected static Node cache(int link, String name) {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
-		
+
 		if(hash == null) {
 			System.out.println("Node cache is empty for " + name + ". (" + link + ")");
 		}
-		
+
 		return (Node) hash.get(name);
 	}
 
