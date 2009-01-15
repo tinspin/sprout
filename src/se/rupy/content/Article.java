@@ -1,15 +1,22 @@
-package se.rupy.sprout;
+package se.rupy.content;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import se.rupy.http.Event;
 import se.rupy.http.Query;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
+import se.rupy.memory.NodeBean;
+import se.rupy.sprout.Node;
+import se.rupy.sprout.Sprout;
+import se.rupy.sprout.User;
+import se.rupy.sprout.Sprout.Cache;
 
 public class Article extends Node {
 	public static int MAX_POST_SIZE = 1024 * 1024; // 1MB
@@ -21,6 +28,76 @@ public class Article extends Node {
 		super(ARTICLE);
 	}
 
+	protected static void invalidate(String type, Article article) {
+		Cache old = (Cache) cache.get(type);
+		
+		if(old != null) {
+			old.invalid = true;
+		}
+		
+		article.invalidate();
+		
+		cache.put(new Long(article.getId()), article);
+	}
+	
+	public static Article find(long id) throws SQLException {
+		if(id == 0) {
+			return null;
+		}
+		
+		Article old = (Article) cache.get(new Long(id));
+
+		if(old == null) {
+			old = new Article();
+			old.setId(id);
+
+			Sprout.update(Base.SELECT, old);
+
+			old.fill(10, 0, 10);
+			
+			cache.put(new Long(id), old);
+		}
+		
+		return old;
+	}
+	
+	public static Cache get(String type) throws SQLException {
+		Cache old = (Cache) cache.get(type);
+				
+		if(old == null) {
+			old = new Cache(true);
+		}
+		
+		if(old.invalid) {
+			old = new Cache(false);
+			old.setType(ARTICLE | USER);
+			old.setParent(-1);
+			Sprout.update(Base.SELECT, old);
+			
+			int index = 0;
+			Iterator it = old.iterator();
+			
+			while(it.hasNext()) {
+				NodeBean node = (NodeBean) it.next();
+				Node article = new Article();
+				
+				article.copy(node);
+				article.fill(10, 0, 10);
+
+				cache.put(new Long(article.getId()), article);
+				
+				Node user = (Node) article.get(USER).getFirst();
+				user.meta();
+				
+				old.set(index++, article);
+			}
+			
+			cache.put(type, old);
+		}
+		
+		return old;
+	}
+	
 	public static Object remove(Object key) {
 		return cache.remove(key);
 	}
@@ -108,8 +185,7 @@ public class Article extends Node {
 					article.add(user);
 					article.update();
 
-					Sprout.invalidate("article", article);
-
+					Article.invalidate("article", article);
 					Article.cache.put(key, new Article());
 
 					Sprout.redirect(event, "/");

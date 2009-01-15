@@ -1,4 +1,4 @@
-package se.rupy.sprout;
+package se.rupy.content;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 import se.rupy.http.Event;
 import se.rupy.http.Input;
 import se.rupy.http.Query;
+import se.rupy.sprout.Data;
+import se.rupy.sprout.Node;
+import se.rupy.sprout.Sprout;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -134,14 +137,14 @@ public class Upload extends Sprout {
 			if(event.query().method() == Query.POST) {
 				event.query().parse();
 
-				Article article = get(event.big("id"));
+				Article article = Article.find(event.big("id"));
 				Node file = article.get(event.big("file"));
 
 				if(article != null && file != null) {
 					// TODO: Delete actual content on disk.
 
 					article.remove(file);
-					Sprout.invalidate("article", article);
+					Article.invalidate("article", article);
 				}
 
 				Sprout.redirect(event);

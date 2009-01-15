@@ -20,13 +20,13 @@ public interface Type {
 	public final static short USER_MAIL			= 102;
 	public final static short USER_KEY			= 103;
 	public final static short USER_IP			= 104;
+	public final static short USER_STATE		= 105;
 	public final static short ARTICLE_TITLE		= 200;
 	public final static short ARTICLE_BODY		= 201;
 	public final static short COMMENT_BODY		= 300;
 	public final static short COMMENT_IP		= 301;
 	public final static short CATEGORY_NAME		= 400;
 	public final static short GROUP_NAME		= 500;
-	public final static short GROUP_TYPE		= 501;
 	public final static short FILE_NAME			= 600;
 	public final static short FILE_TYPE			= 601;
 }

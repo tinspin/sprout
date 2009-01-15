@@ -5,6 +5,7 @@ import java.util.*;
 import se.rupy.http.*;
 import se.rupy.memory.*;
 import se.rupy.sprout.*;
+import se.rupy.content.*;
 
 import se.rupy.util.*;
 
@@ -14,7 +15,7 @@ public class article extends Sprout {
 		event.query().parse();
 		Output out = event.output();
 		Object key = event.session().get("key");
-		Article article = get(event.big("id"));
+		Article article = Article.find(event.big("id"));
 		Node user = (Node) article.get(USER).getFirst();
 		boolean edit = user.get(USER_KEY).getValue().equals(key); ]]
 

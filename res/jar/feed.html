@@ -5,6 +5,7 @@ import java.util.*;
 import se.rupy.http.*;
 import se.rupy.memory.*;
 import se.rupy.sprout.*;
+import se.rupy.content.*;
 
 public class feed extends Sprout {
 	public String path() { return "/feed"; }
@@ -13,7 +14,7 @@ public class feed extends Sprout {
 		String host = "sprout.rupy.se"; // event.query().header("host");
 		Output out = event.output();
 		Object key = event.session().get("key");
-		LinkedList list = get("article");
+		LinkedList list = Article.get("article");
 		Iterator it = list.iterator(); ]]
 
 <?xml version="1.0" encoding="UTF-8"?>

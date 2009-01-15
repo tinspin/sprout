@@ -1,1 +1,1 @@
-alter table data add index FIND (type, value(20));
+ALTER TABLE data ADD INDEX FIND (type, value(20));

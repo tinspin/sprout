@@ -1,4 +1,4 @@
-package se.rupy.sprout;
+package se.rupy.content;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -6,6 +6,9 @@ import java.util.Iterator;
 
 import se.rupy.http.Event;
 import se.rupy.http.Service;
+import se.rupy.sprout.Node;
+import se.rupy.sprout.Sprout;
+import se.rupy.sprout.User;
 
 public abstract class Admin extends Sprout {
 	public static HashMap cache = new HashMap();
