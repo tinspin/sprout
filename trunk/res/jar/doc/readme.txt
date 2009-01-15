@@ -52,6 +52,7 @@ Version:
   E - Columnizing
   F - Flash Video
   G - Button CSS Fix
+  H - Admin
 
 Todo:
 
