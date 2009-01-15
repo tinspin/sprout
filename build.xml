@@ -81,7 +81,7 @@
 	<target name="build" depends="page, util, memory, http, create, check" unless="required">
 		<echo>Building (${name})</echo>
 		<mkdir dir="tmp/cls"/>
-		<javac srcdir="src" target="1.4" source="1.4" destdir="tmp/cls" debug="on" deprecation="off" classpath="src;${lib}"/>
+		<javac srcdir="src" target="1.4" source="1.4" destdir="tmp/cls" nowarn="on" debug="on" deprecation="off" classpath="src;${lib}"/>
 		<mkdir dir="tmp/jar"/>
 		<copy todir="tmp/jar">
 			<fileset dir="tmp/cls"/>
@@ -90,7 +90,7 @@
 			<arg line="bin/sprout.jar"/>
 			<arg line="res/jar"/>
 		</java>
-		<javac srcdir="res/jar" target="1.4" source="1.4" destdir="tmp/jar" debug="on" deprecation="off" classpath="${lib}"/>
+		<javac srcdir="res/jar" target="1.4" source="1.4" destdir="tmp/jar" nowarn="on" debug="on" deprecation="off" classpath="${lib}"/>
 		<copy todir="tmp/jar">
 	    	<fileset dir="res/jar"/>
 		</copy>
