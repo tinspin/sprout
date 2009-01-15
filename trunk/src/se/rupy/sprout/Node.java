@@ -16,7 +16,8 @@ import se.rupy.pool.*;
  */
 public class Node extends NodeBean implements Type {
 	public static HashMap cache = new HashMap();
-
+	private static Data none = new Data();
+	
 	static Format time = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
 
@@ -419,7 +420,7 @@ public class Node extends NodeBean implements Type {
 			}
 		}
 
-		return null;
+		return none;
 	}
 
 	/**
