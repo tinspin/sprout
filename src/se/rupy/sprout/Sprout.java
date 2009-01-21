@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import se.rupy.http.Daemon;
 import se.rupy.http.Event;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
@@ -124,19 +125,19 @@ public abstract class Sprout extends Service implements Type {
 		}
 
 		public String driver() {
-			return "com.mysql.jdbc.Driver";
+			return System.getProperty("dbdriver", "com.mysql.jdbc.Driver");
 		}
 
 		public String url() {
-			return "jdbc:mysql://localhost/sprout";
+			return System.getProperty("dburl", "jdbc:mysql://localhost/sprout");
 		}
 
 		public String user() {
-			return "root";
+			return System.getProperty("dbuser", "root");
 		}
 
 		public String pass() {
-			return "";
+			return System.getProperty("dbpass", "");
 		}
 
 		public void message(Object o) {
