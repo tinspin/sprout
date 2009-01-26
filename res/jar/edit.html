@@ -64,11 +64,11 @@ public class edit extends Sprout {
         </tr>
         
 [[		if(article != null) {
-			Iterator it = article.get(FILE).iterator();
+			Iterator it = article.child(FILE).iterator();
 			while(it.hasNext()) {
 				Node file = (Node) it.next();
-				Data name = file.get(FILE_NAME);
-				Data type = file.get(FILE_TYPE);
+				Data name = file.meta(FILE_NAME);
+				Data type = file.meta(FILE_TYPE);
 				
 				if(type != null) {
 					if(type.getValue().equals("IMAGE")) { ]]

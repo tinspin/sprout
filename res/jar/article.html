@@ -16,8 +16,8 @@ public class article extends Sprout {
 		Output out = event.output();
 		Object key = event.session().get("key");
 		Article article = Article.find(event.big("id"));
-		Node user = (Node) article.get(USER).getFirst();
-		boolean edit = user.get(USER_KEY).getValue().equals(key); ]]
+		Node user = (Node) article.child(USER).getFirst();
+		boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -31,7 +31,7 @@ public class article extends Sprout {
   <div>
     <table>
       <tr>
-        <td colspan="2" class="title">[[ article.get(ARTICLE_TITLE).getValue() ]]</td>
+        <td colspan="2" class="title">[[ article.meta(ARTICLE_TITLE).getValue() ]]</td>
       </tr>
       <tr>
         <td colspan="2"><i>[[ article.time() ]]</i></td>
@@ -39,11 +39,11 @@ public class article extends Sprout {
       <tr>
         <td colspan="2">
         
-[[			Iterator it = article.get(FILE).iterator();
+[[			Iterator it = article.child(FILE).iterator();
 			while(it.hasNext()) {
 				Node file = (Node) it.next();
-				Data name = file.get(FILE_NAME);
-				Data type = file.get(FILE_TYPE);
+				Data name = file.meta(FILE_NAME);
+				Data type = file.meta(FILE_TYPE);
 				
 				if(type != null) {
 					if(type.getValue().equals("IMAGE")) { ]]
@@ -86,10 +86,10 @@ public class article extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2">/[[ user.get(USER_NAME).getValue() ]]</td>
+        <td colspan="2">/[[ user.meta(USER_NAME).getValue() ]]</td>
       </tr>
       
-[[		LinkedList comments = article.get(COMMENT); ]]
+[[		LinkedList comments = article.child(COMMENT); ]]
       
       <tr>
         <td colspan="2"><img src="res/comment.gif">&nbsp;<i>[[ comments.size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
@@ -98,14 +98,14 @@ public class article extends Sprout {
 [[		it = comments.iterator();
 		while(it.hasNext()) {
 			Node comment = (Node) it.next();
-			Data ip = comment.get(COMMENT_IP);
+			Data ip = comment.meta(COMMENT_IP);
             
             if(ip == null) {
-            	ip = ((Node) comment.get(USER).getFirst()).get(USER_IP);
+            	ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
             } ]]
 		
         <tr>
-          <td colspan="2">[[ comment.get(COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(ip.getValue()) ]] --></td>
+          <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(ip.getValue()) ]] --></td>
         </tr>
 
 [[ 		} ]]

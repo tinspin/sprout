@@ -37,7 +37,7 @@ public class Upload extends Sprout {
 
 			Object key = event.session().get("key");
 			Article article = Article.get(key);
-			Node old = article.get(FILE, FILE_NAME, item.name);
+			Node old = article.child(FILE, FILE_NAME, item.name);
 			
 			if(old != null) {
 				file = old;
@@ -60,11 +60,11 @@ public class Upload extends Sprout {
 
 			file.add(FILE_NAME, item.name);
 
-			if(article.get(ARTICLE_TITLE) == null) {
+			if(article.meta(ARTICLE_TITLE) == null) {
 				article.add(ARTICLE_TITLE, i18n("Title"));
 			}
 
-			if(article.get(ARTICLE_BODY) == null) {
+			if(article.meta(ARTICLE_BODY) == null) {
 				article.add(ARTICLE_BODY, i18n("Body"));
 			}
 
@@ -138,7 +138,7 @@ public class Upload extends Sprout {
 				event.query().parse();
 
 				Article article = Article.find(event.big("id"));
-				Node file = article.get(event.big("file"));
+				Node file = article.child(event.big("file"));
 
 				if(article != null && file != null) {
 					// TODO: Delete actual content on disk.

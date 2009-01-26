@@ -86,7 +86,7 @@ public class Article extends Node {
 
 				cache.put(new Long(article.getId()), article);
 				
-				Node user = (Node) article.get(USER).getFirst();
+				Node user = (Node) article.child(USER).getFirst();
 				user.meta();
 				
 				old.set(index++, article);
@@ -127,7 +127,7 @@ public class Article extends Node {
 	public LinkedList columnize() {
 		if(columns == null) {
 			columns = new LinkedList();
-			String column = "", text = get(ARTICLE_BODY).getValue();
+			String column = "", text = meta(ARTICLE_BODY).getValue();
 			int length = 0, begin = 0, end = COLUMN_WIDTH / CHARACTER_WIDTH;
 
 			// loop until all overflowing data has been columnized
@@ -214,12 +214,12 @@ public class Article extends Node {
 					article.fill(10, 0, 10);
 				}
 
-				if(article.get(ARTICLE_TITLE) != null) {
-					event.query().put("title", article.get(ARTICLE_TITLE).getValue());
+				if(article.meta(ARTICLE_TITLE) != null) {
+					event.query().put("title", article.meta(ARTICLE_TITLE).getValue());
 				}
 
-				if(article.get(ARTICLE_BODY) != null) {
-					event.query().put("body", article.get(ARTICLE_BODY).getValue());
+				if(article.meta(ARTICLE_BODY) != null) {
+					event.query().put("body", article.meta(ARTICLE_BODY).getValue());
 				}
 
 				Article.cache.put(key, article);

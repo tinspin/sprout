@@ -14,7 +14,7 @@ public class admin extends Sprout {
 		Output out = event.output();
 		
 		User user = User.get(event.session().get("key"));
-		Object key = user.get(USER_KEY).getValue();
+		Object key = user.meta(USER_KEY).getValue();
 		
 		int link = event.query().medium("link");
 		short meta = event.query().small("meta");
