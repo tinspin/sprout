@@ -15,17 +15,17 @@ public class content extends Sprout {
 		Iterator articles = Article.get("article").iterator();
 		while(articles.hasNext()) {
 			Article article = (Article) articles.next();
-			Node user = (Node) article.get(USER).getFirst();
-			boolean edit = user.get(USER_KEY).getValue().equals(key); ]]
+			Node user = (Node) article.child(USER).getFirst();
+			boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
 
     <div style="float: left; padding: 5px 5px 5px 5px;">
       <table>		
         <tr>
-          <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.get(ARTICLE_TITLE).getValue() ]]</a></td>
+          <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.meta(ARTICLE_TITLE).getValue() ]]</a></td>
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
-          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.get(COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.child(COMMENT).size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
         </tr>
         <tr>
           <td colspan="2">
@@ -35,7 +35,7 @@ public class content extends Sprout {
           </td>
         </tr>
         <tr>
-          <td>/[[ user.get(USER_NAME).getValue() ]]</td>
+          <td>/[[ user.meta(USER_NAME).getValue() ]]</td>
           <td>
 
 [[			if(edit) { ]]
@@ -54,11 +54,11 @@ public class content extends Sprout {
 [[ 		}
 	}
 	static void print(Article article, Output out) throws Exception {
-		Iterator it = article.get(FILE).iterator();
+		Iterator it = article.child(FILE).iterator();
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
-			Data name = file.get(FILE_NAME);
-			Data type = file.get(FILE_TYPE);
+			Data name = file.meta(FILE_NAME);
+			Data type = file.meta(FILE_TYPE);
 				
 			if(type != null) {
 				if(type.getValue().equals("IMAGE")) { ]]

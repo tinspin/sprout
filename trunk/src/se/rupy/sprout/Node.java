@@ -53,7 +53,7 @@ public class Node extends NodeBean implements Type {
 			throw new NullPointerException("Can't add node.");
 		}
 		
-		if(id > 0 && (node.getId() == 0 || get(node.getId()) == null)) {
+		if(id > 0 && (node.getId() == 0 || child(node.getId()) == null)) {
 			update(node);
 		}
 		
@@ -91,7 +91,7 @@ public class Node extends NodeBean implements Type {
 			throw new NullPointerException("Can't add data.");
 		}
 
-		Data old = get(data.getType());
+		Data old = meta(data.getType());
 
 		if(old != null) {
 			meta.remove(old);
@@ -303,23 +303,6 @@ public class Node extends NodeBean implements Type {
 		return false;
 	}
 
-	/**
-	 * Find parent node. You can only query for unique results.
-	 * @param node
-	 * @return
-	 * @throws SQLException
-	 */
-	public boolean query(Node node) throws SQLException {
-		LinkBean link = query(new Node(getType(), -1), node);
-		
-		if(link.size() == 1) {
-			copy((NodeBean) link.getFirst());
-			return true;
-		}
-		
-		return false;
-	}
-	
 	LinkBean query(Node parent, Node child) throws SQLException {
 		return query(parent, child, 1);
 	}
@@ -434,7 +417,7 @@ public class Node extends NodeBean implements Type {
 	 * @param type
 	 * @return
 	 */
-	public Data get(short type) {
+	public Data meta(short type) {
 		Iterator it = meta.iterator();
 
 		while(it.hasNext()) {
@@ -456,7 +439,7 @@ public class Node extends NodeBean implements Type {
 	 * @param type
 	 * @return
 	 */
-	public LinkedList get(int type) throws SQLException {
+	public LinkedList child(int type) throws SQLException {
 		if(type == ALL) {
 			return link;
 		}
@@ -487,7 +470,7 @@ public class Node extends NodeBean implements Type {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Node get(int link, short meta, String value) throws SQLException {
+	public Node child(int link, short meta, String value) throws SQLException {
 		Iterator it = this.link.iterator();
 
 		while(it.hasNext()) {
@@ -496,7 +479,7 @@ public class Node extends NodeBean implements Type {
 			if(node.getType() == link) {
 				node.meta();
 
-				if(node.get(meta).getValue().equals(value)) {
+				if(node.meta(meta).getValue().equals(value)) {
 					return node;
 				}
 			}
@@ -522,7 +505,7 @@ public class Node extends NodeBean implements Type {
 			node.copy((NodeBean) it.next());
 			node.meta();
 
-			if(node.get(data.getType()).getValue().equals(data.getValue())) {
+			if(node.meta(data.getType()).getValue().equals(data.getValue())) {
 				return node;
 			}
 		}
@@ -555,7 +538,7 @@ public class Node extends NodeBean implements Type {
 	 * @param id
 	 * @return
 	 */
-	public Node get(long id) throws SQLException {
+	public Node child(long id) throws SQLException {
 		Iterator it = link.iterator();
 
 		while(it.hasNext()) {
@@ -613,12 +596,15 @@ public class Node extends NodeBean implements Type {
 	
 	protected static Node cache(int link, String name) {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
-		
+
 		if(hash == null) {
 			System.out.println("Node cache is empty for " + name + ". (" + link + ")");
 		}
+		else {
+			return (Node) hash.get(name);
+		}
 		
-		return (Node) hash.get(name);
+		return null;
 	}
 
 	public String toString() {

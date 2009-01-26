@@ -47,7 +47,7 @@ public abstract class Admin extends Sprout {
 			event.query().parse();
 			
 			User user = User.get(event.session().get("key"));
-			String key = user.get(USER_KEY).getValue();
+			String key = user.meta(USER_KEY).getValue();
 			
 			int link = event.query().medium("link");
 			short meta = event.query().small("meta");

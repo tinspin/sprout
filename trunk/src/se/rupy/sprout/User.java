@@ -28,12 +28,12 @@ public class User extends Node {
 	}
 
 	public boolean permit(String group) throws SQLException {
-		Iterator it = get(GROUP).iterator();
+		Iterator it = child(GROUP).iterator();
 
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
 
-			if(node.get(GROUP_NAME).getValue().equals(group)) {
+			if(node.meta(GROUP_NAME).getValue().equals(group)) {
 				return true;
 			}
 		}
@@ -82,8 +82,8 @@ public class User extends Node {
 					if(user.query(USER_MAIL, mail)) {
 						user.fill(10, 0, 10);
 						
-						if(user.get(USER_PASS).getValue().equals(pass)) {
-							if(user.get(USER_STATE).getValue().equals("VERIFIED")) {
+						if(user.meta(USER_PASS).getValue().equals(pass)) {
+							if(user.meta(USER_STATE).getValue().equals("VERIFIED")) {
 								save(event.session(), user, event.bit("remember"));
 							}
 							else {
@@ -178,13 +178,13 @@ public class User extends Node {
 								content.append("browsing to the following address:<br>" + EOL);
 								content.append("<br>" + EOL);
 								content.append("&nbsp;&nbsp;<a href=\"http://" + host + "/login?key=" + 
-										user.get(USER_KEY).getValue() + "\">http://" + host + "/login?key=" + 
-										user.get(USER_KEY).getValue() + "</a><br>" + EOL);
+										user.meta(USER_KEY).getValue() + "\">http://" + host + "/login?key=" + 
+										user.meta(USER_KEY).getValue() + "</a><br>" + EOL);
 								content.append("<br>" + EOL);
 								content.append("For future reference, this is your personal<br>" + EOL);
 								content.append("serial key:<br>" + EOL);
 								content.append("<br>" + EOL);
-								content.append("&nbsp;&nbsp;<i>" + user.get(USER_KEY).getValue() + "</i><br>" + EOL);
+								content.append("&nbsp;&nbsp;<i>" + user.meta(USER_KEY).getValue() + "</i><br>" + EOL);
 								content.append("<br>" + EOL);
 								content.append("It should be kept safe, and used to identify<br>" + EOL);
 								content.append("and authenticate yourself in official inquiries.<br>" + EOL);
@@ -224,7 +224,7 @@ public class User extends Node {
 	}
 
 	static void save(Session session, User user, boolean remember) {
-		String key = user.get(USER_KEY).getValue();
+		String key = user.meta(USER_KEY).getValue();
 		session.put("key", key);
 		cache.put(key, user);
 		
