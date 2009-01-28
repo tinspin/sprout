@@ -98,7 +98,7 @@ public class Node extends NodeBean implements Type {
 			
 			Data cache = Data.cache(type, data.getValue());
 			
-			if(cache != null) {
+			if(cache != null && data.getId() == cache.getId()) {
 				remove(old);
 				meta(Base.INSERT, data, Sprout.connection(false));
 			}
@@ -120,6 +120,56 @@ public class Node extends NodeBean implements Type {
 		meta.setType(data.getType());
 		
 		Sprout.update(Base.DELETE, meta);
+	}
+	
+	/**
+	 * Deletes the node, it's meta-data and all first-hand relations (both parent and child).
+	 * @throws SQLException
+	 */
+	public boolean delete() throws SQLException {
+		if(id == 0) {
+			throw new NullPointerException("Can't delete node.");
+		}
+		
+		boolean success = false;
+		Connection connection = Sprout.connection(true);
+
+		try {
+			if(meta.size() == 0) {
+				meta();
+			}
+
+			Iterator it = meta.iterator();
+
+			while(it.hasNext()) {
+				Data data = (Data) it.next();
+				Data cache = Data.cache(type, data.getValue());
+				
+				if(cache != null && data.getId() == cache.getId()) {
+					System.out.println("Data cache for '" + cache.getValue() + "' found. (" + type + ")");
+				}
+				else {
+					Sprout.update(Base.DELETE, data, connection);
+				}
+			}
+			
+			Sprout.find("DELETE FROM link WHERE parent = " + getId(), connection);
+			Sprout.find("DELETE FROM link WHERE child = " + getId(), connection);
+			Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
+			Sprout.update(Base.DELETE, this);
+			
+			connection.commit();
+			success = true;
+		}
+		catch(SQLException e) {
+			connection.rollback();
+			throw e;
+		}
+		finally {
+			connection.close();
+		}
+		
+		return success;
 	}
 	
 	/**
@@ -598,7 +648,7 @@ public class Node extends NodeBean implements Type {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
 
 		if(hash == null) {
-			System.out.println("Node cache is empty for " + name + ". (" + link + ")");
+			System.out.println("Node cache for '" + name + "' is empty. (" + link + ")");
 		}
 		else {
 			return (Node) hash.get(name);
