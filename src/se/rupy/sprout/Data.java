@@ -36,10 +36,13 @@ public class Data extends DataBean implements Type {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
 
 		if(hash == null) {
-			System.out.println("Data cache is empty for " + name + ". (" + link + ")");
+			System.out.println("Data cache for '" + name + "' is empty. (" + link + ")");
 		}
-
-		return (Data) hash.get(name);
+		else {
+			return (Data) hash.get(name);
+		}
+		
+		return null;
 	}
 
 	public Data() {}
@@ -49,6 +52,7 @@ public class Data extends DataBean implements Type {
 		setValue(value);
 	}
 
+	/*
 	public static class Test extends Service {
 		public String path() { return "/test"; }
 		public void filter(Event event) throws Event, Exception {
@@ -80,4 +84,5 @@ public class Data extends DataBean implements Type {
 			event.output().print("</pre>");
 		}
 	}
+	*/
 }
