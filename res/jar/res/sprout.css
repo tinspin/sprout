@@ -8,6 +8,32 @@ select.small { width: 106px; }
 textarea.large { width: 175px; }
 td { font-size: 0.6em; }
 
+.column {
+	float: left;
+	margin: 5px 5px 5px 5px;
+	width: 200px;
+}
+
+.big {
+	float: left;
+	margin: 5px 5px 5px 5px;
+	width: 400px;
+}
+
+.main {
+	float: left;
+	padding: 5px 5px 5px 5px;
+}
+
+.page {
+	padding: 10px 10px 10px 10px;
+}
+
+.login {
+	float: right;
+	margin-left: 10px
+}
+
 input.file {
 	position: relative;
 	text-align: right;
