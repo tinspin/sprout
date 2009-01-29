@@ -103,6 +103,13 @@
 		<delete dir="tmp" quiet="yes"/>
 	</target>
 
+	<target name="delete">
+		<delete dir="bin" quiet="no"/>
+		<delete dir="res/jar/gen" quiet="no"/>
+	</target>
+	
+	<target name="clean" depends="delete, build"/>
+	
 	<target name="deploy" depends="build">
 		<java fork="yes" classname="se.rupy.http.Deploy" classpath="${lib}">
 			<arg line="localhost:9000"/>

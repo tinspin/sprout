@@ -11,12 +11,15 @@ import se.rupy.pool.*;
 
 /**
  * The node is the atomic persistence object.
- * TODO: require {@link update()} call for post insert adds.
  * @author Marc
  */
 public class Node extends NodeBean implements Type {
 	public static HashMap cache = new HashMap();
 
+	public final static byte PARENT = 1 << 1;
+	public final static byte CHILD = 1 << 2;
+	public final static byte META = 1 << 3;
+	
 	static Format time = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
 
@@ -86,6 +89,11 @@ public class Node extends NodeBean implements Type {
 		add(data);
 	}
 
+	/**
+	 * Add meta-data.
+	 * @param data
+	 * @throws SQLException
+	 */
 	public void add(Data data) throws SQLException {
 		if(data == null) {
 			throw new NullPointerException("Can't add data.");
@@ -114,6 +122,11 @@ public class Node extends NodeBean implements Type {
 		meta.add(data);
 	}
 
+	/**
+	 * Remove the meta-data.
+	 * @param data
+	 * @throws SQLException
+	 */
 	public void remove(Data data) throws SQLException {
 		meta.setNode(this);
 		meta.setData(data);
@@ -124,9 +137,13 @@ public class Node extends NodeBean implements Type {
 	
 	/**
 	 * Deletes the node, it's meta-data and all first-hand relations (both parent and child).
+	 * Make sure all cached data is in the cache before you execute this, otherwise it might 
+	 * delete cached meta-data needed by other nodes!
+	 * @param what
+	 * @return
 	 * @throws SQLException
 	 */
-	public boolean delete() throws SQLException {
+	public boolean delete(byte what) throws SQLException {
 		if(id == 0) {
 			throw new NullPointerException("Can't delete node.");
 		}
@@ -135,26 +152,34 @@ public class Node extends NodeBean implements Type {
 		Connection connection = Sprout.connection(true);
 
 		try {
-			if(meta.size() == 0) {
-				meta();
+			if((what & PARENT) == PARENT) {
+				Sprout.find("DELETE FROM link WHERE parent = " + getId(), connection);
 			}
-
-			Iterator it = meta.iterator();
-
-			while(it.hasNext()) {
-				Data data = (Data) it.next();
-				Data cache = Data.cache(type, data.getValue());
-				
-				if(cache != null && data.getId() == cache.getId()) {
-					System.out.println("Data cache for '" + cache.getValue() + "' found. (" + type + ")");
+			
+			if((what & CHILD) == CHILD) {
+				Sprout.find("DELETE FROM link WHERE child = " + getId(), connection);
+			}
+			
+			if((what & META) == META) {
+				if(meta.size() == 0) {
+					meta();
 				}
-				else {
-					Sprout.update(Base.DELETE, data, connection);
+
+				Iterator it = meta.iterator();
+
+				while(it.hasNext()) {
+					Data data = (Data) it.next();
+					Data cache = Data.cache(type, data.getValue());
+
+					if(cache != null && data.getId() == cache.getId()) {
+						System.out.println("Data cache for '" + cache.getValue() + "' found. (" + type + ")");
+					}
+					else {
+						Sprout.update(Base.DELETE, data, connection);
+					}
 				}
 			}
 			
-			Sprout.find("DELETE FROM link WHERE parent = " + getId(), connection);
-			Sprout.find("DELETE FROM link WHERE child = " + getId(), connection);
 			Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
 			Sprout.update(Base.DELETE, this);
 			

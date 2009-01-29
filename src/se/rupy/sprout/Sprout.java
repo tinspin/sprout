@@ -97,13 +97,20 @@ public abstract class Sprout extends Service implements Type {
 	}
 	
 	public static void redirect(Event event) throws IOException, Event {
-		HashMap query = (HashMap) event.query().clone();
-		event.session().put("post", query);
 		String referer = event.query().header("referer");
-		redirect(event, referer == null ? "/" : referer);
+		redirect(event, referer == null ? "/" : referer, true);
 	}
 	
 	public static void redirect(Event event, String path) throws IOException, Event {
+		redirect(event, path, false);
+	}
+	
+	public static void redirect(Event event, String path, boolean forward) throws IOException, Event {
+		if(forward) {
+			HashMap query = (HashMap) event.query().clone();
+			event.session().put("post", query);
+		}
+		
 		event.reply().header("Location", path);
 		event.reply().code("302 Found");
 		throw event;
