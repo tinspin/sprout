@@ -16,10 +16,10 @@ on your OS and build sprout with ant:
 
   > run.bat | run.sh &
   
-  Edit the database username and password in 
-  the Sprout.java source and at the bottom of 
-  the build.xml now if you want to use 
-  something other than "root"/"".
+  Edit the run script with the 
+  -Ddbuser 
+  -Ddbpass and 
+  -Ddburl parameters.
   
   > ant
 
@@ -45,14 +45,8 @@ Happy Hacking!
 
 Version:
 
-  B - RSS Feed
-      Cache Leak
-  C - Comments
-  D - Connection Leak
-  E - Columnizing
-  F - Flash Video
-  G - Button CSS Fix
-  H - Admin
+  0.1 Alpha
+      - Mini Blog/CMS/Community base. 
 
 Todo:
 
