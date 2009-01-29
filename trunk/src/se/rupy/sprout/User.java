@@ -8,7 +8,7 @@ import se.rupy.http.*;
 import se.rupy.mail.*;
 
 public class User extends Node {
-	private static String host;
+	public static String host;
 	private static String mail;
 
 	private final static String EOL = "\r\n";
@@ -21,6 +21,9 @@ public class User extends Node {
 
 		Data.cache(USER, unverified);
 		Data.cache(USER, verified);
+		
+		host = System.getProperty("host", "localhost:9000");
+		mail = System.getProperty("mail", "dan.bazooka.nu");
 	}
 
 	public User() {
@@ -67,14 +70,12 @@ public class User extends Node {
 		public int index() { return 1; }
 		public String path() { return "/login"; }
 		public void filter(Event event) throws Event, Exception {
-			if(User.host == null) {
-				User.host = event.daemon().properties.getProperty("host", "localhost");
-			}
+
 
 			event.query().parse();
 
 			if(event.query().method() == Query.POST) {
-				String mail = event.string("mail");
+				String mail = event.string("mail").toLowerCase();
 				String pass = event.string("pass");
 
 				if(mail.length() > 0 && pass.length() > 0) {
@@ -139,15 +140,7 @@ public class User extends Node {
 			if(event.query().method() == Query.POST) {
 				event.query().parse();
 
-				if(User.host == null) {
-					User.host = event.daemon().properties.getProperty("host", "localhost");
-				}
-
-				if(User.mail == null) {
-					User.mail = event.daemon().properties.getProperty("mail", "mail.bazooka.nu");
-				}
-
-				String mail = event.string("mail");
+				String mail = event.string("mail").toLowerCase();
 				String name = event.string("name");
 				String pass = event.string("pass");
 				String word = event.string("word");

@@ -136,10 +136,11 @@ public class Node extends NodeBean implements Type {
 	}
 	
 	/**
-	 * Deletes the node, it's meta-data and all first-hand relations (both parent and child).
-	 * Make sure all cached data is in the cache before you execute this, otherwise it might 
-	 * delete cached meta-data needed by other nodes!
-	 * @param what
+	 * Deletes the node, it's meta-data and parent and or child relations.
+	 * Make sure all cached data is in the cache before you execute 
+	 * this, otherwise it might delete cached meta-data needed by 
+	 * other nodes!
+	 * @param what {@link #PARENT}, {@link #CHILD} and/or {@link #META}
 	 * @return
 	 * @throws SQLException
 	 */

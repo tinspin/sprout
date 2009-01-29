@@ -11,7 +11,6 @@ public class feed extends Sprout {
 	public String path() { return "/feed"; }
 	public void filter(Event event) throws Event, Exception {
 		event.reply().type("text/xml");
-		String host = "sprout.rupy.se"; // event.query().header("host");
 		Output out = event.output();
 		Object key = event.session().get("key");
 		LinkedList list = Article.get("article");
@@ -21,8 +20,8 @@ public class feed extends Sprout {
 <rss version="2.0">
   <channel>
     <title>Sprout</title>
-    <link>http://[[ host ]]</link>
-    <description>Content Management System</description>
+    <link>http://[[ User.host ]]</link>
+    <description>Blog/Community/CMS Lite</description>
     
 [[		while(it.hasNext()) {
 			Article article = (Article) it.next();
@@ -31,8 +30,8 @@ public class feed extends Sprout {
 		
     <item>
       <title>[[ article.meta(ARTICLE_TITLE).getValue() ]]</title>
-      <link>http://[[ host ]]/article?id=[[ article.getId() ]]</link>
-      <description>[[ print(host, article, out); ]]</description>
+      <link>http://[[ User.host ]]/article?id=[[ article.getId() ]]</link>
+      <description>[[ print(User.host, article, out); ]]</description>
       <pubDate>[[ article.time() ]]</pubDate>
     </item>
 
@@ -59,7 +58,7 @@ public class feed extends Sprout {
 			String column = (String) it.next();
             out.print(clean(column));
 			if(columns.size() > 1) {
-				out.println("...");
+				out.println("&#8230;");
 			}
 			else {
 				out.println("");

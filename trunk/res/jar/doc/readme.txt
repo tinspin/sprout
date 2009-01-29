@@ -46,7 +46,7 @@ Happy Hacking!
 Version:
 
   0.1 Alpha
-      - Mini Blog/CMS/Community base. 
+      - Blog/Community/CMS Lite. 
 
 Todo:
 

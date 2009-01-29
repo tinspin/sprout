@@ -48,7 +48,7 @@ public class article extends Sprout {
 				if(type != null) {
 					if(type.getValue().equals("IMAGE")) { ]]
 
-          <div style="float: left; margin: 10px 10px 10px 10px; width: 400px;">
+          <div class="big">
             <a href="[[ file.path() + name.getValue() ]]">
             <img src="[[ file.path() + "BIG_" + name.getValue() ]]" border="0"/>
             </a>
@@ -77,7 +77,7 @@ public class article extends Sprout {
 			while(it.hasNext()) {
 				String column = (String) it.next(); ]]
 
-          <div style="float: left; margin: 5px 5px 5px 5px; width: 200px;">
+          <div class="column">
             [[ column ]]
           </div>
 
