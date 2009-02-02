@@ -1,4 +1,5 @@
 #summary Commercial sites that use sprout.
+#labels Featured
 
 [http://www.spraydate.se/singel Singel] _Valentines day campaign site for Swedish match-making site [http://www.spraydate.se Spraydate]._
 
