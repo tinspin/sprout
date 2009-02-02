@@ -3,11 +3,11 @@
 
               ------o------
 
-Sprout is a simple base from which you can 
-build any CMS in Java.
+Sprout is a simple base from which you can build 
+any CMS in Java.
 
-You will need Mysql 4.0 or later and Java 1.4 or later 
-added to the path to run Sprout.
+You will need Mysql 4.0 or later and Java 1.4 or 
+later added to the path to run Sprout.
 
 You need Ant added to the path to build Sprout.
 
@@ -16,10 +16,10 @@ on your OS and build sprout with ant:
 
   > run.bat | run.sh &
   
-  Edit the run script with the 
-  -Ddbuser 
-  -Ddbpass and 
-  -Ddburl parameters.
+  Add these to the run script after java if: 
+  -Ddbuser=... and
+  -Ddbpass=... if your database user is other than "root"/"" and 
+  -Ddburl=... if you choose another database name.
   
   > ant
 
@@ -29,7 +29,7 @@ Then simply create a database like this:
 
 And pipe the create.sql to it like this:
 
-  > mysql sprout < create.sql
+  > mysql sprout -uXXXX -p sprout < create.sql
 
 Finally browse to: http://localhost:9000
 
