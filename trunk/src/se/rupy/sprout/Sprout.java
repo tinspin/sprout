@@ -41,6 +41,7 @@ public abstract class Sprout extends Service implements Type {
 	}
 	
 	public static String clean(String line) {
+		line = line.replaceAll("\"", "&quot;");
 		line = line.replaceAll("&", "&amp;");
 		line = line.replaceAll("<", "&lt;");
 		line = line.replaceAll(">", "&gt;");
