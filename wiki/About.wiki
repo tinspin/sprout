@@ -1,0 +1,10 @@
+#summary Commercial sites that use sprout.
+#labels Featured
+
+[http://www.spraydate.se/singel Singel] _Valentines day campaign site for Swedish match-making site [http://www.spraydate.se Spraydate]._
+
+  * Production time: One week for three people (flash, frontend and backend).
+  * Performance: CPU usage on server is 0%, memory footprint is 50 - 100 MB.
+  * Statistics: 700 - 1000 unique visitors, 10 pageviews per visitor, 1 GB of data transfered; per day.
+
+  While fairly simple and without heavy load, this pilot project has prooved the speed, agility and robustness of sprout in a commercial production with short deadline.
