@@ -111,7 +111,7 @@ public class Node extends NodeBean implements Type {
 				meta(Base.INSERT, data, Sprout.connection(false));
 			}
 			else {
-				data.setId(old.getId());
+				data.setId(old.getId()); // TODO: Should this delete and insert?
 			}
 		}
 
