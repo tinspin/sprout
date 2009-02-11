@@ -29,7 +29,7 @@ Then simply create a database like this:
 
 And pipe the create.sql to it like this:
 
-  > mysql sprout -uXXXX -p sprout < create.sql
+  > mysql -uXXXX -p sprout < create.sql
 
 Finally browse to: http://localhost:9000
 

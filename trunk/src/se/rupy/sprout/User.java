@@ -21,7 +21,7 @@ public class User extends Node {
 
 		Data.cache(USER, unverified);
 		Data.cache(USER, verified);
-		
+
 		host = System.getProperty("host", "localhost:9000");
 		mail = System.getProperty("mail", "dan.bazooka.nu");
 	}
@@ -53,7 +53,7 @@ public class User extends Node {
 
 		if(user == null) {
 			user = new User();
-			
+
 			if(user.query(USER_KEY, key)) {
 				user.fill(10, 0, 10);
 				user.cache.put(key, user);
@@ -70,8 +70,6 @@ public class User extends Node {
 		public int index() { return 1; }
 		public String path() { return "/login"; }
 		public void filter(Event event) throws Event, Exception {
-
-
 			event.query().parse();
 
 			if(event.query().method() == Query.POST) {
@@ -82,7 +80,7 @@ public class User extends Node {
 					User user = new User();
 					if(user.query(USER_MAIL, mail)) {
 						user.fill(10, 0, 10);
-						
+
 						if(user.meta(USER_PASS).getValue().equals(pass)) {
 							if(user.meta(USER_STATE).getValue().equals("VERIFIED")) {
 								save(event.session(), user, event.bit("remember"));
@@ -116,7 +114,7 @@ public class User extends Node {
 					else {
 						throw new Exception(Sprout.i18n("Key not found!"));
 					}
-					
+
 					Sprout.redirect(event);
 				}
 			}
@@ -160,40 +158,38 @@ public class User extends Node {
 								user.add(Group.name("ADMIN"));
 							}
 
-							if(host.equals("localhost")) {
+							StringBuffer content = new StringBuffer();
+
+							content.append("Glad to see you joined!<br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("You need to verify this e-mail address by<br>" + EOL);
+							content.append("browsing to the following address:<br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("&nbsp;&nbsp;<a href=\"http://" + host + "/login?key=" + 
+									user.meta(USER_KEY).getValue() + "\">http://" + host + "/login?key=" + 
+									user.meta(USER_KEY).getValue() + "</a><br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("For future reference, this is your personal<br>" + EOL);
+							content.append("serial key:<br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("&nbsp;&nbsp;<i>" + user.meta(USER_KEY).getValue() + "</i><br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("It should be kept safe, and used to identify<br>" + EOL);
+							content.append("and authenticate yourself in official inquiries.<br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("Cheers,<br>" + EOL);
+							content.append("<br>" + EOL);
+							content.append("/rupy<br>" + EOL);
+
+							try {
 								eMail email = Post.create(User.mail, "group@rupy.se", "Welcome!");
 								email.addRecipient(eMail.TO, mail);
-								StringBuffer content = new StringBuffer();
-
-								content.append("Glad to see you joined!<br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("You need to verify this e-mail address by<br>" + EOL);
-								content.append("browsing to the following address:<br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("&nbsp;&nbsp;<a href=\"http://" + host + "/login?key=" + 
-										user.meta(USER_KEY).getValue() + "\">http://" + host + "/login?key=" + 
-										user.meta(USER_KEY).getValue() + "</a><br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("For future reference, this is your personal<br>" + EOL);
-								content.append("serial key:<br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("&nbsp;&nbsp;<i>" + user.meta(USER_KEY).getValue() + "</i><br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("It should be kept safe, and used to identify<br>" + EOL);
-								content.append("and authenticate yourself in official inquiries.<br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("Cheers,<br>" + EOL);
-								content.append("<br>" + EOL);
-								content.append("/rupy<br>" + EOL);
-
-								try {
-									email.send(content.toString());
-								}
-								catch(Exception e) {
-									event.query().put("error", Sprout.i18n("That's not an e-mail!"));
-									e.printStackTrace();
-									return;
-								}
+								email.send(content.toString());
+							}
+							catch(Exception e) {
+								event.query().put("error", Sprout.i18n("That's not an e-mail!"));
+								e.printStackTrace();
+								return;
 							}
 
 							user.update();
@@ -220,7 +216,7 @@ public class User extends Node {
 		String key = user.meta(USER_KEY).getValue();
 		session.put("key", key);
 		cache.put(key, user);
-		
+
 		if(remember) {
 			long time = (long) 1000 * 60 * 60 * 24 * 365;
 			session.key(key, User.host, System.currentTimeMillis() + time);
@@ -274,7 +270,7 @@ public class User extends Node {
 			String key = (String) event.session().get("key");
 
 			if(key == null) {
-				event.output().println("<pre>unauthorized</pre>");
+				event.output().println("<pre>You need to login!</pre>");
 				throw event;
 			}
 		}
