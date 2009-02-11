@@ -158,21 +158,23 @@ public class User extends Node {
 								user.add(Group.name("ADMIN"));
 							}
 
+							String key = user.meta(USER_KEY).getValue();
+							
 							StringBuffer content = new StringBuffer();
 
+							String url = "http://" + host + "/login?key=" + key;
+							
 							content.append("Glad to see you joined!<br>" + EOL);
 							content.append("<br>" + EOL);
 							content.append("You need to verify this e-mail address by<br>" + EOL);
 							content.append("browsing to the following address:<br>" + EOL);
 							content.append("<br>" + EOL);
-							content.append("&nbsp;&nbsp;<a href=\"http://" + host + "/login?key=" + 
-									user.meta(USER_KEY).getValue() + "\">http://" + host + "/login?key=" + 
-									user.meta(USER_KEY).getValue() + "</a><br>" + EOL);
+							content.append("&nbsp;&nbsp;<a href=\"" + url + "\">" + url + "</a><br>" + EOL);
 							content.append("<br>" + EOL);
 							content.append("For future reference, this is your personal<br>" + EOL);
 							content.append("serial key:<br>" + EOL);
 							content.append("<br>" + EOL);
-							content.append("&nbsp;&nbsp;<i>" + user.meta(USER_KEY).getValue() + "</i><br>" + EOL);
+							content.append("&nbsp;&nbsp;<i>" + key + "</i><br>" + EOL);
 							content.append("<br>" + EOL);
 							content.append("It should be kept safe, and used to identify<br>" + EOL);
 							content.append("and authenticate yourself in official inquiries.<br>" + EOL);
