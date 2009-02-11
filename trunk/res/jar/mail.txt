@@ -1,0 +1,18 @@
+Glad to see you joined!<br>
+<br>
+You need to verify this e-mail address by<br>
+browsing to the following address:<br>
+<br>
+&nbsp;&nbsp;<a href="@@url@@">@@url@@</a><br>
+<br>
+For future reference, this is your personal<br>
+serial key:<br>
+<br>
+&nbsp;&nbsp;<i>@@key@@</i><br>
+<br>
+It should be kept safe, and used to identify<br>
+and authenticate yourself in official inquiries.<br>
+<br>
+Cheers,<br>
+<br>
+/rupy<br>

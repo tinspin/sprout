@@ -24,7 +24,6 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  */
 public class Upload extends Sprout {
 	private static int SIZE = 1024;
-	private static String root = "app" + java.io.File.separator + "content";
 	
 	public int index() { return 2; }
 	public String path() { return "/upload"; }
@@ -85,13 +84,13 @@ public class Upload extends Sprout {
 		BufferedImage image = ImageIO.read(item.file);
 
 		Image tiny = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
-		save(tiny, new java.io.File(root + item.path + java.io.File.separator + "TINY_" + item.name));
+		save(tiny, new java.io.File(Sprout.root + item.path + java.io.File.separator + "TINY_" + item.name));
 
 		Image small = image.getScaledInstance(width * 4, -1, Image.SCALE_AREA_AVERAGING);
-		save(small, new java.io.File(root + item.path + java.io.File.separator + "SMALL_" + item.name));
+		save(small, new java.io.File(Sprout.root + item.path + java.io.File.separator + "SMALL_" + item.name));
 
 		Image big = image.getScaledInstance(width * 8, -1, Image.SCALE_AREA_AVERAGING);
-		save(big, new java.io.File(root + item.path + java.io.File.separator + "BIG_" + item.name));
+		save(big, new java.io.File(Sprout.root + item.path + java.io.File.separator + "BIG_" + item.name));
 	}
 
 	static void save(Image small, java.io.File file) throws IOException {
@@ -202,13 +201,13 @@ public class Upload extends Sprout {
 				 * create path and file
 				 */
 
-				java.io.File path = new java.io.File(root + item.path);
+				java.io.File path = new java.io.File(Sprout.root + item.path);
 
 				if(!path.exists()) {
 					path.mkdirs();
 				}
 
-				item.file = new java.io.File(root + item.path + java.io.File.separator + item.name);
+				item.file = new java.io.File(Sprout.root + item.path + java.io.File.separator + item.name);
 				FileOutputStream out = new FileOutputStream(item.file);
 
 				/*

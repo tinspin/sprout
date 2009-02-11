@@ -22,6 +22,7 @@ import se.rupy.pool.Settings;
 import se.rupy.util.Log;
 
 public abstract class Sprout extends Service implements Type {
+	public static String root = "app" + java.io.File.separator + "content";
 	private static Base db;
 	
 	static {
