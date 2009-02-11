@@ -1,5 +1,12 @@
 package se.rupy.sprout;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,7 +17,8 @@ import se.rupy.mail.*;
 public class User extends Node {
 	public static String host;
 	private static String mail;
-
+	private static String content;
+	
 	private final static String EOL = "\r\n";
 
 	private static HashMap cache = new HashMap();
@@ -23,7 +31,19 @@ public class User extends Node {
 		Data.cache(USER, verified);
 
 		host = System.getProperty("host", "localhost:9000");
-		mail = System.getProperty("mail", "dan.bazooka.nu");
+		mail = System.getProperty("mail", "mail1.comhem.se");
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		
+		try {
+			InputStream in = new FileInputStream(new File(Sprout.root + File.separator + "mail.txt"));
+			Deploy.pipe(in, out);
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		content = new String(out.toByteArray());
 	}
 
 	public User() {
@@ -159,44 +179,22 @@ public class User extends Node {
 							}
 
 							String key = user.meta(USER_KEY).getValue();
-							
-							StringBuffer content = new StringBuffer();
-
 							String url = "http://" + host + "/login?key=" + key;
+							String copy = content.replaceAll("@@url@@", url);
+							copy = copy.replaceAll("@@key@@", key);
 							
-							content.append("Glad to see you joined!<br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("You need to verify this e-mail address by<br>" + EOL);
-							content.append("browsing to the following address:<br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("&nbsp;&nbsp;<a href=\"" + url + "\">" + url + "</a><br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("For future reference, this is your personal<br>" + EOL);
-							content.append("serial key:<br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("&nbsp;&nbsp;<i>" + key + "</i><br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("It should be kept safe, and used to identify<br>" + EOL);
-							content.append("and authenticate yourself in official inquiries.<br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("Cheers,<br>" + EOL);
-							content.append("<br>" + EOL);
-							content.append("/rupy<br>" + EOL);
-
 							try {
 								eMail email = Post.create(User.mail, "group@rupy.se", "Welcome!");
 								email.addRecipient(eMail.TO, mail);
-								email.send(content.toString());
+								email.send(copy);
 							}
 							catch(Exception e) {
 								event.query().put("error", Sprout.i18n("That's not an e-mail!"));
-								e.printStackTrace();
+								System.out.println(e.getMessage());
 								return;
 							}
 
 							user.update();
-
-							//save(event.session(), user, false);
 
 							Sprout.redirect(event, "/verify.html");
 						}
