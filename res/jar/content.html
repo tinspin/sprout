@@ -15,8 +15,8 @@ public class content extends Sprout {
 		Iterator articles = Article.get("article").iterator();
 		while(articles.hasNext()) {
 			Article article = (Article) articles.next();
-			Node user = (Node) article.child(USER).getFirst();
-			boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
+			Node node = (Node) article.child(USER).getFirst();
+			int permit = article.permit(key); ]]
 
     <div class="main">
       <table>		
@@ -35,10 +35,10 @@ public class content extends Sprout {
           </td>
         </tr>
         <tr>
-          <td>/[[ user.meta(USER_NAME).getValue() ]]</td>
+          <td>/[[ node.meta(USER_NAME).getValue() ]]</td>
           <td>
 
-[[			if(edit) { ]]
+[[			if(permit > 0) { ]]
 
             <a href="/edit?id=[[ article.getId() ]]" class="button">
               <span>[[ i18n("Edit") ]]</span>

@@ -12,18 +12,8 @@ public class admin extends Sprout {
 	public String path() { return "/admin"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
+		User user = User.get(event.session().get("key")); ]]
 		
-		User user = User.get(event.session().get("key"));
-		Object key = user.meta(USER_KEY).getValue();
-		
-		int link = event.query().medium("link");
-		short meta = event.query().small("meta");
-		String value = event.query().string("value");
-		
-		if(value == null) {
-			value = "";
-		} ]]
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -32,6 +22,18 @@ public class admin extends Sprout {
   <script type="text/javascript" src="res/sprout.js"></script>
 </head>
 <body>
+		
+[[		if(user != null && user.child(GROUP, GROUP_NAME, "ADMIN") != null) {
+			Object key = user.meta(USER_KEY).getValue();
+		
+			int link = event.query().medium("link");
+			short meta = event.query().small("meta");
+			String value = event.query().string("value");
+		
+			if(value == null) {
+				value = "";
+			} ]]
+
   <table border="0" cellpadding="0" cellspacing="5">
     <form name="search" action="/search" method="post">
       <tr>
@@ -75,9 +77,15 @@ public class admin extends Sprout {
     </form>
   </table>
 
-[[	Node node = (Node) Admin.get(key);
-	if(node != null) { ]]
+[[		Node node = (Node) Admin.get(key);
+		if(node != null) { ]]
   <pre>[[ clean(node.toString()) ]]</pre>
+[[		}
+	}
+	else { ]]
+
+  <pre>You are not an administrator!</pre>
+
 [[	} ]]
 
 </body>

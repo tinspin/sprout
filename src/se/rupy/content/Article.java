@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import se.rupy.http.Event;
 import se.rupy.http.Query;
@@ -19,13 +20,41 @@ import se.rupy.sprout.User;
 import se.rupy.sprout.Sprout.Cache;
 
 public class Article extends Node {
+	public final static byte NO = 0;
+	public final static byte USER = 1 << 0;
+	public final static byte ADMIN = 1 << 1;
+	
 	public static int MAX_POST_SIZE = 1024 * 1024; // 1MB
 	public static HashMap cache = new HashMap();
 	public static FontMetrics metric = Toolkit.getDefaultToolkit().getFontMetrics(new Font("Sans", Font.PLAIN, 8));
+	
 	public LinkedList columns;
 
 	public Article() {
 		super(ARTICLE);
+	}
+
+	public int permit(Object key) throws SQLException {
+		User user = User.get(key);
+		
+		if(user == null) {
+			return NO;
+		}
+		
+		try {
+			Node node = (Node) child(USER).getFirst();
+
+			if(user.getId() == node.getId()) {
+				return USER;
+			}
+		}
+		catch(NoSuchElementException e) {}
+
+		if(user.child(GROUP, GROUP_NAME, "ADMIN") != null) {
+			return ADMIN;
+		}
+		
+		return NO;
 	}
 
 	protected static void invalidate(String type, Article article) {
@@ -174,15 +203,23 @@ public class Article extends Node {
 				if(title.length() > 0 && body.length() > 0 && key != null) {
 					Article article = get(key);
 					User user = User.get(key);
-
+					int permit = article.permit(key);
+					
 					if(article == null) {
 						article = new Article();
 						Article.cache.put(key, article);
 					}
+					else if(permit == NO) {
+						throw new Exception("You are not authorized!");
+					}
 
 					article.add(ARTICLE_TITLE, title);
 					article.add(ARTICLE_BODY, body);
-					article.add(user);
+					
+					if(permit == USER) {
+						article.add(user);
+					}
+					
 					article.update();
 
 					Article.invalidate("article", article);
@@ -204,10 +241,10 @@ public class Article extends Node {
 
 			long id = event.big("id");
 			Object key = event.session().get("key");
-
+			
 			if(key != null) {
 				Article article = (Article) Article.get(key);
-
+				
 				if(id > 0 && article.getId() != id) {
 					article.setId(id);
 					Sprout.update(Base.SELECT, article); // select date
