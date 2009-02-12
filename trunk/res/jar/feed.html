@@ -13,7 +13,7 @@ public class feed extends Sprout {
 		event.reply().type("text/xml");
 		Output out = event.output();
 		Object key = event.session().get("key");
-		LinkedList list = Article.get("article");
+		LinkedList list = Article.get("article", 0, 5);
 		Iterator it = list.iterator(); ]]
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -32,7 +32,7 @@ public class feed extends Sprout {
       <title>[[ article.meta(ARTICLE_TITLE).getValue() ]]</title>
       <link>http://[[ User.host ]]/article?id=[[ article.getId() ]]</link>
       <description>[[ print(User.host, article, out); ]]</description>
-      <pubDate>[[ article.time() ]]</pubDate>
+      <pubDate>[[ clean(article.time()) ]]</pubDate>
     </item>
 
 [[ 		} ]]

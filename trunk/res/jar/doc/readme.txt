@@ -46,10 +46,15 @@ Happy Hacking!
 Version:
 
   0.1 Alpha
-      - Blog/Community/CMS Lite. 
+      - Users
+      - Articles
+      - Comments
+      - File Upload
+      - Flash Video
+      - Pagination
+      - Translation
 
 Todo:
 
-  - Delete images
-  - Pagination
+  - Delete Nodes
   - Cache Timeout

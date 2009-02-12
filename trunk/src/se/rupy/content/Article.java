@@ -16,20 +16,34 @@ import se.rupy.memory.Base;
 import se.rupy.memory.NodeBean;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
+import se.rupy.sprout.Type;
 import se.rupy.sprout.User;
 import se.rupy.sprout.Sprout.Cache;
 
 public class Article extends Node {
+	public static long MAX = 0;
+	
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
 	
 	public static int MAX_POST_SIZE = 1024 * 1024; // 1MB
-	public static HashMap cache = new HashMap();
+	public static HashMap cache1 = new HashMap(); // by id
+	public static HashMap cache2 = new HashMap(); // by page
+	public static HashMap cache3 = new HashMap(); // by user
 	public static FontMetrics metric = Toolkit.getDefaultToolkit().getFontMetrics(new Font("Sans", Font.PLAIN, 8));
 	
 	public LinkedList columns;
 
+	static {
+		try {
+			MAX = Sprout.value("SELECT count(*) FROM link WHERE type = " + (USER | ARTICLE));
+		}
+		catch(SQLException s) {
+			s.printStackTrace();
+		}
+	}
+	
 	public Article() {
 		super(ARTICLE);
 	}
@@ -57,16 +71,10 @@ public class Article extends Node {
 		return NO;
 	}
 
-	protected static void invalidate(String type, Article article) {
-		Cache old = (Cache) cache.get(type);
-		
-		if(old != null) {
-			old.invalid = true;
-		}
-		
+	protected static void invalidate(Article article) {
+		cache2.clear();
 		article.invalidate();
-		
-		cache.put(new Long(article.getId()), article);
+		cache1.put(new Long(article.getId()), article);
 	}
 	
 	public static Article find(long id) throws SQLException {
@@ -74,7 +82,7 @@ public class Article extends Node {
 			return null;
 		}
 		
-		Article old = (Article) cache.get(new Long(id));
+		Article old = (Article) cache1.get(new Long(id));
 
 		if(old == null) {
 			old = new Article();
@@ -84,15 +92,16 @@ public class Article extends Node {
 
 			old.fill(10, 0, 10);
 			
-			cache.put(new Long(id), old);
+			cache1.put(new Long(id), old);
 		}
 		
 		return old;
 	}
 	
-	public static Cache get(String type) throws SQLException {
-		Cache old = (Cache) cache.get(type);
-				
+	public static Cache get(String type, int start, int limit) throws SQLException {
+		String key = type + "|" + start + "|" + limit;
+		Cache old = (Cache) cache2.get(key);
+		
 		if(old == null) {
 			old = new Cache(true);
 		}
@@ -101,6 +110,8 @@ public class Article extends Node {
 			old = new Cache(false);
 			old.setType(ARTICLE | USER);
 			old.setParent(-1);
+			old.setStart(start);
+			old.setLimit(limit);
 			Sprout.update(Base.SELECT, old);
 			
 			int index = 0;
@@ -113,30 +124,32 @@ public class Article extends Node {
 				article.copy(node);
 				article.fill(10, 0, 10);
 
-				cache.put(new Long(article.getId()), article);
+				cache1.put(new Long(article.getId()), article);
 				
-				Node user = (Node) article.child(USER).getFirst();
-				user.meta();
+				//Node user = (Node) article.child(USER).getFirst();
+				//user.meta();
 				
 				old.set(index++, article);
 			}
 			
-			cache.put(type, old);
+			cache2.put(key, old);
 		}
 		
 		return old;
 	}
 	
 	public static Object remove(Object key) {
-		return cache.remove(key);
+		return cache3.remove(key);
 	}
 
-	public static Article get(Object key) {
-		Article article = (Article) Article.cache.get(key);
-
+	public static Article get(Object key) throws SQLException {
+		Article article = (Article) cache3.get(key);
+		User user = (User) User.get(key);
+		
 		if(article == null) {
 			article = new Article();
-			Article.cache.put(key, article);
+			article.add(user);
+			cache3.put(key, article);
 		}
 
 		return article;
@@ -203,27 +216,21 @@ public class Article extends Node {
 				if(title.length() > 0 && body.length() > 0 && key != null) {
 					Article article = get(key);
 					User user = User.get(key);
-					int permit = article.permit(key);
-					
-					if(article == null) {
-						article = new Article();
-						Article.cache.put(key, article);
-					}
-					else if(permit == NO) {
+
+					if(article.permit(key) == NO) {
 						throw new Exception("You are not authorized!");
 					}
 
-					article.add(ARTICLE_TITLE, title);
-					article.add(ARTICLE_BODY, body);
-					
-					if(permit == USER) {
-						article.add(user);
+					if(article.getId() == 0) {
+						MAX++;
 					}
 					
+					article.add(ARTICLE_TITLE, title);
+					article.add(ARTICLE_BODY, body);
 					article.update();
 
-					Article.invalidate("article", article);
-					Article.cache.put(key, new Article());
+					Article.invalidate(article);
+					cache3.put(key, new Article());
 
 					Sprout.redirect(event, "/");
 				}
@@ -246,9 +253,7 @@ public class Article extends Node {
 				Article article = (Article) Article.get(key);
 				
 				if(id > 0 && article.getId() != id) {
-					article.setId(id);
-					Sprout.update(Base.SELECT, article); // select date
-					article.fill(10, 0, 10);
+					article = find(id);
 				}
 
 				if(article.meta(ARTICLE_TITLE) != null) {
@@ -259,7 +264,7 @@ public class Article extends Node {
 					event.query().put("body", article.meta(ARTICLE_BODY).getValue());
 				}
 
-				Article.cache.put(key, article);
+				cache3.put(key, article);
 
 				Sprout.redirect(event);
 			}
