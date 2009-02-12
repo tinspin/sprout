@@ -195,7 +195,7 @@ public class User extends Node {
 
 							user.update();
 
-							Sprout.redirect(event, "/verify.html");
+							Sprout.redirect(event, "/verify");
 						}
 						else {
 							event.query().put("error", Sprout.i18n("Mail already in use!"));
