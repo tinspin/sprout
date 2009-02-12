@@ -1,7 +1,13 @@
 package se.rupy.sprout;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -9,8 +15,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Properties;
 
 import se.rupy.http.Daemon;
+import se.rupy.http.Deploy;
 import se.rupy.http.Event;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
@@ -23,6 +31,7 @@ import se.rupy.util.Log;
 
 public abstract class Sprout extends Service implements Type {
 	public static String root = "app" + java.io.File.separator + "content";
+	private static Properties i18n;
 	private static Base db;
 	
 	static {
@@ -35,10 +44,34 @@ public abstract class Sprout extends Service implements Type {
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(Sprout.root + File.separator + "i18n.txt"));
+			String line = in.readLine();
+			i18n = new Properties();
+			
+			while (line != null) {
+				int equals = line.indexOf("=");
+
+				if (equals > -1) {
+					String name = line.substring(0, equals).trim();
+					String value = line.substring(equals + 1).trim();
+
+					i18n.put(name, value);
+				}
+
+				line = in.readLine();
+			}
+
+			in.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String i18n(String text) {
-		return text;
+		return i18n.getProperty(text, text);
 	}
 	
 	public static String clean(String line) {
