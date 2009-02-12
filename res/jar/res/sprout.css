@@ -25,6 +25,11 @@ td { font-size: 0.6em; }
 	padding: 5px 5px 5px 5px;
 }
 
+span.clear {
+	display: block;
+	clear: both;
+}
+
 .page {
 	padding: 10px 10px 10px 10px;
 }

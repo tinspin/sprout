@@ -26,7 +26,10 @@ public class edit extends Sprout {
       <form name="article" action="article/edit" method="post">
         <tr>
           <td colspan="2">
-          
+            <a href="/logout" class="button">
+              <span>[[ i18n("Logout") ]]</span>
+            </a>
+
 [[		if(user != null && user.permit("ADMIN")) { ]]
 
             <a href="/admin" class="button">
@@ -35,9 +38,6 @@ public class edit extends Sprout {
 
 [[		} ]]
           
-            <a href="/logout" class="button">
-              <span>[[ i18n("Logout") ]]</span>
-            </a>
           </td>
         </tr>
 

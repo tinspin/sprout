@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -46,14 +47,14 @@ public abstract class Sprout extends Service implements Type {
 		}
 
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(Sprout.root + File.separator + "i18n.txt"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(Sprout.root + File.separator + "i18n.txt"), "UTF-8"));
 			String line = in.readLine();
 			i18n = new Properties();
 			
-			while (line != null) {
+			while(line != null) {
 				int equals = line.indexOf("=");
 
-				if (equals > -1) {
+				if(equals > -1) {
 					String name = line.substring(0, equals).trim();
 					String value = line.substring(equals + 1).trim();
 
@@ -62,7 +63,7 @@ public abstract class Sprout extends Service implements Type {
 
 				line = in.readLine();
 			}
-
+			
 			in.close();
 		}
 		catch(IOException e) {
@@ -71,7 +72,7 @@ public abstract class Sprout extends Service implements Type {
 	}
 	
 	public static String i18n(String text) {
-		return i18n.getProperty(text, text);
+		return text; // i18n.getProperty(text, text); // uncomment to translate from i18n.txt
 	}
 	
 	public static String clean(String line) {

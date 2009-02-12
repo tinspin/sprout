@@ -11,15 +11,22 @@ public class content extends Sprout {
 	public String path() { return "/content"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
+		event.query().parse();
+		
+		int total = 5;
+		long max = Article.MAX;
+		int page = event.query().medium("page", 0);
+
 		Object key = event.session().get("key");
-		Iterator articles = Article.get("article").iterator();
+		Iterator articles = Article.get("article", page, total).iterator();
+		
 		while(articles.hasNext()) {
 			Article article = (Article) articles.next();
 			Node node = (Node) article.child(USER).getFirst();
 			int permit = article.permit(key); ]]
 
     <div class="main">
-      <table width="100">		
+      <table width="100">
         <tr>
           <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.meta(ARTICLE_TITLE).getValue() ]]</a></td>
         </tr>
@@ -51,7 +58,50 @@ public class content extends Sprout {
       </table>
     </div>
 
-[[ 		}
+[[ 		} ]]
+
+[[		if(max > total) { ]]
+
+    <span class="clear"></span>
+    <div>
+      <table>
+        <tr>
+          <td>
+
+[[			int first = page > 2 ? page - 2 : 0;
+			int last = (int) (max / total) + (max % total > 0 ? 1 : 0);
+			int start = last < first + 5 && last > 5 ? last - 5 : first;
+			int length = last > first + 5 ? first + 5 : last;
+
+			if(first > 0) { ]]
+
+            <a href="/?page=0" title="[[ Sprout.i18n("First Page") ]]">&laquo;</a>
+
+[[			}
+			for(int j = start; j < length; j++) {
+				if(page == j) { ]]
+
+            [[ (j + 1) ]]
+
+[[				}
+				else { ]]
+
+            <a href="/?page=[[ j ]]" title="[[ Sprout.i18n("Go to page") ]]&nbsp;[[ j + 1 ]]">[[ (j + 1) ]]</a>
+
+[[				}
+			}
+			if(last > length) { ]]
+
+            <a href="/?page=[[ (last - 1) ]]" title="[[ Sprout.i18n("Last page") ]]">&raquo;</a>
+
+[[			} ]]
+
+          </td>
+        </tr>
+      </table>
+    </div>
+
+[[		}
 	}
 	static void print(Article article, Output out) throws Exception {
 		Iterator it = article.child(FILE).iterator();
