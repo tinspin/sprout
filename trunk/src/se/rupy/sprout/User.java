@@ -1,12 +1,10 @@
 package se.rupy.sprout;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,12 +36,13 @@ public class User extends Node {
 		try {
 			InputStream in = new FileInputStream(new File(Sprout.root + File.separator + "mail.txt"));
 			Deploy.pipe(in, out);
+			content = new String(out.toByteArray());
+			out.close();
+			in.close();
 		}
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		
-		content = new String(out.toByteArray());
 	}
 
 	public User() {
