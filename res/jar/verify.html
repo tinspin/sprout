@@ -1,1 +1,14 @@
-<pre>Verify your E-mail address by clicking on the link sent in a mail to you.</pre>
+[[ package gen;
+
+import se.rupy.http.*;
+import se.rupy.sprout.*;
+
+public class verify extends Sprout {
+	public String path() { return "/verify"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
+		out.print("<pre>");
+		out.print(Sprout.i18n("Verify your E-mail address by clicking on the link sent in a mail to you."));
+		out.println("</pre>");
+	} 
+} ]]

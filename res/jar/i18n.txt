@@ -1,4 +1,4 @@
-Search = Sök
+﻿Search = Sök
 Comments = Kommentarer
 Post = Posta
 Edit = Editera
@@ -21,3 +21,4 @@ Key not found! = Nyckel ej funnen!
 That's not an e-mail! = Ogiltig e-post!
 Mail already in use! = E-post används redan!
 Passwords don't match! = Lösenorden stämmer inte överens!
+Verify your E-mail address by clicking on the link sent in a mail to you. = Verifiera din e-post address genom att klicka på länken i mailet vi skickat.
