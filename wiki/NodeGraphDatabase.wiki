@@ -6,7 +6,7 @@ And performance is not a problem, take the example below where our customer want
 
 {{{
 /*
-String post = "FROM node n " + // node
+String post = "SELECT DISTINCT n.id FROM node n " + // node
 // title and body joins
 "LEFT JOIN meta m1 ON (n.id = m1.node) " + // entry - data (body and title)
 "LEFT JOIN data d1 ON (m1.data = d1.id) " + // body
@@ -19,13 +19,14 @@ String post = "FROM node n " + // node
 "LEFT JOIN meta m2 ON (n3.id = m2.node) " + // user - data (name)
 "LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
 "WHERE " + 
-"(d1.type = 400 AND d1.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // title
-"(d2.type = 401 AND d2.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // body
-"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") " + // name
+"(d1.type = 400 AND d1.value COLLATE utf8_swedish_ci LIKE \"%" + query + "%\") OR " + // title
+"(d2.type = 401 AND d2.value COLLATE utf8_swedish_ci LIKE \"%" + query + "%\") OR " + // body
+"(d3.type = 100 AND d3.value COLLATE utf8_swedish_ci LIKE \"%" + query + "%\") " + // name
 "ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
 */
-String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, link l2, node n3, meta m2, data d3 " + 
-"WHERE ((d1.type = 400 AND d1.value COLLATE utf8_swedish_ci LIKE '%" + query + "%') OR " + 
+String post = "SELECT DISTINCT n.id FROM node n, meta m1, data d1, data d2, link l1, node n2, link l2, node n3, meta m2, data d3 " + 
+"WHERE " + 
+"((d1.type = 400 AND d1.value COLLATE utf8_swedish_ci LIKE '%" + query + "%') OR " + 
 "(d2.type = 401 AND d2.value COLLATE utf8_swedish_ci LIKE '%" + query + "%') OR " + 
 "(d3.type = 100 AND d3.value COLLATE utf8_swedish_ci LIKE '%" + query + "%')) AND " + 
 "(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND " + 
