@@ -6,7 +6,7 @@ And performance is not a problem, take the example below where our customer want
 
 {{{
 /*
-String post = "SELECT DISTINCT n.id FROM node n " + // node
+String sql = "SELECT DISTINCT n.id FROM node n " + // node
 // title and body joins
 "LEFT JOIN meta m1 ON (n.id = m1.node) " + // entry - data (body and title)
 "LEFT JOIN data d1 ON (m1.data = d1.id) " + // body
@@ -24,7 +24,7 @@ String post = "SELECT DISTINCT n.id FROM node n " + // node
 "(d3.type = 100 AND d3.value COLLATE utf8_swedish_ci LIKE \"%" + query + "%\") " + // name
 "ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
 */
-String post = "SELECT DISTINCT n.id FROM node n, meta m1, data d1, data d2, link l1, node n2, link l2, node n3, meta m2, data d3 " + 
+String sql = "SELECT DISTINCT n.id FROM node n, meta m1, data d1, data d2, link l1, node n2, link l2, node n3, meta m2, data d3 " + 
 "WHERE " + 
 "((d1.type = 400 AND d1.value COLLATE utf8_swedish_ci LIKE '%" + query + "%') OR " + 
 "(d2.type = 401 AND d2.value COLLATE utf8_swedish_ci LIKE '%" + query + "%') OR " + 
