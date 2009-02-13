@@ -2,7 +2,7 @@
 
 The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code you write when every table is a node is huge.
 
-And performance is not a problem, take the example below where our customer wanted a complex search that we dreaded to implement in mysql with innodb. But after transforming the query it executes fast (the old one (top) takes 2 minutes and the new one (bottom) 1 second with 10000 rows):
+And performance is not a problem, take the example below where our customer wanted a complex search that we dreaded to implement in mysql with innodb. But after transforming the query it executes fast, the old one (top) takes 2 minutes and the new one (bottom) 1 second with 10000 rows:
 
 {{{
 /*
