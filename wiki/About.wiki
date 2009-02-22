@@ -5,6 +5,6 @@
 
   * Production: Three people for one week full-time.
   * Statistics: ~3000 unique visitors, 3.74 pageviews per visitor, ~2 GB of data transfered; per day.
-  * Performance: CPU usage on server is average 2.41%, heap footprint is ~1 MB.
+  * Performance: CPU usage on server is average 2.41% of which 99% is MySQL, heap footprint is ~1 MB.
 
   While fairly simple and without heavy load, this pilot project has proved the speed, agility and robustness of sprout in a commercial production with short deadline.
