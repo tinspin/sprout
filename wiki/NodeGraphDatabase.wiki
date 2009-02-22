@@ -4,6 +4,8 @@ The node graph database structure is scary at first but after working with it in
 
 And performance is not a problem, take the example below where our customer wanted a complex search that we dreaded to implement in mysql with innodb. But after transforming the query it executes fast, the old one (top) takes 2 minutes and the new one (bottom) 1 second with 10000 rows:
 
+_The query is a search on entry -body (401), -title (400) and username (100), that returns a list of entries ordered by date. The tricky part is the user - entries hierarchy join_
+
 {{{
 /*
 String sql = "SELECT DISTINCT n.id FROM node n " + // node
