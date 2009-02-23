@@ -183,7 +183,7 @@ public class User extends Node {
 							copy = copy.replaceAll("@@key@@", key);
 							
 							try {
-								eMail email = Post.create(User.mail, "group@rupy.se", "Welcome!");
+								eMail email = Post.create(User.mail, "group@rupy.se", Sprout.i18n("Welcome!"));
 								email.addRecipient(eMail.TO, mail);
 								email.send(copy);
 							}
@@ -227,7 +227,7 @@ public class User extends Node {
 	}
 
 	public static class Timeout extends Service {
-		public String path() { return "/:/login:/register:/article/edit:/upload:/edit:/admin:/search"; }
+		public String path() { return "/:/login:/register:/publish:/upload:/edit:/admin:/search"; }
 		public void session(Session session, int type) throws Exception {
 			String key = (String) session.get("key");
 
@@ -264,12 +264,12 @@ public class User extends Node {
 
 	public static class Identify extends Service {
 		public int index() { return 1; }
-		public String path() { return "/article/edit:/upload:/edit:/admin:/search"; }
+		public String path() { return "/publish:/upload:/edit:/admin:/search"; }
 		public void filter(Event event) throws Event, Exception {
 			String key = (String) event.session().get("key");
 
 			if(key == null) {
-				event.output().println("<pre>You need to login!</pre>");
+				event.output().println("<pre>" + Sprout.i18n("You need to login!") + "</pre>");
 				throw event;
 			}
 		}

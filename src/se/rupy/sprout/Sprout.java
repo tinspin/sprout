@@ -58,6 +58,12 @@ public abstract class Sprout extends Service implements Type {
 					String name = line.substring(0, equals).trim();
 					String value = line.substring(equals + 1).trim();
 
+					int comment = line.indexOf("//");
+					
+					if(comment > 0) {
+						value = line.substring(0, comment).trim();
+					}
+					
 					i18n.put(name, value);
 				}
 

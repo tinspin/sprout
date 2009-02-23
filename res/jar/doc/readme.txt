@@ -33,10 +33,25 @@ And pipe the create.sql to it like this:
 
 Finally browse to: http://localhost:9000
 
+To localise your site; edit i18n.txt, mail.txt and uncomment the 
+Sprout.i18n() method.
+
 To view the database structure, double click lib/logic.jar and
 open res/sprout.xml, you should not need to modify the database
 but you can easily do so in logic and save the sprout.xml. The 
 changes will be executed when you run the ant script.
+
+The node graph for the content demo code is very simple:
+
+  User    --- (n) Groups
+
+  Article -+- (1) User
+           |
+           +- (n) Files
+           |
+           +- (n) Comments
+
+  Comment --- (1) User
 
 Now just edit the Type.java types to reflect the model your project 
 requires and write the HTML to manipulate this model.
@@ -58,3 +73,6 @@ Todo:
 
   - Delete Nodes
   - Cache Timeout
+  - Generic Admin
+  - Search
+  - Categories

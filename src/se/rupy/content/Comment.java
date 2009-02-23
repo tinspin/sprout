@@ -12,7 +12,7 @@ public class Comment extends Node {
 	}
 	
 	public static class Post extends Sprout {
-		public String path() { return "/article/comment/post"; }
+		public String path() { return "/comment"; }
 		public void filter(Event event) throws Event, Exception {
 			if(event.query().method() == Query.POST) {
 				event.query().parse();
@@ -36,7 +36,7 @@ public class Comment extends Node {
 					article.add(comment);
 					article.update();
 					
-					Article.invalidate("article", article);
+					Article.invalidate(article);
 				}
 
 				Sprout.redirect(event);
