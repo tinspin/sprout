@@ -104,9 +104,10 @@ public class article extends Sprout {
             	ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
             } ]]
 		
-        <tr>
-          <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]<!-- [[ Ip.reverse(ip.getValue()) ]] --></td>
-        </tr>
+      <tr>
+        <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
+        <!-- [[ Ip.reverse(ip.getValue()) ]] -->
+      </tr>
 
 [[ 		} ]]
       
@@ -114,7 +115,7 @@ public class article extends Sprout {
   </div>
   <div style="float: left; padding-right: 10px; padding-bottom: 10px;">
     <table border="0" width="100">
-      <form name="comment" action="article/comment/post" method="post">
+      <form name="comment" action="comment" method="post">
         <input type="hidden" name="id" value="[[ article.getId() ]]"/>
         
 [[		if(event.string("error").length() > 0) { ]]

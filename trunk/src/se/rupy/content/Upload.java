@@ -130,27 +130,6 @@ public class Upload extends Sprout {
 		}
 	}
 
-	public static class Delete extends Sprout {
-		public String path() { return "/upload/delete"; }
-		public void filter(Event event) throws Event, Exception {
-			if(event.query().method() == Query.POST) {
-				event.query().parse();
-
-				Article article = Article.find(event.big("id"));
-				Node file = article.child(event.big("file"));
-
-				if(article != null && file != null) {
-					// TODO: Delete actual content on disk.
-
-					article.remove(file);
-					Article.invalidate("article", article);
-				}
-
-				Sprout.redirect(event);
-			}
-		}
-	}
-
 	public static Item save(Event event, Item item) throws Event, IOException {
 		String type = event.query().header("content-type");
 		String boundary = "--" + unquote(type.substring(type.indexOf("boundary=") + 9));

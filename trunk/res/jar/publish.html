@@ -7,9 +7,9 @@ import se.rupy.memory.*;
 import se.rupy.sprout.*;
 import se.rupy.content.*;
 
-public class edit extends Sprout {
+public class publish extends Sprout {
 	public int index() { return 3; }
-	public String path() { return "/article/edit"; }
+	public String path() { return "/publish"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 		Object key = event.session().get("key");
@@ -23,7 +23,7 @@ public class edit extends Sprout {
 		} ]]
 
     <table border="0" width="100">
-      <form name="article" action="article/edit" method="post">
+      <form name="article" action="publish" method="post">
         <tr>
           <td colspan="2">
             <a href="/logout" class="button">

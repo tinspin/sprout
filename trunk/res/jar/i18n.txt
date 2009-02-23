@@ -1,7 +1,11 @@
 ﻿/* Translation file.
  */
+ 
+Welcome! = Välkommen! // welcome mail subject
+
+// Buttons
+Delete = Radera
 Search = Sök
-Comments = Kommentarer
 Post = Posta
 Edit = Editera
 Admin = Admin
@@ -11,14 +15,24 @@ Publish = Publicera
 Upload = Ladda upp
 Login = Logga in
 Register = Registrera
+
+// Fields
+Comments = Kommentarer
 Mail = E-Post
 Name = Namn
 Pass = Lösen
 Word = Ord
-Body = Kropp
+Body = Brödtext
+
+// Pagination
 First page = Första sidan
 Last page = Sista sidan
-Go to page = Gå till sida
+Go to page = Gå till sida // followed by the number
+
+// Warnings
+Are you sure you want to delete the article? = Är du säker på att du vill ta bort artikeln?
+
+// Benine errors
 Verify your e-mail first! = Verifiera din e-post först!
 Wrong password! = Fel lösenord!
 User not found! = Användare ej funnen!
@@ -26,4 +40,11 @@ Key not found! = Nyckel ej funnen!
 That's not an e-mail! = Ogiltig e-post!
 Mail already in use! = E-post används redan!
 Passwords don't match! = Lösenorden stämmer inte överens!
+
+// Malign errors
+You are not authorized! = Du saknar rättigheter!
+You are not an administrator! = Du är inte administratör!
+You need to login! = Du måste logga in!
+
+// See verify.html
 Verify your E-mail address by clicking on the link sent in a mail to you. = Verifiera din e-post adress genom att klicka på länken i mailet vi skickat.

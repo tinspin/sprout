@@ -26,7 +26,7 @@ public class Article extends Node {
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
-	
+	public final static byte ALL = PARENT & CHILD & META;
 	public static int MAX_POST_SIZE = 1024 * 1024; // 1MB
 	public static HashMap cache1 = new HashMap(); // by id
 	public static HashMap cache2 = new HashMap(); // by page
@@ -202,9 +202,38 @@ public class Article extends Node {
 		return columns;
 	}
 
+	public static class Delete extends Service {
+		public String path() { return "/delete"; }
+		public void filter(Event event) throws Event, Exception {
+			if(event.query().method() == Query.GET) {
+				event.query().parse();
+
+				long id = event.big("id");
+				Object key = event.session().get("key");
+
+				if(key != null) {
+					Article article = find(id);
+					
+					if(article.permit(key) == NO) {
+						throw new Exception(Sprout.i18n("You are not authorized!"));
+					}
+					
+					article.delete(ALL);
+					
+					cache1.remove(new Long(id));
+					cache2.clear();
+					
+					MAX--;
+				}
+				
+				Sprout.redirect(event);
+			}
+		}
+	}
+	
 	public static class Publish extends Service {
 		public int index() { return 2; }
-		public String path() { return "/article/edit"; }
+		public String path() { return "/publish"; }
 		public void filter(Event event) throws Event, Exception {
 			if(event.query().method() == Query.POST) {
 				event.query().parse(MAX_POST_SIZE);
@@ -218,7 +247,7 @@ public class Article extends Node {
 					User user = User.get(key);
 
 					if(article.permit(key) == NO) {
-						throw new Exception("You are not authorized!");
+						throw new Exception(Sprout.i18n("You are not authorized!"));
 					}
 
 					if(article.getId() == 0) {
