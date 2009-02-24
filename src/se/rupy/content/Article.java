@@ -14,6 +14,7 @@ import se.rupy.http.Query;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
 import se.rupy.memory.NodeBean;
+import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
 import se.rupy.sprout.Type;
@@ -21,19 +22,20 @@ import se.rupy.sprout.User;
 import se.rupy.sprout.Sprout.Cache;
 
 public class Article extends Node {
-	public static long MAX = 0;
-	
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
 	public final static byte ALL = PARENT & CHILD & META;
-	public static int MAX_POST_SIZE = 1024 * 1024; // 1MB
+	public final static int MAX_POST_SIZE = 1024 * 1024; // 1MB
+
+	public static long MAX = 0;
 	public static HashMap cache1 = new HashMap(); // by id
 	public static HashMap cache2 = new HashMap(); // by page
 	public static HashMap cache3 = new HashMap(); // by user
 	public static FontMetrics metric = Toolkit.getDefaultToolkit().getFontMetrics(new Font("Sans", Font.PLAIN, 8));
 	
 	public LinkedList columns;
+	public int comments;
 
 	static {
 		try {
@@ -71,10 +73,25 @@ public class Article extends Node {
 		return NO;
 	}
 
-	protected static void invalidate(Article article) {
+	protected static void invalidate(Article article) throws SQLException {
 		cache2.clear();
 		article.invalidate();
 		cache1.put(new Long(article.getId()), article);
+		article.count();
+	}
+	
+	public void count() throws SQLException {
+		comments = 0;
+		Iterator it = child(COMMENT).iterator();
+		
+		while(it.hasNext()) {
+			Node node = (Node) it.next();
+			Data data = node.meta(COMMENT_STATE);
+			
+			if(data != null && data.getValue().equals("SHOW")) {
+				comments++;
+			}
+		}
 	}
 	
 	public static Article find(long id) throws SQLException {
@@ -93,6 +110,8 @@ public class Article extends Node {
 			old.fill(10, 0, 10);
 			
 			cache1.put(new Long(id), old);
+			
+			old.count();
 		}
 		
 		return old;
@@ -119,12 +138,14 @@ public class Article extends Node {
 			
 			while(it.hasNext()) {
 				NodeBean node = (NodeBean) it.next();
-				Node article = new Article();
+				Article article = new Article();
 				
 				article.copy(node);
 				article.fill(10, 0, 10);
 
 				cache1.put(new Long(article.getId()), article);
+				
+				article.count();
 				
 				//Node user = (Node) article.child(USER).getFirst();
 				//user.meta();
