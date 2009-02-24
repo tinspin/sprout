@@ -44,3 +44,5 @@ String sql = "SELECT DISTINCT n.id FROM node n, meta m1, data d1, data d2, link 
 "l2.parent = n3.id AND n3.id = m2.node AND m2.data = d3.id) " + 
 "ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
 }}}
+
+[http://sprout.googlecode.com/files/logic.gif]
