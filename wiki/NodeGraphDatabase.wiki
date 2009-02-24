@@ -1,6 +1,6 @@
 #summary Pro's and Con's
 
-*The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data*
+*The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
 For example for the search below the structure look like this:
 
