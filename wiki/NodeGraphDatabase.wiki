@@ -51,6 +51,6 @@ String sql = "SELECT DISTINCT n.id FROM node n, meta m1, data d1, data d2, link 
 "ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
 }}}
 
-We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly and other complex queries performance drawbacks.
+We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly.
 
   [http://sprout.googlecode.com/files/logic.gif]
