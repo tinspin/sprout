@@ -2,7 +2,7 @@
 
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
-For example for the search below the structure look like this:
+For example for the search below the structure looks like this:
 
 {{{
 user -+- campaign -+- entry
@@ -45,4 +45,6 @@ String sql = "SELECT DISTINCT n.id FROM node n, meta m1, data d1, data d2, link 
 "ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
 }}}
 
-[http://sprout.googlecode.com/files/logic.gif]
+We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data you need to debug in a straight forward way with SQL, the drawback is depth iteration can be costly.
+
+  [http://sprout.googlecode.com/files/logic.gif]
