@@ -17,7 +17,8 @@ public class article extends Sprout {
 		Object key = event.session().get("key");
 		Article article = Article.find(event.big("id"));
 		Node user = (Node) article.child(USER).getFirst();
-		boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
+		boolean edit = user.meta(USER_KEY).getValue().equals(key);
+		int permit = article.permit(key); ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -92,21 +93,40 @@ public class article extends Sprout {
 [[		LinkedList comments = article.child(COMMENT); ]]
       
       <tr>
-        <td colspan="2"><img src="res/comment.gif">&nbsp;<i>[[ comments.size() ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+        <td colspan="2"><img src="res/comment.gif">&nbsp;<i>[[ article.comments ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
       </tr>
       
 [[		it = comments.iterator();
 		while(it.hasNext()) {
 			Node comment = (Node) it.next();
 			Data ip = comment.meta(COMMENT_IP);
+			Data state = comment.meta(COMMENT_STATE);
+			
+            boolean show = (state == null ? false : state.getValue().equals("SHOW"));
             
             if(ip == null) {
             	ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
             } ]]
 		
       <tr>
-        <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
+      
+[[			if(permit > 0) { ]]
+      
+        <td>[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
+        <td>
+          <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
+            <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
+          </a>
+        </td>
+        
         <!-- [[ Ip.reverse(ip.getValue()) ]] -->
+        
+[[			} else if(show) { ]]
+
+        <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
+
+[[			} ]]
+        
       </tr>
 
 [[ 		} ]]

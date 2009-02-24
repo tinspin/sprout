@@ -99,22 +99,26 @@ public class Node extends NodeBean implements Type {
 			throw new NullPointerException("Can't add data.");
 		}
 
-		Data old = meta(data.getType());
+		meta();
 
+		Data old = meta(data.getType());
+		Data cache = Data.cache(type, data.getValue());
+		
 		if(old != null) {
 			meta.remove(old);
-			
-			Data cache = Data.cache(type, data.getValue());
 			
 			if(cache != null && data.getId() == cache.getId()) {
 				remove(old);
 				meta(Base.INSERT, data, Sprout.connection(false));
 			}
 			else {
-				data.setId(old.getId()); // TODO: Should this delete and insert?
+				data.setId(old.getId()); // TODO: Should this delete and insert? Nope, update() should be called?
 			}
 		}
-
+		else if(cache != null && data.getId() == cache.getId()) {
+			meta(Base.INSERT, data, Sprout.connection(false));
+		}
+		
 		if(id > 0 && data.getId() == 0) {
 			meta(Base.INSERT, data, Sprout.connection(false));
 		}
