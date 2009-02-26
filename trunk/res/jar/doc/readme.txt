@@ -71,8 +71,7 @@ Version:
 
 Todo:
 
-  - Delete Nodes
+  - Delete files
   - Cache Timeout
   - Generic Admin
-  - Search
   - Categories

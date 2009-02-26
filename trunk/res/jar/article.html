@@ -107,28 +107,27 @@ public class article extends Sprout {
             if(ip == null) {
             	ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
             } ]]
-		
-      <tr>
       
 [[			if(permit > 0) { ]]
-      
+
+      <tr>      
         <td>[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
             <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
           </a>
         </td>
-        
-        <!-- [[ Ip.reverse(ip.getValue()) ]] -->
+      </tr>
+      <!-- [[ Ip.reverse(ip.getValue()) ]] -->
         
 [[			} else if(show) { ]]
 
+      <tr>
         <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
-
+      </tr>
+      
 [[			} ]]
         
-      </tr>
-
 [[ 		} ]]
       
     </table>
