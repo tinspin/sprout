@@ -115,7 +115,7 @@ public class Node extends NodeBean implements Type {
 				data.setId(old.getId()); // TODO: Should this delete and insert? Nope, update() should be called?
 			}
 		}
-		else if(cache != null && data.getId() == cache.getId()) {
+		else if(id > 0 && cache != null && data.getId() == cache.getId()) {
 			meta(Base.INSERT, data, Sprout.connection(false));
 		}
 		
