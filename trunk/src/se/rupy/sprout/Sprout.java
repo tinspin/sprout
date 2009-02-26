@@ -58,12 +58,12 @@ public abstract class Sprout extends Service implements Type {
 					String name = line.substring(0, equals).trim();
 					String value = line.substring(equals + 1).trim();
 
-					int comment = line.indexOf("//");
+					int comment = value.indexOf("//");
 					
 					if(comment > 0) {
-						value = line.substring(0, comment).trim();
+						value = value.substring(0, comment).trim();
 					}
-					
+
 					i18n.put(name, value);
 				}
 
@@ -79,6 +79,11 @@ public abstract class Sprout extends Service implements Type {
 	
 	public static String i18n(String text) {
 		return text; // i18n.getProperty(text, text); // uncomment to translate from i18n.txt
+	}
+	
+	public static String language() {
+		System.out.println(i18n.getProperty("language", "general"));
+		return i18n.getProperty("language", "general");
 	}
 	
 	public static String clean(String line) {

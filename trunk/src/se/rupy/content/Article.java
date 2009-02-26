@@ -79,9 +79,9 @@ public class Article extends Node {
 
 	public static long max(String query) throws Exception {
 		String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
-		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
-				"(d2.type = 201 AND d2.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
-				"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE '%" + query + "%')) AND " + 
+		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
+				"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
+				"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%')) AND " + 
 				"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
 				(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id);";
 		
@@ -127,9 +127,9 @@ public class Article extends Node {
 	"LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
 	"LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
 	"WHERE " + 
-	"(d1.type = 400 AND d1.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // title
-	"(d2.type = 401 AND d2.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // body
-	"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") " + // name
+	"(d1.type = 400 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
+	"(d2.type = 401 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
+	"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") " + // name
 	"ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
 	*/
 	
@@ -137,9 +137,9 @@ public class Article extends Node {
 		LinkedList list = new LinkedList();
 
 		String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
-		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
-				"(d2.type = 201 AND d2.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
-				"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE '%" + query + "%')) AND " + 
+		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
+				"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
+				"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%')) AND " + 
 				"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
 				(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id) " + 
 				"ORDER BY n.date DESC LIMIT " + start * limit + ", " + limit + ";";
