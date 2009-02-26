@@ -3,17 +3,21 @@ package se.rupy.content;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 import se.rupy.http.Event;
 import se.rupy.http.Query;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
 import se.rupy.memory.NodeBean;
+import se.rupy.pool.Connection;
 import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
@@ -25,7 +29,7 @@ public class Article extends Node {
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
-	public final static byte ALL = PARENT & CHILD & META;
+	public final static byte ALL = PARENT | CHILD | META;
 	public final static int MAX_POST_SIZE = 1024 * 1024; // 1MB
 
 	public static long MAX = 0;
@@ -39,7 +43,7 @@ public class Article extends Node {
 
 	static {
 		try {
-			MAX = Sprout.value("SELECT count(*) FROM link WHERE type = " + (USER | ARTICLE));
+			MAX = Sprout.value("SELECT count(*) FROM link WHERE type = " + (ARTICLE | USER));
 		}
 		catch(SQLException s) {
 			s.printStackTrace();
@@ -73,6 +77,102 @@ public class Article extends Node {
 		return NO;
 	}
 
+	public static long max(String query) throws Exception {
+		String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
+		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
+				"(d2.type = 201 AND d2.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
+				"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE '%" + query + "%')) AND " + 
+				"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
+				(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id);";
+		
+		Connection conn = Sprout.connection(false);
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String sql = null;
+		try {
+			sql = "SELECT count(DISTINCT n.id) AS count " + post;
+			stmt = conn.prepareStatement(sql);
+			result = stmt.executeQuery();
+			if(result.next()) {
+				return result.getLong("count");
+			}
+		} catch(SQLException e) {
+			throw e;
+		} finally {
+			if(result != null) {
+				result.close();
+			}
+			if(stmt != null) {
+				stmt.close();
+			}
+			if(conn != null && conn.getAutoCommit()) {
+				conn.close();
+			}
+		}
+
+		return 0;
+	}
+
+	// TODO: Add search on comments?
+	
+	/*
+	String post = "FROM node n " + // node
+	// title and body joins
+	"LEFT JOIN meta m1 ON (n.id = m1.node) " + // entry - data (body and title)
+	"LEFT JOIN data d1 ON (m1.data = d1.id) " + // body
+	"LEFT JOIN data d2 ON (m1.data = d2.id) " + // title
+	// name joins
+	"LEFT JOIN link l1 ON (n.id = l1.parent AND l1.type = " + (ARTICLE | USER) + ") " + // article - user, ignore COMMENT | USER
+	"LEFT JOIN node n2 ON (l1.child = n2.id) " + // user
+	"LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
+	"LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
+	"WHERE " + 
+	"(d1.type = 400 AND d1.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // title
+	"(d2.type = 401 AND d2.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // body
+	"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") " + // name
+	"ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
+	*/
+	
+	public static LinkedList query(String query, int start, int limit) throws Exception {
+		LinkedList list = new LinkedList();
+
+		String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
+		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
+				"(d2.type = 201 AND d2.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
+				"(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE '%" + query + "%')) AND " + 
+				"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
+				(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id) " + 
+				"ORDER BY n.date DESC LIMIT " + start * limit + ", " + limit + ";";
+		
+		Connection conn = Sprout.connection(false);
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String sql = null;
+		try {
+			sql = "SELECT DISTINCT n.id " + post;
+			stmt = conn.prepareStatement(sql);
+			result = stmt.executeQuery();
+			while(result.next()) {
+				Node node = find(result.getLong("id"));
+				list.add(node);
+			}
+		} catch(SQLException e) {
+			throw e;
+		} finally {
+			if(result != null) {
+				result.close();
+			}
+			if(stmt != null) {
+				stmt.close();
+			}
+			if(conn != null && conn.getAutoCommit()) {
+				conn.close();
+			}
+		}
+
+		return list;
+	}
+	
 	protected static void invalidate(Article article) throws SQLException {
 		cache2.clear();
 		article.invalidate();
@@ -107,7 +207,7 @@ public class Article extends Node {
 
 			Sprout.update(Base.SELECT, old);
 
-			old.fill(10, 0, 10);
+			old.fill(10, 0, 100);
 			
 			cache1.put(new Long(id), old);
 			
@@ -141,7 +241,7 @@ public class Article extends Node {
 				Article article = new Article();
 				
 				article.copy(node);
-				article.fill(10, 0, 10);
+				article.fill(10, 0, 100);
 
 				cache1.put(new Long(article.getId()), article);
 				
