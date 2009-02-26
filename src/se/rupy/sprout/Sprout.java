@@ -82,7 +82,6 @@ public abstract class Sprout extends Service implements Type {
 	}
 	
 	public static String language() {
-		System.out.println(i18n.getProperty("language", "general"));
 		return i18n.getProperty("language", "general");
 	}
 	
