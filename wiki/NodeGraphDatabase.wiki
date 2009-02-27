@@ -16,7 +16,7 @@ The node graph database structure is scary at first but after working with it in
 
 And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb. But after transforming the query it executes fast, the old one (top) takes 2 minutes and the new one (bottom) 1 second with 10000 rows:
 
-_The query is a search on article -body (201), -title (200) and username (100), that returns a list of articles ordered by date. The tricky part is the join hierarchy_
+_The query is a search on article -body (201), -title (200) and username (100), that returns a list of articles ordered by date. The tricky part is the JOIN hierarchy_
 
 {{{
 /*
@@ -49,6 +49,6 @@ String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2
 
 We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly, but not that costly as we saw in the example above.
 
-My tests shows that the LIKE statement is going to cause alot more problems than the join hierarchy because of full text search still not being implemented in innodb, so for larger projects you will need to either mirror the data table with a myisam table to search on or implement an external indexing engine like lucene.
+My tests shows that the LIKE statement is going to cause alot more problems than the JOIN hierarchy because of full text search still not being implemented in innodb, so for larger projects you will need to either mirror the data table with a myisam table to search on or implement an external indexing engine like lucene.
 
   [http://sprout.googlecode.com/files/logic.gif]
