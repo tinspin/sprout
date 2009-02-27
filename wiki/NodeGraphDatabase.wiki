@@ -47,6 +47,6 @@ String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2
 "ORDER BY n.date DESC LIMIT " + start * limit + ", " + limit + ";";
 }}}
 
-We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly.
+We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly, but not that costly as we saw in the example above, my tests shows that the LIKE statement is going to cause alot more problems than the join hierarchy because of full text search still not being implemented in innodb, so for larger projects you will need to either mirror the data table with a myisam table to search on or implement an external indexing engine like lucene.
 
   [http://sprout.googlecode.com/files/logic.gif]
