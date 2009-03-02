@@ -38,7 +38,8 @@ return "FROM node n " + // node
 "(d1.type = 400 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
 "(d2.type = 401 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
 "(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\")" + // name
-		
+}}}
+
 _1 second with 10000 rows_
 {{{
 return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
