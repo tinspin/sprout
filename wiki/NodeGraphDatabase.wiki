@@ -49,7 +49,7 @@ return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data 
 "(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
 "(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%')) AND " + 
 "(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
-(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id)";}}}
+(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id)";
 }}}
 
 We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly, but not that costly as we saw in the example above.
