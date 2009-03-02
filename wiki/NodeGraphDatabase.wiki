@@ -14,12 +14,12 @@ And there is no way someone can figure it out without having to go through the c
 
 The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code when every table is a node becomes huge as the project progresses.
 
-And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb. But after transforming the query it executes fast, the old one (top) takes 2 minutes and the new one (bottom) 1 second with 10000 rows:
+And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb. After transforming the query it executes fast.
 
 _The query is a search on article -body (201), -title (200) and username (100), that returns a list of articles ordered by date. The tricky part is the JOIN hierarchy_
 
+_2 minutes with 10000 rows_
 {{{
-/*
 String post = "FROM node n " + // node
 // title and body joins
 "LEFT JOIN meta m1 ON (n.id = m1.node) " + // entry - data (body and title)
@@ -35,8 +35,9 @@ String post = "FROM node n " + // node
 "(d2.type = 401 AND d2.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") OR " + // body
 "(d3.type = 100 AND d3.value COLLATE utf8_general_ci LIKE \"%" + query + "%\") " + // name
 "ORDER BY n.date DESC LIMIT " + start + ", " + limit + ";";
-*/
 }}}
+
+_1 second with 10000 rows_
 {{{
 String post = "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
 "WHERE ((d1.type = 200 AND d1.value COLLATE utf8_general_ci LIKE '%" + query + "%') OR " + 
