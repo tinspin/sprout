@@ -1,12 +1,12 @@
 [[ package gen;
 
 import java.util.*;
+import java.net.*;
 
 import se.rupy.http.*;
 import se.rupy.memory.*;
 import se.rupy.sprout.*;
 import se.rupy.content.*;
-
 import se.rupy.util.*;
 
 public class article extends Sprout {
@@ -63,10 +63,16 @@ public class article extends Sprout {
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
             <param name="allowScriptAccess" value="sameDomain" />
             <param name="allowFullScreen" value="true" />
-            <param name="movie" value="player.swf?source=[[ file.encoded() + flv + ".flv" ]]" />
+            <param name="movie" value="video.swf?source=[[ file.encoded() + flv + ".flv" ]]" />
             <param name="quality" value="high" />
             <param name="bgcolor" value="#ffffff" />
-            <embed src="player.swf?source=[[ file.encoded() + flv + ".flv" ]]" quality="high" bgcolor="#ffffff" width="320" height="280" name="player" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+          </object>
+
+[[					}
+					else if(type.getValue().equals("AUDIO")) { ]]
+
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200" id="player" align="middle">
+            <param name="movie" value="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" />
           </object>
 
 [[					}
@@ -118,8 +124,18 @@ public class article extends Sprout {
           </a>
         </td>
       </tr>
-      <!-- [[ Ip.reverse(ip.getValue()) ]] -->
-        
+[[				try {
+					String address = ip.getValue();
+					int index = ip.getValue().indexOf(",");
+					
+					if(index > 0) {
+						address = address.substring(index + 1).trim();
+					} ]]
+      <!-- [[ Ip.reverse(address) ]] -->
+[[				} catch(Exception e) { ]]
+      <!-- [[ e.getMessage() ]] -- >
+[[				} ]]
+
 [[			} else if(show) { ]]
 
       <tr>
