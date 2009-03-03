@@ -16,9 +16,9 @@ import se.rupy.pool.*;
 public class Node extends NodeBean implements Type {
 	public static HashMap cache = new HashMap();
 
-	public final static byte PARENT = 1 << 1;
-	public final static byte CHILD = 1 << 2;
-	public final static byte META = 1 << 3;
+	public final static byte PARENT = 1 << 0;
+	public final static byte CHILD = 1 << 1;
+	public final static byte META = 1 << 2;
 	
 	static Format time = new SimpleDateFormat("yy/MM/dd'&nbsp;'HH:mm:ss");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
@@ -166,9 +166,7 @@ public class Node extends NodeBean implements Type {
 			}
 			
 			if((what & META) == META) {
-				if(meta.size() == 0) {
-					meta();
-				}
+				meta();
 
 				Iterator it = meta.iterator();
 
@@ -183,13 +181,17 @@ public class Node extends NodeBean implements Type {
 						Sprout.update(Base.DELETE, data, connection);
 					}
 				}
+				
+				Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
 			}
 			
-			Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
-			Sprout.update(Base.DELETE, this);
-			
-			connection.commit();
-			success = true;
+			if((what & PARENT) == PARENT || 
+			   (what & CHILD) == CHILD || 
+			   (what & META) == META) {
+				Sprout.update(Base.DELETE, this);
+				connection.commit();
+				success = true;
+			}
 		}
 		catch(SQLException e) {
 			connection.rollback();
