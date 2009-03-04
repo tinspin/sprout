@@ -155,6 +155,13 @@ public class content extends Sprout {
 
 [[ 					break;
 				}
+				else if(type.getValue().equals("AUDIO")) { ]]
+
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200" id="player" align="middle">
+            <param name="movie" value="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" />
+          </object>
+
+[[				}
 			}
 		}
 
@@ -163,7 +170,7 @@ public class content extends Sprout {
 		if(it.hasNext()) {
 			String column = (String) it.next(); ]]
 
-          <div style="width: 200px;">
+          <div class="column">
             [[ column ]]
             [[ if(columns.size() > 1) { ]]
             [[ out.print("&#8230;"); ]]
