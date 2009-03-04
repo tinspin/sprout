@@ -153,15 +153,18 @@ public class content extends Sprout {
             <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + name.getValue() ]]" border="0"/></a>
           </div>
 
-[[ 					break;
-				}
-				else if(type.getValue().equals("AUDIO")) { ]]
+[[				} else if(type.getValue().equals("AUDIO")) { ]]
 
-          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200" id="player" align="middle">
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" />
+            <embed src="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
           </object>
 
 [[				}
+
+System.out.println(type.getValue());
+
+				break;
 			}
 		}
 
