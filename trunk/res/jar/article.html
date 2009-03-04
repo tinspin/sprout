@@ -66,13 +66,15 @@ public class article extends Sprout {
             <param name="movie" value="video.swf?source=[[ file.encoded() + flv + ".flv" ]]" />
             <param name="quality" value="high" />
             <param name="bgcolor" value="#ffffff" />
+            <embed src="video.swf?source=[[ file.encoded() + flv + ".flv" ]]" quality="high" bgcolor="#ffffff" width="320" height="280" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
           </object>
 
 [[					}
 					else if(type.getValue().equals("AUDIO")) { ]]
 
-          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200" id="player" align="middle">
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" />
+            <embed src="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
           </object>
 
 [[					}
