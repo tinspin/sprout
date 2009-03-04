@@ -65,7 +65,7 @@ Version:
       - Articles
       - Comments
       - File Upload
-      - Flash Video
+      - Flash Video & Audio
       - Pagination
       - Translation
 
@@ -75,3 +75,5 @@ Todo:
   - Cache Timeout
   - Generic Admin
   - Categories
+  - Localized Dates
+  - Javascript Columnization
