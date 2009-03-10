@@ -81,7 +81,7 @@
 	<target name="build" depends="page, util, memory, http, create, check" unless="required">
 		<echo>Building (${name})</echo>
 		<mkdir dir="bin"/>
-		<javac srcdir="src" target="1.4" source="1.4" destdir="bin" nowarn="on" debug="on" deprecation="off" classpath="src;${lib}"/>
+		<javac srcdir="src" target="1.4" source="1.4" destdir="bin" nowarn="on" debug="on" deprecation="off" classpath="src;${lib}" encoding="UTF-8"/>
 		<mkdir dir="tmp"/>
 		<copy todir="tmp">
 			<fileset dir="bin" includes="**/*.class"/>
