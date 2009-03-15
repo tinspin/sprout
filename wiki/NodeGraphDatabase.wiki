@@ -14,6 +14,8 @@ And there is no way someone can figure it out without having to go through the c
 
 The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code when every table is a node becomes huge as the project progresses.
 
+And the fact that you can hot-deploy any changes directly to the live environment, without having to alter tables, is not to underestimate. Not from a "it's so hard to alter tables" point of view, but from a human error point of view.
+
 And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb.
 
 _The query is a search on article -body (201), -title (200) and username (100), that returns a list of articles ordered by date. The tricky part is the JOIN hierarchy_
