@@ -1,4 +1,4 @@
-#summary Commercial sites that use sprout.
+#summary Commercial sites that use sprout/rupy.
 #labels Featured
 
 [http://singel.spraydate.se Singel] _Valentines day campaign site for Swedish match-making site [http://www.spraydate.se Spraydate]._
@@ -8,3 +8,10 @@
   * Performance: CPU usage on server is average 2.14% of which most is MySQL, heap footprint is ~1 MB.
 
   While fairly simple and without heavy load, this pilot project has proved the speed, agility and robustness of sprout in a commercial production with short deadline.
+
+[http://www.hemlistan.se Hemlistan] _A real-estate sraper that aggregates swedens monopoly housing site [http://www.hemnet.se Hemnet]._
+
+  * Production: One person one week full-time.
+  * Performance: The site currently uses MySQL cache, to keep the memory usage low, all pages are served in ~200ms the first time and 20ms the remaning times, data is scraped every hour.
+
+  The producton values on this project are high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boligan.se Boligan]. Only one competitor is a hobbyist, and it's also the best (no surprise) [http://www.bospindeln.se Bospindeln].
