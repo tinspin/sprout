@@ -48,12 +48,15 @@ public class Upload extends Sprout {
 			}
 
 			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv")) {
-				encode(item);
+				video(item);
 				file.add(File.type("VIDEO"));
 			}
 
-			if(item.name.endsWith(".mp3")) {
-				// TODO: Add audio player
+			if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
+				if(item.name.endsWith(".wav")) {
+					audio(item);
+				}
+				
 				file.add(File.type("AUDIO"));
 			}
 
@@ -113,12 +116,29 @@ public class Upload extends Sprout {
 		out.close();
 	}
 
-	static void encode(Item item) {
+	static void video(Item item) {
 		try {
 			String line;
 			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
 			System.out.println(item.path + item.name);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + path + item.name.substring(0, item.name.indexOf('.')) + ".flv");
+			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			while ((line = input.readLine()) != null) {
+				System.out.println(line);
+			}
+			input.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	static void audio(Item item) {
+		try {
+			String line;
+			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
+			System.out.println(item.path + item.name);
+			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " " + path + item.name.substring(0, item.name.indexOf('.')) + ".mp3");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
 				System.out.println(line);
