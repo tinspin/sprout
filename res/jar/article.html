@@ -70,11 +70,13 @@ public class article extends Sprout {
           </object>
 
 [[					}
-					else if(type.getValue().equals("AUDIO")) { ]]
+					else if(type.getValue().equals("AUDIO")) {
+						String tmp = name.getValue();
+						String mp3 = tmp.substring(0, tmp.indexOf('.')); ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
-            <param name="movie" value="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" />
-            <embed src="audio.swf?audio_file=[[ URLEncoder.encode(file.path() + name.getValue(), "UTF-8") ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+            <param name="movie" value="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4" />
+            <embed src="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
           </object>
 
 [[					}
