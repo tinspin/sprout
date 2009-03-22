@@ -9,7 +9,7 @@
 
   While fairly simple and without heavy load, this pilot project has proved the speed, agility and robustness of sprout in a commercial production with short deadline.
 
-[http://www.hemlistan.se Hemlistan] _A real-estate sraper that aggregates swedens monopoly housing site [http://www.hemnet.se Hemnet]._
+[http://www.hemlistan.se Hemlistan] _A real-estate scraper/spider/crawler that aggregates swedens monopoly housing site [http://www.hemnet.se Hemnet]._
 
   * Production: One person one week full-time.
   * Performance: The site currently uses MySQL cache, to keep the memory usage low, all pages are served in ~200ms the first time and 20ms the remaning times, data is scraped every hour.
