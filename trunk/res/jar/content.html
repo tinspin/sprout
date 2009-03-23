@@ -35,7 +35,7 @@ public class content extends Sprout {
 			Node node = (Node) article.child(USER).getFirst();
 			int permit = article.permit(key); ]]
 
-    <div class="main">
+    <div class="article">
       <table width="100">
         <tr>
           <td colspan="2"><a class="title" href="article?id=[[ article.getId() ]]">[[ article.meta(ARTICLE_TITLE).getValue() ]]</a></td>
@@ -79,7 +79,7 @@ public class content extends Sprout {
 [[ 		} ]]
 
     <span class="clear"></span>
-    <div style="float: left;">
+    <div class="query">
       <form name="query" action="" method="get">
         <table border="0" width="100">
           <tr>
@@ -87,7 +87,7 @@ public class content extends Sprout {
               <input type="text" class="small" name="query" value="[[ event.string("query") ]]"/>
             </td>
             <td>
-              <a href="" class="arrow" onclick="document.query.submit(); return false;">
+              <a href="" class="arrow_gray" onclick="document.query.submit(); return false;">
                 <span>[[ i18n("Search") ]]</span>
               </a>
             </td>
@@ -98,7 +98,7 @@ public class content extends Sprout {
 
 [[		if(max > total) { ]]
 
-    <div style="float: right;">
+    <div class="pagination">
       <table>
         <tr>
           <td>
