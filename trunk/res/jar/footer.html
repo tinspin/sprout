@@ -14,7 +14,11 @@ public class footer extends Sprout {
 		int total = Article.PAGE;
 		long max = Article.MAX;
 		int page = event.query().medium("page", 0);
-		String query = event.string("query"); ]]
+		String query = event.string("query");
+		
+		if(query.length() > 0) {
+			max = Article.max(query);
+		} ]]
 
     <div class="query">
       <form name="query" action="" method="get">

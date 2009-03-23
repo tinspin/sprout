@@ -17,7 +17,6 @@ public class content extends Sprout {
 		Iterator articles = null;
 		
 		int total = Article.PAGE;
-		long max = Article.MAX;
 		int page = event.query().medium("page", 0);
 
 		Object key = event.session().get("key");
@@ -25,7 +24,6 @@ public class content extends Sprout {
 		
 		if(query.length() > 0) {
 			articles = Article.query(query, page, total).iterator();
-			max = Article.max(query);
 		}
 		else {
 			articles = Article.get("article", page, total).iterator();
