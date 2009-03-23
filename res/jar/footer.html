@@ -1,0 +1,78 @@
+[[ package gen;
+
+import java.net.*;
+import java.util.*;
+
+import se.rupy.http.*;
+import se.rupy.sprout.*;
+import se.rupy.content.*;
+
+public class footer extends Sprout {
+	public String path() { return "/footer"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
+		int total = Article.PAGE;
+		long max = Article.MAX;
+		int page = event.query().medium("page", 0);
+		String query = event.string("query"); ]]
+
+    <div class="query">
+      <form name="query" action="" method="get">
+        <table border="0" width="100">
+          <tr>
+            <td>
+              <input type="text" class="small" name="query" value="[[ event.string("query") ]]"/>
+            </td>
+            <td>
+              <a href="" class="arrow_gray" onclick="document.query.submit(); return false;">
+                <span>[[ i18n("Search") ]]</span>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+[[		if(max > total) { ]]
+
+    <div class="pagination">
+      <table>
+        <tr>
+          <td>
+
+[[			int first = page > 2 ? page - 2 : 0;
+			int last = (int) (max / total) + (max % total > 0 ? 1 : 0);
+			int start = last < first + 5 && last > 5 ? last - 5 : first;
+			int length = last > first + 5 ? first + 5 : last;
+
+			if(first > 0) { ]]
+
+            <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=0" title="[[ Sprout.i18n("First Page") ]]">&laquo;</a>
+
+[[			}
+			for(int j = start; j < length; j++) {
+				if(page == j) { ]]
+
+            [[ (j + 1) ]]
+
+[[				}
+				else { ]]
+
+            <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ j ]]" title="[[ Sprout.i18n("Go to page") ]]&nbsp;[[ j + 1 ]]">[[ (j + 1) ]]</a>
+
+[[				}
+			}
+			if(last > length) { ]]
+
+            <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ (last - 1) ]]" title="[[ Sprout.i18n("Last page") ]]">&raquo;</a>
+
+[[			} ]]
+
+          </td>
+        </tr>
+      </table>
+    </div>
+    
+[[		}
+	} 
+} ]]

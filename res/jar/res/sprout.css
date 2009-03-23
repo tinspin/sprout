@@ -24,10 +24,21 @@ td { font-size: 0.6em; }
 }
 
 .article {
-	float: left;
+	position: absolute;
 	background-color: #fff;
 	padding: 5px;
 	margin: 5px;
+}
+
+.single {
+	background-color: #fff;
+	padding: 10px;
+	margin: 5px 10px 10px 5px;
+}
+
+.comment {
+	float: left;
+	padding: 5px;
 }
 
 .query {
@@ -47,11 +58,6 @@ span.clear {
 
 .page {
 	padding: 10px;
-}
-
-.login {
-	float: right;
-	margin-left: 10px
 }
 
 input.file {
