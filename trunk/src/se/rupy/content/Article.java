@@ -26,6 +26,7 @@ import se.rupy.sprout.User;
 import se.rupy.sprout.Sprout.Cache;
 
 public class Article extends Node {
+	public final static int PAGE = 10;
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;

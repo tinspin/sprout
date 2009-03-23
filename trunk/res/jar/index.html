@@ -8,7 +8,8 @@ public class index extends Sprout {
 	public int index() { return 1; }
 	public String path() { return "/"; }
 	public void filter(Event event) throws Event, Exception {
-		Output out = event.output(); ]]
+		Output out = event.output();
+		String key = (String) event.session().get("key"); ]]
 		
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -16,13 +17,18 @@ public class index extends Sprout {
   <title>Sprout</title>
   <link rel="stylesheet" type="text/css" href="res/sprout.css">
   <script type="text/javascript" src="res/sprout.js"></script>
+  <script type="text/javascript">
+    function init() {
+      document.forms[0].elements[0].focus();
+      columnize(document.getElementById("content"), [[ key == null ? "140" : "240" ]]);
+    }
+  </script>
 </head>
-<body onLoad="document.forms[0].elements[0].focus();">
+<body onLoad="init();">
 <div id="page" class="page">
-  <div class="login">
+  <div style="float: right;">
 
-[[ String key = (String) event.session().get("key");
-if(key == null) {
+[[ if(key == null) {
 	event.daemon().chain("/login").filter(event);
 }
 else {
@@ -30,11 +36,15 @@ else {
 } ]]
 
   </div>
-  <div>
+  <div id="content">
 
 [[ event.daemon().chain("/content").filter(event); ]]
 
   </div>
+  <span class="clear"></span>
+
+[[ event.daemon().chain("/footer").filter(event); ]]
+
 </div>
 </body>
 </html>

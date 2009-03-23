@@ -71,9 +71,18 @@ Version:
 
 Todo:
 
+  - Integrate SortPoll with Node, test with most read articles.
+  - Smaller title font in content.
+  - Encrypt email and password from a key that you input upon 
+    starting the server, backwards compability.
+  - Track- / Ping- backs.
+  - Hide/show articles, with selective select.
+  - Cascade delete for article child nodes (except user!).
+  - Delete comment for admin.
+  - Edit and hide comment for session.
   - Delete files
-  - Cache Timeout
-  - Generic Admin
-  - Categories
-  - Localized Dates
-  - Javascript Columnization
+  - Cache timeout
+  - Add editor privilege, disable it by default.
+  - Generic admin.
+  - Categories, test with swedish/english.
+  - Localized dates.
