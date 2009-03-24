@@ -83,17 +83,18 @@ input.file {
 	cursor: pointer;
 	margin-left: 5px;
 	text-decoration: none;
-	background-image: url(left.gif);
+	padding-right: 6px;
+	background-image: url(right.gif);
+	background-position: top right;
 	background-repeat: no-repeat;
 }
 
 .button span {
 	display: block;
-	padding: 5px 10px 6px 10px;
+	padding: 5px 3px 6px 9px;
 	line-height: 14px;
 	text-transform: uppercase;
-	background-image: url(right.gif);
-	background-position: top right;
+	background-image: url(left.gif);
 	background-repeat: no-repeat;
 }
 
@@ -103,65 +104,26 @@ input.file {
 	cursor: pointer;
 	margin-left: 5px;
 	text-decoration: none;
-	background-image: url(left.gif);
-	background-repeat: no-repeat;
-}
-
-.arrow span {
-	display: block;
-	padding: 5px 18px 6px 10px;
-	line-height: 14px;
-	text-transform: uppercase;
+	padding-right: 12px;
 	background-image: url(arrow.gif);
 	background-position: top right;
 	background-repeat: no-repeat;
 }
 
-.button_gray {
-	float: right;
+.arrow span {
 	display: block;
-	cursor: pointer;
-	margin-left: 5px;
-	text-decoration: none;
+	padding: 5px 6px 6px 9px;
+	line-height: 14px;
+	text-transform: uppercase;
 	background-image: url(left.gif);
 	background-repeat: no-repeat;
 }
 
-.button_gray span {
-	display: block;
-	padding: 5px 10px 6px 10px;
-	line-height: 14px;
-	text-transform: uppercase;
-	background-image: url(right_gray.gif);
-	background-position: top right;
-	background-repeat: no-repeat;
-}
-
-.arrow_gray {
-	float: right;
-	display: block;
-	cursor: pointer;
-	margin-left: 5px;
-	text-decoration: none;
-	background-image: url(left.gif);
-	background-repeat: no-repeat;
-}
-
-.arrow_gray span {
-	display: block;
-	padding: 5px 18px 6px 10px;
-	line-height: 14px;
-	text-transform: uppercase;
-	background-image: url(arrow_gray.gif);
-	background-position: top right;
-	background-repeat: no-repeat;
-}
-
-.button_gray.overflow {
+.button.overflow {
 	overflow: hidden;
 }
 
-.button_gray .file {
+.button .file {
 	position: absolute;
 	right: 0;
 	height: 25px;

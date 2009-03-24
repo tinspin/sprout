@@ -26,13 +26,13 @@ public class publish extends Sprout {
       <form name="article" action="publish" method="post">
         <tr>
           <td colspan="2">
-            <a href="/logout" class="button_gray">
+            <a href="/logout" class="button">
               <span>[[ i18n("Logout") ]]</span>
             </a>
 
 [[		if(user != null && user.permit("ADMIN")) { ]]
 
-            <a href="/admin" class="button_gray">
+            <a href="/admin" class="button">
               <span>[[ i18n("Admin") ]]</span>
             </a>
 
@@ -98,7 +98,7 @@ public class publish extends Sprout {
         
         <tr>
           <td colspan="2">
-            <a href="" class="arrow_gray" onclick="document.article.submit(); return false;">
+            <a href="" class="arrow" onclick="document.article.submit(); return false;">
               <span>[[ i18n("Publish") ]]</span>
             </a>
           </td>
@@ -107,7 +107,7 @@ public class publish extends Sprout {
       <form enctype="multipart/form-data" name="upload" action="upload" method="POST">
         <tr>
           <td colspan="2">
-            <a class="button_gray overflow">
+            <a class="button overflow">
               <input name="file" type="file" class="file" onchange="document.upload.submit()"/>
               <span>[[ i18n("Upload") ]]</span>
             </a>

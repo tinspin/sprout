@@ -69,14 +69,18 @@ Version:
       - Pagination
       - Translation
 
+  0.2 Beta
+      - Javascript columization
+
 Todo:
 
-  - Integrate SortPoll with Node, test with most read articles.
+  - Make a new video player to match the audio player.
+  - Integrate SortPoll with Node, test with "most read" articles.
   - Smaller title font in content.
   - Encrypt email and password from a key that you input upon 
     starting the server, backwards compability.
   - Track- / Ping- backs.
-  - Hide/show articles, with selective select.
+  - Hide/show articles, with selective select, apply to comments.
   - Cascade delete for article child nodes (except user!).
   - Delete comment for admin.
   - Edit and hide comment for session.
