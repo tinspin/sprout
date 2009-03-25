@@ -13,12 +13,14 @@ public class article extends Sprout {
 	public String path() { return "/article"; }
 	public void filter(Event event) throws Event, Exception {
 		event.query().parse();
+		event.reply().header("X-Pingback", "http://" + System.getProperty("host", "localhost") + "/ping");
 		Output out = event.output();
 		Object key = event.session().get("key");
 		Article article = Article.find(event.big("id"));
 		Node user = (Node) article.child(USER).getFirst();
 		boolean edit = user.meta(USER_KEY).getValue().equals(key);
-		int permit = article.permit(key); ]]
+		int permit = article.permit(key);
+		article.poll(ARTICLE_READ); ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">

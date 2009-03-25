@@ -733,4 +733,76 @@ public class Node extends NodeBean implements Type {
 		padding(buffer, level);
 		buffer.append("</node>\n");
 	}
+	
+	/*
+	 * Remove count from poll
+	 */
+	public boolean remove(short type) throws Exception {
+		PollBean poll = new PollBean();
+		poll.setType(type);
+		poll.setNode(this);
+
+		if(Sprout.update(Base.SELECT, poll)) {
+			if(poll.size() == 1) {
+				poll = (PollBean) poll.getFirst();
+				Sprout.update(Base.DELETE, poll);
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean poll(short type) throws Exception {
+		return poll(type, 1);
+	}
+	
+	/*
+	 * Add count to poll
+	 */
+	public boolean poll(short type, int increment) throws Exception {
+		PollBean poll = new PollBean();
+		poll.setNode(this);
+		poll.setType(type);
+
+		if(Sprout.update(Base.SELECT, poll)) {
+			if(poll.size() == 1) {
+				poll = (PollBean) poll.getFirst();
+			}
+			else {
+				throw new Exception("Multiple " + type + " found.");
+			}
+
+			poll.setValue(poll.getValue() + increment);
+			Sprout.update(Base.UPDATE, poll);
+			return false;
+		}
+		else {
+			poll.setValue(poll.getValue() + increment);
+			Sprout.update(Base.INSERT, poll);
+			return true;
+		}
+	}
+	
+	public double count(short type) throws Exception {
+		PollBean poll = new PollBean();
+		poll.setNode(this);
+		poll.setType(type);
+		
+		if(Sprout.update(Base.SELECT, poll)) {
+			if(poll.size() == 1) {
+				poll = (PollBean) poll.getFirst();
+			}
+			else {
+				throw new Exception("Multiple " + type + " found.");
+			}
+
+			return poll.getValue();
+		}
+		
+		return -1;
+	}
 }

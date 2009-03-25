@@ -171,12 +171,23 @@ public class User extends Node {
 							user.add(USER_PASS, pass);
 							user.add(Sprout.generate(USER_KEY, 16));
 							user.add(USER_IP, event.remote());
-							user.add(Data.cache(USER, "UNVERIFIED"));
 
 							if(Sprout.value("SELECT count(*) FROM node WHERE type = " + Type.USER) == 0) {
 								user.add(Group.name("ADMIN"));
 							}
 
+							String live = event.daemon().properties.getProperty("live");
+							
+							if(live == null || !live.equals("true")) {
+								user.add(Data.cache(USER, "VERIFIED"));
+								user.update();
+								save(event.session(), user, false);
+								Sprout.redirect(event, "/");
+							}
+							else {
+								user.add(Data.cache(USER, "UNVERIFIED"));
+							}
+							
 							String key = user.meta(USER_KEY).getValue();
 							String url = "http://" + host + "/login?key=" + key;
 							String copy = content.replaceAll("@@url@@", url);
@@ -190,7 +201,7 @@ public class User extends Node {
 							catch(Exception e) {
 								event.query().put("error", Sprout.i18n("That's not an e-mail!"));
 								System.out.println(e.getMessage());
-								return;
+								Sprout.redirect(event);
 							}
 
 							user.update();

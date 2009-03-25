@@ -11,6 +11,7 @@ public interface Type {
 	public final static int CATEGORY	= 1 << 3;
 	public final static int GROUP		= 1 << 4;
 	public final static int FILE		= 1 << 5;
+	public final static int PING		= 1 << 6;
 	
 	/*
 	 * Data
@@ -23,6 +24,7 @@ public interface Type {
 	public final static short USER_STATE		= 105;
 	public final static short ARTICLE_TITLE		= 200;
 	public final static short ARTICLE_BODY		= 201;
+	public final static short ARTICLE_READ		= 202;
 	public final static short COMMENT_BODY		= 300;
 	public final static short COMMENT_IP		= 301;
 	public final static short COMMENT_STATE		= 302;
@@ -30,4 +32,6 @@ public interface Type {
 	public final static short GROUP_NAME		= 500;
 	public final static short FILE_NAME			= 600;
 	public final static short FILE_TYPE			= 601;
+	public final static short PING_TITLE		= 700;
+	public final static short PING_URL			= 701;
 }
