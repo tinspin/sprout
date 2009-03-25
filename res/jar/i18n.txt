@@ -9,14 +9,16 @@ Search = Sök
 Post = Posta
 Edit = Editera
 Admin = Admin
-Logout = Logga ut
+Logout = Logga&nbsp;ut
 Title = Titel
 Publish = Publicera
-Upload = Ladda upp
-Login = Logga in
+Upload = Ladda&nbsp;upp
+Login = Logga&nbsp;in
 Register = Registrera
 Hide = Göm
 Show = Visa
+Most&nbsp;Read = Mest&nbsp;Lästa
+All = Alla
 
 // Fields
 Comments = Kommentarer

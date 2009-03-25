@@ -21,8 +21,12 @@ public class content extends Sprout {
 
 		Object key = event.session().get("key");
 		String query = event.string("query");
+		boolean most = event.bit("most");
 		
-		if(query.length() > 0) {
+		if(most) {
+			articles = Article.most(ARTICLE_READ, page, total).iterator();
+		}
+		else if(query.length() > 0) {
 			articles = Article.query(query, page, total).iterator();
 		}
 		else {
@@ -41,7 +45,7 @@ public class content extends Sprout {
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
-          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.comments ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+          <td align="right"><img src="res/comment.gif">&nbsp;<i>[[ article.comments ]]</i>&nbsp;[[ i18n("Comments") ]]</span></td>
         </tr>
         <tr>
           <td colspan="2">

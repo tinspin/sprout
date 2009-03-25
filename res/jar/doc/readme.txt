@@ -68,24 +68,23 @@ Version:
       - Flash Video & Audio
       - Pagination
       - Translation
+      - Search
 
   0.2 Beta
-      - Javascript columization
+      - Columization
+      - Node poll
+      - Pingback
 
 Todo:
 
-  - Make a new video player to match the audio player.
-  - Integrate SortPoll with Node, test with "most read" articles.
-  - Smaller title font in content.
-  - Encrypt email and password from a key that you input upon 
-    starting the server, backwards compability.
-  - Track- / Ping- backs.
+  - Session lock on ARTICLE_READ.
+  - Delete files.
+  - Make a new video player to match the audio player (that does not autostart).
   - Hide/show articles, with selective select, apply to comments.
   - Cascade delete for article child nodes (except user!).
   - Delete comment for admin.
   - Edit and hide comment for session.
-  - Delete files
-  - Cache timeout
+  - Cache timeout.
   - Add editor privilege, disable it by default.
   - Generic admin.
   - Categories, test with swedish/english.

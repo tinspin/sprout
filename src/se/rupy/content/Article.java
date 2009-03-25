@@ -17,6 +17,7 @@ import se.rupy.http.Query;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
 import se.rupy.memory.NodeBean;
+import se.rupy.memory.PollBean;
 import se.rupy.pool.Connection;
 import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
@@ -26,7 +27,7 @@ import se.rupy.sprout.User;
 import se.rupy.sprout.Sprout.Cache;
 
 public class Article extends Node {
-	public final static int PAGE = 10;
+	public final static int PAGE = 20;
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
@@ -76,6 +77,69 @@ public class Article extends Node {
 		}
 		
 		return NO;
+	}
+	
+	public static long max(short type) throws Exception {
+		Connection conn = Sprout.connection(false);
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String sql = null;
+		try {
+			sql = "SELECT count(*) AS count FROM poll WHERE type = " + type + ";";
+			stmt = conn.prepareStatement(sql);
+			result = stmt.executeQuery();
+			if(result.next()) {
+				return result.getLong("count");
+			}
+		} catch(SQLException e) {
+			throw e;
+		} finally {
+			if(result != null) {
+				result.close();
+			}
+			if(stmt != null) {
+				stmt.close();
+			}
+			if(conn != null && conn.getAutoCommit()) {
+				conn.close();
+			}
+		}
+
+		return 0;
+	}
+	
+	public static LinkedList most(short type, int start, int limit) throws SQLException {
+		return most(type, start, limit, "ORDER BY value DESC");
+	}
+	
+	public static LinkedList most(short type, int start, int limit, String order) throws SQLException {
+		LinkedList list = new LinkedList();
+		Connection conn = Sprout.connection(false);
+		PreparedStatement stmt = null;
+		ResultSet result = null;
+		String sql = null;
+		try {
+			sql = "SELECT node FROM poll WHERE type = " + type + " " + order + " LIMIT " + start * limit + ", " + limit + ";";
+			stmt = conn.prepareStatement(sql);
+			result = stmt.executeQuery();
+			while(result.next()) {
+				list.add(find(result.getLong("node")));
+			}
+		} catch(SQLException e) {
+			throw e;
+		} finally {
+			if(result != null) {
+				result.close();
+			}
+			if(stmt != null) {
+				stmt.close();
+			}
+			if(conn != null && conn.getAutoCommit()) {
+				conn.close();
+			}
+		}
+
+		return list;
 	}
 	
 	static String from(String query) {
@@ -260,7 +324,7 @@ public class Article extends Node {
 		Article article = (Article) cache3.get(key);
 		User user = (User) User.get(key);
 		
-		if(article == null) {
+		if(article == null && user != null) {
 			article = new Article();
 			article.add(user);
 			cache3.put(key, article);
