@@ -6,7 +6,7 @@ function myKeyPressed(e) {
     return false;
   }
 }
-function columnize(content, push) {
+function columnize(content, parent, push) {
   var max = 0, art = 0;
   var div = content.getElementsByTagName('div');
   
@@ -14,7 +14,7 @@ function columnize(content, push) {
     return;
   }
   
-  var col = new Array(Math.floor(content.offsetWidth / div[0].offsetWidth));
+  var col = new Array(Math.floor(parent.offsetWidth / div[0].offsetWidth));
 
   for(i = 0; i < col.length; i++) {
     col[i] = 0;

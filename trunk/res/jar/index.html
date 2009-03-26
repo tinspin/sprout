@@ -20,7 +20,10 @@ public class index extends Sprout {
   <script type="text/javascript">
     function init() {
       document.forms[0].elements[0].focus();
-      columnize(document.getElementById("content"), [[ key == null ? "140" : "240" ]]);
+      size();
+    }
+    function size() {
+      columnize(document.getElementById("content"), document.getElementById("page"), [[ key == null ? "140" : "240" ]]);
     }
   </script>
 </head>
@@ -36,7 +39,7 @@ else {
 } ]]
 
   </div>
-  <div id="content">
+  <div id="content" onResize="size();">
 
 [[ event.daemon().chain("/content").filter(event); ]]
 
