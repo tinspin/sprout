@@ -12,6 +12,6 @@
 [http://www.hemlistan.se Hemlistan] _A real-estate scraper/spider/crawler that aggregates swedens monopoly housing site [http://www.hemnet.se Hemnet]._
 
   * Production: One person for one week full-time.
-  * Performance: The site currently uses MySQL cache, to keep the memory usage low, all pages are served in ~200ms the first time and 20ms the remaning times, data is scraped every hour.
+  * Performance: The site currently uses MySQL cache, to keep the memory usage low, all pages are served in ~200ms the first time and 20ms (10ms with jrockit JVM) the remaining times, data is scraped every hour.
 
   The production value on this project is high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boligan.se Boligan]. Only one competitor is a hobbyist, and it's also the best (no surprise there) [http://www.bospindeln.se Bospindeln].
