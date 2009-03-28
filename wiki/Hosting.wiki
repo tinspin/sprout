@@ -2,9 +2,9 @@
 
 There are 3 things your hosting has to provide for you to be able to use sprout:
 
- 1. Java (1.4 or 1.5)
- 2. MySQL (any version)
- 3. Apache (preferrably 2)
+  # Java (1.4 or 1.5)
+  # MySQL (any version)
+  # Apache (preferrably 2)
 
 The only tricky part is that you need to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, simply ask if your hoster can enter the followin config into the apache:
 {{{
