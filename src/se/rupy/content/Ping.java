@@ -61,9 +61,9 @@ public class Ping extends Node {
 						boolean found = false;
 
 						while(it.hasNext()) {
-							Ping ping = (Ping) it.next();
+							Node ping = (Node) it.next();
 
-							if(ping.meta(PING_URL).equals(from)) {
+							if(ping.meta(PING_URL).getValue().equals(from)) {
 								found = true;
 								System.out.println("Pingback '" + ping.meta(PING_TITLE).getValue() + "' allready added!");
 								break;

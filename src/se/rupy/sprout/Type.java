@@ -34,4 +34,5 @@ public interface Type {
 	public final static short FILE_TYPE			= 601;
 	public final static short PING_TITLE		= 700;
 	public final static short PING_URL			= 701;
+	public final static short PING_STATE		= 702;
 }

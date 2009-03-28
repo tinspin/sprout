@@ -102,6 +102,45 @@ public class article extends Sprout {
         <td colspan="2">/[[ user.meta(USER_NAME).getValue() ]]</td>
       </tr>
       
+[[		LinkedList pings = article.child(PING); ]]
+
+[[		if(article.pings > 0) { ]]
+
+      <tr>
+        <td colspan="2"><i>[[ article.pings ]]</i>&nbsp;[[ i18n("Pings") ]]</td>
+      </tr>
+
+[[		} ]]
+
+[[		it = pings.iterator();
+		while(it.hasNext()) {
+			Node ping = (Node) it.next();
+			Data title = ping.meta(PING_TITLE);
+			Data url = ping.meta(PING_URL);
+			Data state = ping.meta(PING_STATE);
+			
+			boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+      
+[[			if(permit > 0) { ]]
+
+      <tr>      
+        <td><a href="[[ url.getValue() ]]">[[ title.getValue() ]]</a></td>
+        <td>
+          <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&ping=[[ ping.getId() ]]" class="button">
+            <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
+          </a>
+        </td>
+      </tr>
+
+[[			} else if(show) { ]]
+
+      <tr>
+        <td colspan="2"><a href="[[ url.getValue() ]]">[[ title.getValue() ]]</a></td>
+      </tr>
+      
+[[			}
+		} ]]
+
 [[		LinkedList comments = article.child(COMMENT); ]]
       
       <tr>
@@ -112,6 +151,7 @@ public class article extends Sprout {
 		while(it.hasNext()) {
 			Node comment = (Node) it.next();
 			Data ip = comment.meta(COMMENT_IP);
+			Data body = comment.meta(COMMENT_BODY);
 			Data state = comment.meta(COMMENT_STATE);
 			
             boolean show = (state == null ? false : state.getValue().equals("SHOW"));
@@ -123,7 +163,7 @@ public class article extends Sprout {
 [[			if(permit > 0) { ]]
 
       <tr>      
-        <td>[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
+        <td>[[ body.getValue() ]]</td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
             <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
@@ -145,12 +185,11 @@ public class article extends Sprout {
 [[			} else if(show) { ]]
 
       <tr>
-        <td colspan="2">[[ comment.meta(COMMENT_BODY).getValue() ]]</td>
+        <td colspan="2">[[ body.getValue() ]]</td>
       </tr>
       
-[[			} ]]
-        
-[[ 		} ]]
+[[			}
+		} ]]
       
     </table>
   </div>
