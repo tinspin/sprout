@@ -158,11 +158,11 @@ public class Node extends NodeBean implements Type {
 
 		try {
 			if((what & PARENT) == PARENT) {
-				Sprout.find("DELETE FROM link WHERE parent = " + getId(), connection);
+				Sprout.find("DELETE FROM link WHERE parent = " + id, connection);
 			}
 			
 			if((what & CHILD) == CHILD) {
-				Sprout.find("DELETE FROM link WHERE child = " + getId(), connection);
+				Sprout.find("DELETE FROM link WHERE child = " + id, connection);
 			}
 			
 			if((what & META) == META) {

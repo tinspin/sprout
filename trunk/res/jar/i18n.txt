@@ -1,7 +1,8 @@
 ﻿/* Translation file.
  */
 language = swedish // mysql collation: general, czech, danish, estonian, hungarian, icelandic, latvian, lithuanian, persian, polish, roman, romanian, slovak, slovenian, spanish, swedish, turkish
-Welcome! = Välkommen! // welcome mail subject
+Welcome! = Välkommen! // welcome mail subject, see mail.txt
+Pings = Pingar
 
 // Buttons
 Delete = Radera

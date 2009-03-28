@@ -41,7 +41,7 @@ public class Article extends Node {
 	public static FontMetrics metric = Toolkit.getDefaultToolkit().getFontMetrics(new Font("Sans", Font.PLAIN, 8));
 	
 	public LinkedList columns;
-	public int comments;
+	public int comments, pings;
 
 	static {
 		try {
@@ -238,17 +238,24 @@ public class Article extends Node {
 	}
 	
 	public void count() throws SQLException {
-		comments = 0;
-		Iterator it = child(COMMENT).iterator();
+		comments = count(COMMENT, COMMENT_STATE);
+		pings = count(PING, PING_STATE);
+	}
+	
+	int count(int type, short state) throws SQLException {
+		Iterator it = child(type).iterator();
+		int count = 0;
 		
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
-			Data data = node.meta(COMMENT_STATE);
+			Data data = node.meta(state);
 			
 			if(data != null && data.getValue().equals("SHOW")) {
-				comments++;
+				count++;
 			}
 		}
+		
+		return count;
 	}
 	
 	public static Article find(long id) throws SQLException {

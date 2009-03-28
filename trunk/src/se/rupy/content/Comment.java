@@ -55,6 +55,12 @@ public class Comment extends Node {
 			Data.cache(COMMENT, show);
 			Data.cache(COMMENT, hide);
 			Data.cache(COMMENT, report);
+			
+			show = new Data(PING_STATE, "SHOW");
+			hide = new Data(PING_STATE, "HIDE");
+			
+			Data.cache(PING, show);
+			Data.cache(PING, hide);
 		}
 		
 		public String path() { return "/show:/hide"; }
@@ -63,6 +69,8 @@ public class Comment extends Node {
 				event.query().parse();
 				
 				long cid = event.big("comment");
+				long pid = event.big("ping");
+				
 				Object key = event.session().get("key");
 				Article article = Article.find(event.big("id"));
 				
@@ -71,13 +79,14 @@ public class Comment extends Node {
 						throw new Exception(Sprout.i18n("You are not authorized!"));
 					}
 					
-					Node comment = article.child(cid);
+					int type = cid > 0 ? COMMENT : PING;
+					Node node = article.child(cid > 0 ? cid : pid);
 					
 					if(event.query().path().equals("/hide")) {
-						comment.add(Data.cache(COMMENT, "HIDE"));
+						node.add(Data.cache(type, "HIDE"));
 					}
 					else {
-						comment.add(Data.cache(COMMENT, "SHOW"));
+						node.add(Data.cache(type, "SHOW"));
 					}
 
 					//comment.update();
