@@ -6,7 +6,7 @@ There are 3 things your hosting has to provide for you to be able to use sprout:
   # MySQL (any version)
   # Apache (preferrably 2)
 
-The only tricky part is that you need to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, simply ask if your hoster can enter the followin config into the apache:
+The only tricky part is that you need to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, simply ask if your host can enter the following into the apache config:
 {{{
 NameVirtualHost *:80
 VirtualHost *:80>
