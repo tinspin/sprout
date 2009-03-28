@@ -9,6 +9,7 @@ import se.rupy.http.Service;
 import se.rupy.http.Deploy;
 import se.rupy.http.Event;
 import se.rupy.http.Reply;
+import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
 
@@ -88,6 +89,7 @@ public class Ping extends Node {
 								Ping ping = new Ping();
 								ping.add(PING_TITLE, title);
 								ping.add(PING_URL, from);
+								ping.add(Data.cache(PING, "SHOW"));
 								article.add(ping);
 
 								System.out.println("Pingback '" + title + "' added!");
