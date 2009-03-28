@@ -1,7 +1,8 @@
 #summary What do I need to use sprout.
 
-There are 3 things your hosting has to provide for you to be able to use sprout:
+There are 4 things your hosting has to provide for you to be able to use sprout:
 
+  # SSH
   # Java (1.4 or 1.5)
   # MySQL (any version)
   # Apache (with mod_proxy)
