@@ -1,4 +1,5 @@
 #summary What do I need to use sprout.
+#labels Featured
 
 There are 4 things your hosting has to provide for you to be able to use sprout:
 
