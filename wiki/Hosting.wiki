@@ -16,4 +16,4 @@ NameVirtualHost *:80
     ProxyPassReverse / http://localhost:XXXX/
 </VirtualHost>
 }}}
-*To hosting firms:* _rupy is a small footprint embeddable server that uses below 1 MB in heap, it is not a problem to run 100 rupy instances on one low end machine._
+*To hosting firms:* _Sprout uses [http://rupy.googlecode.com rupy], a small footprint embedded HTTP server that uses below 1 MB in heap, it is not a problem to run 100 rupy instances on one low end machine._
