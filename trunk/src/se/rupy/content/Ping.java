@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;
 
+import se.rupy.http.Output;
 import se.rupy.http.Service;
 import se.rupy.http.Deploy;
 import se.rupy.http.Event;
@@ -48,7 +49,17 @@ public class Ping extends Node {
 				new In(event);
 				Reply reply = event.reply();
 				reply.type("text/xml");
-				reply.output(0).flush();
+				Output out = reply.output();
+				out.println("<?xml version=\"1.0\"?>");
+				out.println("<methodResponse>");
+				out.println("  <params>");
+				out.println("    <param>");
+				out.println("      <value>");
+				out.println("        <string>Pingback registered.</string>");
+				out.println("      </value>");
+				out.println("    </param>");
+				out.println("  </params>");
+				out.println("</methodResponse>");
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -140,13 +151,14 @@ public class Ping extends Node {
 					conn.setDoOutput(true);
 
 					StringBuffer buffer = new StringBuffer();
-					buffer.append("<?xml version=\"1.0\"?>");
-					buffer.append("<methodCall>");
-					buffer.append("<methodName>pingback.ping</methodName>");
-					buffer.append("<params>");
-					buffer.append("<param><value><string>http://" + User.host + "/article?id=" + article.getId() + "</string></value></param>");
-					buffer.append("<param><value><string>" + url + "</string></value></param>");
-					buffer.append("</params></methodCall>");
+					buffer.append("<?xml version=\"1.0\"?>\n");
+					buffer.append("<methodCall>\n");
+					buffer.append("  <methodName>pingback.ping</methodName>\n");
+					buffer.append("  <params>\n");
+					buffer.append("    <param><value><string>http://" + User.host + "/article?id=" + article.getId() + "</string></value></param>\n");
+					buffer.append("    <param><value><string>" + url + "</string></value></param>\n");
+					buffer.append("  </params>\n");
+					buffer.append("</methodCall>\n");
 
 					System.out.println(buffer.toString());
 					
