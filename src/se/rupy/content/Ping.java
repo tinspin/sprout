@@ -1,6 +1,9 @@
 package se.rupy.content;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;
@@ -12,6 +15,7 @@ import se.rupy.http.Reply;
 import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
+import se.rupy.sprout.User;
 
 /*
  * <?xml version="1.0"?>
@@ -24,100 +28,187 @@ import se.rupy.sprout.Sprout;
  */
 
 public class Ping extends Node {
+	static {
+		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
+		System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
+	}
+	
 	public Ping() {
 		super(PING);
+	}
+
+	public static void call(Article article) throws Exception {
+		new Out(article);
 	}
 
 	public static class Back extends Service {
 		public String path() { return "/ping"; }
 		public void filter(Event event) throws Event, Exception {
 			try {
-				new Process(event);
+				new In(event);
+				Reply reply = event.reply();
+				reply.type("text/xml");
+				reply.output(0).flush();
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 				throw e;
 			}
 		}
+	}
 
-		public static class Process {
-			int index = 0;
-			public Process(Event event) throws Exception {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				Deploy.pipe(event.input(), out);
+	public static class In extends Search {
+		public In(Event event) throws Exception {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			Deploy.pipe(event.input(), out);
 
-				String body = new String(out.toByteArray(), "UTF-8");
-				String from = find("string", body);
-				String to = find("string", body);
+			String body = new String(out.toByteArray(), "UTF-8");
+			String from = find("string", body);
+			String to = find("string", body);
 
-				if(from.length() > 0 && to.length() > 0) {
-					index = to.indexOf("article?id=");
-					long id = Long.parseLong(to.substring(index + "article?id=".length()));
-					index = 0;
+			if(from.length() > 0 && to.length() > 0) {
+				index = to.indexOf("article?id=");
+				long id = Long.parseLong(to.substring(index + "article?id=".length()));
+				index = 0;
 
-					Article article = Article.find(id);
+				Article article = Article.find(id);
 
-					if(article != null) {
-						Iterator it = article.child(PING).iterator();
-						boolean found = false;
+				if(article != null) {
+					Iterator it = article.child(PING).iterator();
+					boolean found = false;
 
-						while(it.hasNext()) {
-							Node ping = (Node) it.next();
+					while(it.hasNext()) {
+						Node ping = (Node) it.next();
 
-							if(ping.meta(PING_URL).getValue().equals(from)) {
-								found = true;
-								System.out.println("Pingback '" + ping.meta(PING_TITLE).getValue() + "' allready added!");
-								break;
-							}
+						if(ping.meta(PING_URL).getValue().equals(from)) {
+							found = true;
+							System.out.println("Pingback '" + ping.meta(PING_TITLE).getValue() + "' allready added!");
+							break;
+						}
+					}
+
+					if(!found) {
+						HttpURLConnection conn = (HttpURLConnection) new URL(from).openConnection();
+						conn.setRequestMethod("GET");
+						int code = conn.getResponseCode();
+
+						if(code == 200) {
+							Deploy.pipe(conn.getInputStream(), out);
+						} else {
+							System.out.println("Code: " + code);
 						}
 
-						if(!found) {
-							HttpURLConnection conn = (HttpURLConnection) new URL(from).openConnection();
-							conn.setRequestMethod("GET");
-							int code = conn.getResponseCode();
+						body = new String(out.toByteArray(), "UTF-8");
+						String title = find("title", body);
 
-							if(code == 200) {
-								Deploy.pipe(conn.getInputStream(), out);
-							} else {
-								System.out.println("Code: " + code);
-							}
+						if(title.length() > 0 && body.indexOf(to) > -1) {
+							Ping ping = new Ping();
+							ping.add(PING_TITLE, title);
+							ping.add(PING_URL, from);
+							ping.add(Data.cache(PING, "SHOW"));
+							article.add(ping);
 
-							body = new String(out.toByteArray(), "UTF-8");
-							String title = find("title", body);
-
-							if(title.length() > 0 && body.indexOf(to) > -1) {
-								Ping ping = new Ping();
-								ping.add(PING_TITLE, title);
-								ping.add(PING_URL, from);
-								ping.add(Data.cache(PING, "SHOW"));
-								article.add(ping);
-
-								System.out.println("Pingback '" + title + "' added!");
-							}
-							else {
-								System.out.println("URL not found!");
-							}
+							System.out.println("Pingback '" + title + "' added!");
+						}
+						else {
+							System.out.println("URL not found!");
 						}
 					}
 				}
-
-				Reply reply = event.reply();
-				reply.type("text/xml");
-				reply.output(0).flush();
 			}
+		}
+	}
 
-			String find(String tag, String body) {
-				int start = body.indexOf("<" + tag + ">", index);
-				int stop = body.indexOf("</" + tag + ">", index);
+	public static class Out extends Search {
+		HttpURLConnection conn;
+		public Out(Article article) throws Exception {
+			String body = article.meta(ARTICLE_BODY).getValue();
+			String url = find("a", "href", body);
 
-				if(start < 0 && stop < 0) {
-					return "";
+			while(url.length() > 0) {
+				System.out.println(url);
+
+				conn = (HttpURLConnection) new URL(url).openConnection();
+				conn.setRequestMethod("POST");
+				int code = conn.getResponseCode();
+				String ping = conn.getHeaderField("X-Pingback");
+
+				System.out.println(ping);
+
+				if(ping != null) {
+					conn = (HttpURLConnection) new URL(ping).openConnection();
+					conn.setDoOutput(true);
+
+					StringBuffer buffer = new StringBuffer();
+					buffer.append("<?xml version=\"1.0\"?>");
+					buffer.append("<methodCall>");
+					buffer.append("<methodName>pingback.ping</methodName>");
+					buffer.append("<params>");
+					buffer.append("<param><value><string>http://" + User.host + "/article?id=" + article.getId() + "</string></value></param>");
+					buffer.append("<param><value><string>" + url + "</string></value></param>");
+					buffer.append("</params></methodCall>");
+
+					System.out.println(buffer.toString());
+					
+					OutputStream out = conn.getOutputStream();
+					out.write(buffer.toString().getBytes("UTF-8"));
+					code = conn.getResponseCode();
+
+					InputStream in = null;
+
+					if (code == 200) {
+						in = conn.getInputStream();
+					} else if (code < 0) {
+						throw new IOException("HTTP response unreadable.");
+					} else {
+						in = conn.getErrorStream();
+					}
+
+					Deploy.pipe(in, System.out);
+					in.close();
 				}
 
-				index = stop + 1;
-
-				return body.substring(start + ("<" + tag + ">").length(), stop);
+				url = find("a", "href", body);
 			}
+		}
+	}
+
+	public static class Search {
+		int index = 0;
+
+		String find(String element, String body) {
+			int start = body.indexOf("<" + element + ">", index);
+			int stop = body.indexOf("</" + element + ">", index);
+
+			if(start < 0 || stop < 0) {
+				return "";
+			}
+
+			index = stop + 1;
+
+			return body.substring(start + ("<" + element + ">").length(), stop);
+		}
+
+		String find(String element, String attribute, String body) {
+			int start = body.indexOf("<" + element, index);
+			int stop = body.indexOf(">", index);
+			
+			if(start < 0 || stop < 0) {
+				return "";
+			}
+
+			index = body.indexOf("</" + element + ">", index) + ("</" + element + ">").length() + 1;
+			
+			//System.out.println(index + " " + start + " " + stop);
+			
+			String tag = body.substring(start + ("<" + element).length(), stop);
+
+			int length = (attribute + "=\"").length();
+
+			start = tag.indexOf(attribute + "=\"");
+			stop = tag.indexOf("\"", start + length + 1);
+
+			return tag.substring(start + length, stop);
 		}
 	}
 }
