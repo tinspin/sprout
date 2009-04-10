@@ -15,7 +15,7 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 || [http://www.ipeer.se/vps.php IPeer] || 165 SEK || 350 GB || 15 GB || 256 MB || Sweden ||
 || [http://www.levonline.com/sv/server-hotell.html Levonline] || 250 SEK || 20 GB || 10 GB || 256 MB || Sweden ||
 || [http://www.serverchoice.com/products Serverchoice] || 15 £ || 50 GB || 5 GB || 192 MB || UK ||
-|| [ http://www.hostforweb.com/vps/index.php Hostforweb] || 40$ || 400 GB || 15 GB || 256 MB || USA ||
+|| [http://www.hostforweb.com/vps/index.php Hostforweb] || 40$ || 400 GB || 15 GB || 256 MB || USA ||
 
 The only tricky part is that you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
