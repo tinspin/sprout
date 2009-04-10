@@ -19,6 +19,7 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 || [http://www.powervps.com/no-control-panel-vps.php PowerVPS] || 40$ || 500 GB || 10 GB || USA ||
 || [http://www.hostforweb.com/vps/index.php Hostforweb] || 40$ || 400 GB || 15 GB || USA ||
 || [http://www.solarvps.com/linux-vps.php SolarVPS] || 40$ || 300 GB || 15 GB || USA ||
+|| [http://www.wiredtree.com/managedvps/ WiredTree] || 44$ || 600 GB || 40 GB || USA ||
 
 This should NOT be trusted nor cared about, just "informative".
 
