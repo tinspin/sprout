@@ -8,7 +8,7 @@ There are 4 things your hosting has to provide for you to be able to use sprout:
   # MySQL (any version)
   # Apache (with mod_proxy)
 
-The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) solution (please add any available providers here):
+The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) solution:
 
 || Company || Price / Month || Transfer / Month || Space || Country || Date ||
 || [http://www.strongbox.se/webbhotell.php Strongbox] || 65 SEK || 40 GB || 5 GB || Sweden || 10/4-09 ||
