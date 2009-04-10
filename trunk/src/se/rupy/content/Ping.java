@@ -71,7 +71,7 @@ public class Ping extends Node {
 	public static class In extends Search {
 		public In(Event event) throws Exception {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			Deploy.pipe(event.input(), out);
+			Deploy.pipe(event.input(), out); // TODO: Limit
 
 			String body = new String(out.toByteArray(), "UTF-8");
 			String from = find("string", body);
