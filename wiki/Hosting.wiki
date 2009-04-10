@@ -10,20 +10,20 @@ There are 4 things your hosting has to provide for you to be able to use sprout:
 
 The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) solution (please add any available providers here):
 
-|| Company || Price / Month || Transfer / Month || Space || Country ||
-|| [http://www.strongbox.se/webbhotell.php Strongbox] || 65 SEK || 40 GB || 5 GB || Sweden ||
-|| [http://glesys.se/serverhotell/vps.php Glesys] || 79 SEK || 50 GB || 5 GB || Sweden ||
-|| [http://www.ipeer.se/vps.php IPeer] || 165 SEK || 350 GB || 15 GB || Sweden ||
-|| [http://www.levonline.com/sv/server-hotell.html Levonline] || 250 SEK || 20 GB || 10 GB || Sweden ||
-|| [http://www.serverchoice.com/products Serverchoice] || £15 || 50 GB || 5 GB || UK ||
-|| [http://www.demon.net/demon/products/hosting/virtualserverhosting Demon] || £30 || 15 GB || 500 GB || UK ||
-|| [http://www.clustered.net/vds/ Clustered] || £35 || 1 TB || 50 GB || UK ||
-|| [http://www.solidhost.com/products/linux-vps/ Solidhost] || £39 || 200 GB || 10 GB || UK ||
-|| [http://knownhost.com/ Knownhost] || 20$ || 125 GB || 7 GB || USA ||
-|| [http://www.powervps.com/no-control-panel-vps.php PowerVPS] || 40$ || 500 GB || 10 GB || USA ||
-|| [http://www.hostforweb.com/vps/index.php Hostforweb] || 40$ || 400 GB || 15 GB || USA ||
-|| [http://www.solarvps.com/linux-vps.php SolarVPS] || 40$ || 300 GB || 15 GB || USA ||
-|| [http://www.wiredtree.com/managedvps/ WiredTree] || 44$ || 600 GB || 40 GB || USA ||
+|| Company || Price / Month || Transfer / Month || Space || Country || Date ||
+|| [http://www.strongbox.se/webbhotell.php Strongbox] || 65 SEK || 40 GB || 5 GB || Sweden || 10/4-09 ||
+|| [http://glesys.se/serverhotell/vps.php Glesys] || 79 SEK || 50 GB || 5 GB || Sweden || 10/4-09 ||
+|| [http://www.ipeer.se/vps.php IPeer] || 165 SEK || 350 GB || 15 GB || Sweden || 10/4-09 ||
+|| [http://www.levonline.com/sv/server-hotell.html Levonline] || 250 SEK || 20 GB || 10 GB || Sweden || 10/4-09 ||
+|| [http://www.serverchoice.com/products Serverchoice] || £15 || 50 GB || 5 GB || UK || 10/4-09 ||
+|| [http://www.demon.net/demon/products/hosting/virtualserverhosting Demon] || £30 || 15 GB || 500 GB || UK || 10/4-09 ||
+|| [http://www.clustered.net/vds/ Clustered] || £35 || 1 TB || 50 GB || UK || 10/4-09 ||
+|| [http://www.solidhost.com/products/linux-vps/ Solidhost] || £39 || 200 GB || 10 GB || UK || 10/4-09 ||
+|| [http://knownhost.com/ Knownhost] || 20$ || 125 GB || 7 GB || USA || 10/4-09 ||
+|| [http://www.powervps.com/no-control-panel-vps.php PowerVPS] || 40$ || 500 GB || 10 GB || USA || 10/4-09 ||
+|| [http://www.hostforweb.com/vps/index.php Hostforweb] || 40$ || 400 GB || 15 GB || USA || 10/4-09 ||
+|| [http://www.solarvps.com/linux-vps.php SolarVPS] || 40$ || 300 GB || 15 GB || USA || 10/4-09 ||
+|| [http://www.wiredtree.com/managedvps/ WiredTree] || 44$ || 600 GB || 40 GB || USA || 10/4-09 ||
 
 The only tricky part is that you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
