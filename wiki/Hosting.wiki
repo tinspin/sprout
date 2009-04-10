@@ -35,4 +35,4 @@ NameVirtualHost *:80
     ProxyPassReverse / http://localhost:XXXX/
 </VirtualHost>
 }}}
-*Dependencies:* _Sprout uses [http://rupy.googlecode.com rupy], a "tiny footprint" embedded HTTP server that uses below 1 MB in heap, it's not a problem to run one rupy instance per 32 MB of RAM, which means that on any VPS account you will be able to run at least 4 instances, since the smallest amount of guaranteed RAM I encountered is 128 MB._
+*Dependencies:* _Sprout uses [http://rupy.googlecode.com rupy], a "tiny footprint" embedded HTTP server that uses below 1 MB in heap, it's not a problem to run one rupy instance per 32 MB of RAM, which means that on any VPS account you will be able to run at least 4 instances, since the smallest amount of guaranteed RAM is 128 MB in the solutions above._
