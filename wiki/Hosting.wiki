@@ -1,7 +1,7 @@
 #summary What do I need to use sprout.
 #labels Featured
 
-There are 4 things your hosting has to provide for you to be able to use sprout:
+There are 4 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
 
   # SSH
   # Java (1.4 or 1.5)
