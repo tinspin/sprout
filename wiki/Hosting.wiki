@@ -8,7 +8,11 @@ There are 4 things your hosting has to provide for you to be able to use sprout:
   # MySQL (any version)
   # Apache (with mod_proxy)
 
-The only tricky part is that your hosting firm needs to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, simply ask if they can enter the following into the apache config, the port number (XXXX below) should be assigned by your hosting firm and sent back to you so that you can run sprout on that port:
+The easiest way to get this cheaply is to buy a virtual private server solution (please add the available providers here):
+
+[http://www.levonline.com/sv/server-hotell.html Levonline]
+
+The only tricky part is that you needs to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
 NameVirtualHost *:80
 <VirtualHost *:80>
@@ -18,4 +22,4 @@ NameVirtualHost *:80
     ProxyPassReverse / http://localhost:XXXX/
 </VirtualHost>
 }}}
-*To hosting firms:* _Sprout uses [http://rupy.googlecode.com rupy], a "tiny footprint" embedded HTTP server that uses below 1 MB in heap, it is not a problem to run 100 rupy instances on one low end machine. You need to assign one port per sprout instance (XXXX above) though._
+*To hosting firms:* _Sprout uses [http://rupy.googlecode.com rupy], a "tiny footprint" embedded HTTP server that uses below 1 MB in heap, it is not a problem to run 100 rupy instances on one low end machine._
