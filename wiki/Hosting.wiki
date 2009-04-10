@@ -8,9 +8,9 @@ There are 4 things your hosting has to provide for you to be able to use sprout:
   # MySQL (any version)
   # Apache (with mod_proxy)
 
-The easiest way to get this cheaply is to buy a virtual private server solution (please add the available providers here):
+The easiest way to get this cheaply is to buy a virtual private server solution (please add any available providers here):
 
-[http://www.levonline.com/sv/server-hotell.html Levonline]
+|| [http://www.levonline.com/sv/server-hotell.html Levonline] || Sweden ||
 
 The only tricky part is that you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
