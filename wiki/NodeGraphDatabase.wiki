@@ -58,6 +58,6 @@ We decided to build our node graph on top of a traditional RDBMS and ORM which h
 
 My tests shows that the LIKE statement is going to cause alot more problems than the JOIN hierarchy because of full text search still not being implemented in innodb, so for larger projects you will need to either mirror the data table with a myisam table to search on or implement an external indexing engine like lucene.
 
-Added a poll table, so that you can sort nodes by any number. This is good for well polls among other things.
+Added a poll table, so that you can sort nodes by any number. This is good for; well polls, among other things.
 
   [http://sprout.googlecode.com/files/poll.gif]
