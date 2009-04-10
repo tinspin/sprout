@@ -1,6 +1,8 @@
 #summary Commercial sites that use sprout/rupy.
 #labels Featured
 
+To host a rupy/sprout site you need a hosting that meets the following [http://code.google.com/p/sprout/wiki/Hosting hosting] requirements.
+
 [http://singel.spraydate.se Singel] _Valentines day campaign site for Swedish match-making site [http://www.spraydate.se Spraydate]._
 
   * Production: Three people for one week full-time.
