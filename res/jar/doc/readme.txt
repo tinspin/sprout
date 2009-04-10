@@ -3,8 +3,8 @@
 
               ------o------
 
-Sprout is a simple base from which you can build 
-any CMS in Java.
+Sprout is a simple blogger from which you can 
+build any site.
 
 You will need Mysql 4.0 or later and Java 1.4 or 
 later added to the path to run Sprout.
