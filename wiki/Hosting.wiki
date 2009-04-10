@@ -12,7 +12,7 @@ The easiest way to get this cheaply is to buy a virtual private server solution 
 
 [http://www.levonline.com/sv/server-hotell.html Levonline]
 
-The only tricky part is that you need to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
+The only tricky part is that you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run rupy/sprout on that port:
 {{{
 NameVirtualHost *:80
 <VirtualHost *:80>
