@@ -16,6 +16,7 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 || [http://www.ipeer.se/vps.php IPeer] || 165 SEK || 350 GB || 15 GB || Sweden ||
 || [http://www.levonline.com/sv/server-hotell.html Levonline] || 250 SEK || 20 GB || 10 GB || Sweden ||
 || [http://www.serverchoice.com/products Serverchoice] || £15 || 50 GB || 5 GB || UK ||
+|| [http://knownhost.com/ Knownhost] || 20$ || 125 GB || 7 GB || USA ||
 || [http://www.powervps.com/no-control-panel-vps.php PowerVPS] || 40$ || 500 GB || 10 GB || USA ||
 || [http://www.hostforweb.com/vps/index.php Hostforweb] || 40$ || 400 GB || 15 GB || USA ||
 || [http://www.solarvps.com/linux-vps.php SolarVPS] || 40$ || 300 GB || 15 GB || USA ||
