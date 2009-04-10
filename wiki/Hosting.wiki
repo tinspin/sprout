@@ -12,7 +12,7 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 
 || Company || Price || Country ||
 || [http://www.levonline.com/sv/server-hotell.html Levonline] || 250 SEK || Sweden ||
-|| [http://glesys.se/serverhotell/vps.php] || 79 SEK || Sweden ||
+|| [http://glesys.se/serverhotell/vps.php Glesys] || 79 SEK || Sweden ||
 
 The only tricky part is that you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
