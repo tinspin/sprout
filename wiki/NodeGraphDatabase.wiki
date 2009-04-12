@@ -37,8 +37,8 @@ return "FROM node n " + // node
 "LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
 "LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
 "WHERE " + 
-"(d1.type = 400 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
-"(d2.type = 401 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
+"(d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
+"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
 "(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\")" + // name
 }}}
 
