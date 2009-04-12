@@ -12,8 +12,8 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 
 || Company || Price / Month || Transfer / Month || Space || Country || Date ||
 || [http://glesys.se/serverhotell/vps.php Glesys] || 79 SEK || 50 GB || 5 GB || Sweden || 10/4-09 ||
-|| [http://www.strongbox.se/webbhotell.php Strongbox] || 165 SEK || 250 GB || 15 GB || Sweden || 12/4-09 ||
 || [http://www.ipeer.se/vps.php IPeer] || 165 SEK || 350 GB || 15 GB || Sweden || 10/4-09 ||
+|| [http://www.strongbox.se/webbhotell.php Strongbox] || 165 SEK || 250 GB || 15 GB || Sweden || 12/4-09 ||
 || [http://www.levonline.com/sv/server-hotell.html Levonline] || 250 SEK || 20 GB || 10 GB || Sweden || 10/4-09 ||
 || [http://www.serverchoice.com/products Serverchoice] || £15 || 50 GB || 5 GB || UK || 10/4-09 ||
 || [http://www.demon.net/demon/products/hosting/virtualserverhosting Demon] || £30 || 15 GB || 500 GB || UK || 10/4-09 ||
