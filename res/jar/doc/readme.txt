@@ -7,9 +7,8 @@ Sprout is a simple blogger from which you can
 build any site.
 
 You will need Mysql 4.0 or later and Java 1.4 or 
-later added to the path to run Sprout.
-
-You need Ant added to the path to build Sprout.
+later and Ant added to the path to build and run 
+Sprout.
 
 Run the server with run.bat or run.sh depending 
 on your OS and build sprout with ant:
