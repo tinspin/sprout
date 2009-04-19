@@ -21,8 +21,8 @@ img.icon {
 
 .column {
 	float: left;
-	margin: 5px;
-	width: 190px;
+	margin: 0px 0px 0px 0px;
+	width: 200px;
 }
 
 .big {
