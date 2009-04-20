@@ -84,19 +84,23 @@ public class content extends Sprout {
 [[	}
 	static void print(Article article, Output out) throws Exception {
 		Iterator it = article.child(FILE).iterator();
+		boolean image = false;
+		boolean audio = false;
+		
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
 			Data name = file.meta(FILE_NAME);
 			Data type = file.meta(FILE_TYPE);
-				
+			
 			if(type != null) {
-				if(type.getValue().equals("IMAGE")) { ]]
+				if(type.getValue().equals("IMAGE") && !image) { ]]
 
           <div>
             <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + name.getValue() ]]" border="0"/></a>
           </div>
 
-[[				} else if(type.getValue().equals("AUDIO")) {
+[[					image = true;
+				} else if(type.getValue().equals("AUDIO") && !audio) {
 					String tmp = name.getValue();
 					String mp3 = tmp.substring(0, tmp.indexOf('.')); ]]
 
@@ -105,9 +109,8 @@ public class content extends Sprout {
             <embed src="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
           </object>
 
-[[				}
-
-				break;
+[[					audio = true;
+				}
 			}
 		}
 
