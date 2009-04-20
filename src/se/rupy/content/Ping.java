@@ -203,7 +203,7 @@ public class Ping extends Node {
 
 		String find(String element, String attribute, String body) {
 			int start = body.indexOf("<" + element, index);
-			int stop = body.indexOf(">", index);
+			int stop = body.indexOf(">", start);
 			
 			if(start < 0 || stop < 0) {
 				return "";
