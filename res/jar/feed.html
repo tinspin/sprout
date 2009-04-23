@@ -46,8 +46,9 @@ public class feed extends Sprout {
 		Iterator it = article.child(FILE).iterator();
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
-			
-			if(file.meta(FILE_TYPE).getValue().equals("IMAGE")) {
+			Data type = file.meta(FILE_TYPE);
+            
+            if(type != null && type.getValue().equals("IMAGE")) {
 				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.meta(FILE_NAME).getValue() + "\" align=\"right\"/>"));
 				break;
 			}
