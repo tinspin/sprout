@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="deploy" name="sprout">
 
+	<!-- you can change these to match your project -->
+	
 	<property name="db" value="mysql"/>
 	<property name="name" value="sprout"/>
-
+	<property name="port" value="9000"/>
+	<property name="pass" value="secret"/>
+	
 	<condition property="unix">
 		<os family="unix"/>
 	</condition>
@@ -54,7 +58,7 @@
 	
 	<target name="check-create">
 		<uptodate property="create-required" targetfile="bin/${name}.jar">
-			<srcfiles file="res/sprout.xml"/>
+			<srcfiles file="res/${name}.xml"/>
 			<srcfiles file="lib/memory.jar"/>
 		</uptodate>
 	</target>
@@ -63,7 +67,7 @@
 		<delete dir="src/se/rupy/memory" quiet="yes"/>
 		<java fork="yes" classname="se.rupy.memory.Origin" classpath="lib/memory.jar">
 			<arg line="${db}"/>
-			<arg line="res/sprout.xml"/>
+			<arg line="res/${name}.xml"/>
 			<arg line="."/>
 			<arg line="se.rupy.memory"/>
 		</java>
@@ -87,7 +91,7 @@
 			<fileset dir="bin" includes="**/*.class"/>
 		</copy>
 		<java classname="Page" classpath="${lib}">
-			<arg line="bin/sprout.jar"/>
+			<arg line="bin/${name}.jar"/>
 			<arg line="res/jar"/>
 		</java>
 		<javac srcdir="res/jar" target="1.4" source="1.4" destdir="res/jar" nowarn="on" debug="on" deprecation="off" classpath="${lib};bin"/>
@@ -112,19 +116,19 @@
 	
 	<target name="deploy" depends="build">
 		<java fork="yes" classname="se.rupy.http.Deploy" classpath="${lib}">
-			<arg line="localhost:9000"/>
+			<arg line="localhost:${port}"/>
 			<arg line="bin/${name}.jar"/>
-			<arg line="secret"/>
+			<arg line="${pass}"/>
 		</java>
 	</target>
 	
 	<!-- requires manual flush on unix -->
 	<target name="flush" unless="unix">
 		<exec executable="mysql">
-			<arg line='-u root -D sprout -e "source create.sql"'/>
+			<arg line='-u root -D ${name} -e "source create.sql"'/>
 		</exec>
 		<exec executable="mysql">
-			<arg line='-u root -D sprout -e "source alter.sql"'/>
+			<arg line='-u root -D ${name} -e "source alter.sql"'/>
 		</exec>
 	</target>
 	
