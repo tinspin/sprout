@@ -6,6 +6,10 @@
 Sprout is a simple blogger from which you can 
 build any site.
 
+----------------------------------------------
+
+1. Quick Tutorial:
+
 You will need Mysql 4.0, Java 1.4 or later and 
 Ant added to the path to build and run Sprout.
 
@@ -32,23 +36,44 @@ And pipe the create.sql to it like this:
 
 Finally browse to: http://localhost:9000
 
-  # IMPORTANT: Now that you got sprout up and running, 
-  # change the pass from 'secret' to something secure 
-  # in the run.bat, run.sh and build.xml files.
+----------------------------------------------
 
-  # You can change the name of the whole project in the 
-  # build.xml file if you will run multiple sprout, the 
-  # name is used for the database name per default so the 
-  # tutorial above has to be modified to suit the new name.
+2. Setting up a live sprout instance:
 
-  # Don't forget to add -Ddburl=jdbc:mysql://localhost/ZZZ 
-  # to the run.bat and run.sh if you choose another database 
-  # name, where ZZZ should be replaced with your database name.
+a. Hot-deployment password
 
-  # You can change the port in the run.bat, run.sh and 
-  # build.xml files if you will run multiple instances 
-  # of sprout on the same machine. Then it's recommended 
-  # to virtual host proxy the sites with an apache up front.
+Now that you got sprout up and running, change the 
+pass from 'secret' to something secure in the run.bat, 
+run.sh and build.xml files.
+
+b. Change project name from sprout
+
+You can change the name of the whole project in the 
+build.xml file if you will run multiple sprout, the 
+name is used for the database name per default so the 
+tutorial above has to be modified to suit the new name.
+
+Don't forget to add -Ddburl=jdbc:mysql://localhost/ZZZ 
+to the run.bat and run.sh if you choose another database 
+name, where ZZZ should be replaced with your database name.
+
+c. Host multiple sprout on different ports
+
+You can change the port in the run.bat, run.sh and 
+build.xml files if you will run multiple instances 
+of sprout on the same machine. Then it's recommended 
+to virtual host proxy the sites with an apache up front.
+
+d. Server and mail hosts
+
+You also need to change the -Dhost=sprout.rupy.se 
+-Dmail=mail1.comhem.se properties in the run.sh (or add 
+and alter them to run.bat if you run your live server on 
+windows) file to match your site.
+
+----------------------------------------------
+
+3. Development tunings:
 
 To localise your site; edit i18n.txt, mail.txt and uncomment the 
 Sprout.i18n() method.
@@ -75,7 +100,9 @@ requires and write the HTML to manipulate this model.
 
 Happy Hacking!
 
-Version:
+----------------------------------------------
+
+4. Version:
 
   0.1 Alpha
       - Users
@@ -92,7 +119,9 @@ Version:
       - Node poll
       - Pingback
 
-Todo:
+----------------------------------------------
+
+5. Todo:
 
   - Session lock on ARTICLE_READ.
   - Delete files.
