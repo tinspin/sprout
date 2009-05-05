@@ -18,6 +18,10 @@ on your OS and build sprout with ant:
 
   > run.bat | run.sh &
   
+  # IMPORTANT: If you use unix derivative for development 
+  # you should probably remove the -live flag from the .sh 
+  # script.
+  
   # Default mysql user is root with empty string as 
   # password if you want to use other credentials just 
   # add -Ddbuser=XXX -Ddbpass=YYY to the run.bat or run.sh, 
@@ -42,34 +46,34 @@ Finally browse to: http://localhost:9000
 
 a. Hot-deployment password
 
-Now that you got sprout up and running, change the 
-pass from 'secret' to something secure in the run.bat, 
-run.sh and build.xml files.
+   Now that you got sprout up and running, change the 
+   pass from 'secret' to something secure in the run.bat, 
+   run.sh and build.xml files.
 
 b. Change project name from sprout
 
-You can change the name of the whole project in the 
-build.xml file if you will run multiple sprout, the 
-name is used for the database name per default so the 
-tutorial above has to be modified to suit the new name.
+   You can change the name of the whole project in the 
+   build.xml file if you will run multiple sprout, the 
+   name is used for the database name per default so the 
+   tutorial above has to be modified to suit the new name.
 
-Don't forget to add -Ddburl=jdbc:mysql://localhost/ZZZ 
-to the run.bat and run.sh if you choose another database 
-name, where ZZZ should be replaced with your database name.
+   Don't forget to add -Ddburl=jdbc:mysql://localhost/ZZZ 
+   to the run.bat and run.sh if you choose another database 
+   name, where ZZZ should be replaced with your database name.
 
 c. Host multiple sprout on different ports
 
-You can change the port in the run.bat, run.sh and 
-build.xml files if you will run multiple instances 
-of sprout on the same machine. Then it's recommended 
-to virtual host proxy the sites with an apache up front.
+   You can change the port in the run.bat, run.sh and 
+   build.xml files if you will run multiple instances 
+   of sprout on the same machine. Then it's recommended 
+   to virtual host proxy the sites with an apache up front.
 
 d. Server and mail hosts
 
-You also need to change the -Dhost=sprout.rupy.se 
--Dmail=mail1.comhem.se properties in the run.sh (or add 
-and alter them to run.bat if you run your live server on 
-windows) file to match your site.
+   You also need to edit the -Dhost=sprout.rupy.se and 
+   -Dmail=mail1.comhem.se properties in the run.sh (or add 
+   and alter them to run.bat if you run your live server on 
+   windows) file to match your site.
 
 ----------------------------------------------
 
