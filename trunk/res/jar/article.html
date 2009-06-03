@@ -162,8 +162,8 @@ public class article extends Sprout {
       
 [[			if(permit > 0) { ]]
 
-      <tr>      
-        <td>[[ body.getValue() ]]</td>
+      <tr>
+        <td><img src="res/quote.gif">&nbsp;[[ body.getValue() ]]</td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
             <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
@@ -185,7 +185,7 @@ public class article extends Sprout {
 [[			} else if(show) { ]]
 
       <tr>
-        <td colspan="2">[[ body.getValue() ]]</td>
+        <td colspan="2"><img src="res/quote.gif">&nbsp;[[ body.getValue() ]]</td>
       </tr>
       
 [[			}
