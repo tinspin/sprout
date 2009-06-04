@@ -47,7 +47,7 @@ public class Upload extends Sprout {
 				file.add(File.type("IMAGE"));
 			}
 
-			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv")) {
+			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4")) {
 				video(item);
 				file.add(File.type("VIDEO"));
 			}
@@ -120,7 +120,7 @@ public class Upload extends Sprout {
 		try {
 			String line;
 			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
-			System.out.println(item.path + item.name);
+			System.out.println(path + item.name);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + path + item.name.substring(0, item.name.indexOf('.')) + ".flv");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
