@@ -1,9 +1,8 @@
 #summary What do I need to use sprout.
 #labels Featured
 
-There are 4 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
+There are 3 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
 
-  # SSH
   # Java (1.4 or 1.5)
   # MySQL (any version)
   # Apache (with mod_proxy)
@@ -25,7 +24,7 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 || [http://www.solarvps.com/linux-vps.php SolarVPS] || 40$ || 300 GB || 15 GB || USA || 10/4-09 ||
 || [http://www.wiredtree.com/managedvps/ WiredTree] || 44$ || 600 GB || 40 GB || USA || 10/4-09 ||
 
-The only tricky part is that you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain in Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
+The only tricky part is that if you whant to host multiple sites on one machine you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain with Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
 NameVirtualHost *:80
 <VirtualHost *:80>
