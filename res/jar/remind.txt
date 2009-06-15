@@ -1,0 +1,7 @@
+Hello @@name@@!
+
+Your password is '@@pass@@'.
+
+Cheers,
+
+/sprout

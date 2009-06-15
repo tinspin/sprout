@@ -6,6 +6,13 @@ function myKeyPressed(e) {
     return false;
   }
 }
+function remind() {
+  if(document.getElementById('mail').value != '') {
+    document.getElementById('login').action = 'remind';
+    document.getElementById('login').submit();
+  }
+  return false;
+}									
 function columnize(content, parent, push) {
   var max = 0, art = 0;
   var div = content.getElementsByTagName('div');

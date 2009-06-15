@@ -32,6 +32,19 @@ public class login extends Sprout {
             <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" onkeypress="return myKeyPressed(event)" tabindex="2"/>
           </td>
         </tr>
+        
+[[		if(event.string("error").length() > 0) { ]]
+
+        <tr>
+          <td colspan="2">
+            <a href="" onclick="return remind(); return false;">
+              [[ i18n("Forgot password?") ]]
+            </a>
+          </td>
+        </tr>
+
+[[		} ]]
+
         <tr>
           <td valign="top">
             <input type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>

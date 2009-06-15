@@ -122,6 +122,9 @@ Happy Hacking!
       - Columization
       - Node poll
       - Pingback
+      
+  0.2.1
+      - Password Reminder
 
 ----------------------------------------------
 
