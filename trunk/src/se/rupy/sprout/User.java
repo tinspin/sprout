@@ -15,8 +15,8 @@ import se.rupy.mail.*;
 public class User extends Node {
 	public static String host;
 	private static String mail;
-	private static String content;
-	
+	private static String content, remind;
+
 	private final static String EOL = "\r\n";
 
 	private static HashMap cache = new HashMap();
@@ -30,11 +30,17 @@ public class User extends Node {
 
 		host = System.getProperty("host", "localhost:9000");
 		mail = System.getProperty("mail", "mail1.comhem.se");
-		
+
+		content = read(Sprout.root + File.separator + "mail.txt");
+		remind = read(Sprout.root + File.separator + "remind.txt");
+	}
+
+	static String read(String file) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		
+		String content = null;
+
 		try {
-			InputStream in = new FileInputStream(new File(Sprout.root + File.separator + "mail.txt"));
+			InputStream in = new FileInputStream(new File(file));
 			Deploy.pipe(in, out);
 			content = new String(out.toByteArray());
 			out.close();
@@ -43,6 +49,8 @@ public class User extends Node {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+
+		return content;
 	}
 
 	public User() {
@@ -119,8 +127,7 @@ public class User extends Node {
 
 				Sprout.redirect(event);
 			}
-
-			if(event.query().method() == Query.GET) {
+			else if(event.query().method() == Query.GET) {
 				String key = event.string("key");
 
 				if(key.length() > 0) {
@@ -177,7 +184,7 @@ public class User extends Node {
 							}
 
 							String live = event.daemon().properties.getProperty("live");
-							
+
 							if(live == null || !live.equals("true")) {
 								user.add(Data.cache(USER, "VERIFIED"));
 								user.update();
@@ -187,14 +194,14 @@ public class User extends Node {
 							else {
 								user.add(Data.cache(USER, "UNVERIFIED"));
 							}
-							
+
 							String key = user.meta(USER_KEY).getValue();
 							String url = "http://" + host + "/login?key=" + key;
 							String copy = content.replaceAll("@@url@@", url);
 							copy = copy.replaceAll("@@key@@", key);
-							
+
 							try {
-								eMail email = Post.create(User.mail, "group@rupy.se", Sprout.i18n("Welcome!"));
+								eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), Sprout.i18n("Welcome!"));
 								email.addRecipient(eMail.TO, mail);
 								email.send(copy);
 							}
@@ -214,6 +221,45 @@ public class User extends Node {
 					}
 					else {
 						event.query().put("error", Sprout.i18n("Passwords don't match!"));
+					}
+				}
+
+				Sprout.redirect(event);
+			}
+		}
+	}
+
+	public static class Remind extends Service {
+		public String path() { return "/remind"; }
+		public void filter(Event event) throws Event, Exception {
+			if(event.query().method() == Query.POST) {
+				event.query().parse();
+
+				String mail = event.string("mail").toLowerCase();
+
+				if(mail.length() > 0) {
+					User user = new User();
+					if(user.query(USER_MAIL, mail)) {
+						user.meta();
+						System.out.println(user);
+						
+						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
+						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
+						
+						try {
+							eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), Sprout.i18n("Reminder!"));
+							email.addRecipient(eMail.TO, mail);
+							email.send(copy);
+						}
+						catch(Exception e) {
+							event.query().put("error", Sprout.i18n("That's not an e-mail!"));
+							System.out.println(e.getMessage());
+						}
+
+						event.query().put("error", Sprout.i18n("Reminder sent!"));
+					}
+					else {
+						event.query().put("error", Sprout.i18n("E-mail not found!"));
 					}
 				}
 

@@ -2,6 +2,8 @@
  */
 language = swedish // mysql collation: general, czech, danish, estonian, hungarian, icelandic, latvian, lithuanian, persian, polish, roman, romanian, slovak, slovenian, spanish, swedish, turkish
 Welcome! = Välkommen! // welcome mail subject, see mail.txt
+Reminder! = Påminnelse! // welcome mail subject, see mail.txt
+Forgot password? = Glömt lösenord?
 Pings = Pingar
 
 // Buttons
@@ -34,6 +36,9 @@ First page = Första sidan
 Last page = Sista sidan
 Go to page = Gå till sida // followed by the number
 
+// Updates
+Reminder sent! = Påminnelse skickad!
+
 // Warnings
 Are you sure you want to delete the article? = Är du säker på att du vill ta bort artikeln?
 
@@ -45,6 +50,7 @@ Key not found! = Nyckel ej funnen!
 That's not an e-mail! = Ogiltig e-post!
 Mail already in use! = E-post används redan!
 Passwords don't match! = Lösenorden stämmer inte överens!
+E-mail not found! = E-post ej funnen!
 
 // Malign errors
 You are not authorized! = Du saknar rättigheter!
