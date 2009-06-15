@@ -241,7 +241,6 @@ public class User extends Node {
 					User user = new User();
 					if(user.query(USER_MAIL, mail)) {
 						user.meta();
-						System.out.println(user);
 						
 						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
 						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
