@@ -1,7 +1,7 @@
-Hello @@name@@!
-
-Your password is '@@pass@@'.
-
-Cheers,
-
-/sprout
+Hello @@name@@!<br>
+<br>
+Your password is '@@pass@@'.<br>
+<br>
+Cheers,<br>
+<br>
+/sprout<br>
