@@ -118,6 +118,7 @@ public class User extends Node {
 						}
 						else {
 							event.query().put("error", Sprout.i18n("Wrong password!"));
+							event.query().put("remind", "yes");
 						}
 					}
 					else {
