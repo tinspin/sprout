@@ -58,8 +58,10 @@ b. Change project name from sprout
    tutorial above has to be modified to suit the new name.
 
    Don't forget to add -Ddburl=jdbc:mysql://localhost/ZZZ 
-   to the run.bat and run.sh if you choose another database 
-   name, where ZZZ should be replaced with your database name.
+   to the run.bat and run.sh and change the name of the 
+   res/sprout.xml file to res/ZZZ.xml if you choose another 
+   database name, where ZZZ should be replaced with your 
+   database name.
 
 c. Host multiple sprout on different ports
 
@@ -68,12 +70,13 @@ c. Host multiple sprout on different ports
    of sprout on the same machine. Then it's recommended 
    to virtual host proxy the sites with an apache up front.
 
-d. Server and mail hosts
+d. Server properties
 
-   You also need to edit the -Dhost=sprout.rupy.se and 
-   -Dmail=mail1.comhem.se properties in the run.sh (or add 
-   and alter them to run.bat if you run your live server on 
-   windows) file to match your site.
+   You also need to edit or add the -Dhost=sprout.rupy.se, 
+   -Dmail=mail1.comhem.se and -Daddress=info@yourcompany.com 
+   properties in the run.sh (or add and alter them to run.bat 
+   if you run your live server on windows) file to match your 
+   site.
 
 ----------------------------------------------
 
