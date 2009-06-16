@@ -201,7 +201,7 @@ public class User extends Node {
 							String copy = content.replaceAll("@@url@@", url);
 							copy = copy.replaceAll("@@key@@", key);
 
-							send(event, copy, Sprout.i18n("Welcome!"));
+							send(event, Sprout.i18n("Welcome!"), copy);
 
 							user.update();
 
@@ -250,7 +250,7 @@ public class User extends Node {
 						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
 						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
 						
-						send(event, copy, Sprout.i18n("Reminder!"));
+						send(event, Sprout.i18n("Reminder!"), copy);
 
 						event.query().put("error", Sprout.i18n("Reminder sent!"));
 					}
