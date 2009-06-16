@@ -129,6 +129,9 @@ Happy Hacking!
       
   0.2.1
       - Password Reminder
+      - User Profile (Birthday, Country, First Name, Last Name and 
+        Gender with public options)
+      - Profile Image
 
 ----------------------------------------------
 

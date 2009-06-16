@@ -124,8 +124,8 @@ public class register extends Sprout {
       <tr>
         <td>[[ i18n("Gender") ]]&nbsp;&nbsp;</td>
         <td>
-          <input type="radio" name="gender" value="female"[[ event.string("gender").equals("female") ? " checked" : "" ]]/>[[ i18n("Female") ]]
-          <input type="radio" name="gender" value="male"[[ event.string("gender").equals("male") ? " checked" : "" ]]/>[[ i18n("Male") ]]
+          <input type="radio" name="gender" value="female" tabindex="11"[[ event.string("gender").equals("female") ? " checked" : "" ]]/>[[ i18n("Female") ]]
+          <input type="radio" name="gender" value="male" tabindex="12"[[ event.string("gender").equals("male") ? " checked" : "" ]]/>[[ i18n("Male") ]]
         </td>
         <td>
           <input type="checkbox" name="show_gender"[[ event.string("show_gender").equals("on") ? " checked" : "" ]]/>
