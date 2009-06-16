@@ -254,6 +254,7 @@ public class User extends Node {
 						catch(Exception e) {
 							event.query().put("error", Sprout.i18n("That's not an e-mail!"));
 							System.out.println(e.getMessage());
+							Sprout.redirect(event);
 						}
 
 						event.query().put("error", Sprout.i18n("Reminder sent!"));
