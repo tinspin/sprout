@@ -201,16 +201,7 @@ public class User extends Node {
 							String copy = content.replaceAll("@@url@@", url);
 							copy = copy.replaceAll("@@key@@", key);
 
-							try {
-								eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), Sprout.i18n("Welcome!"));
-								email.addRecipient(eMail.TO, mail);
-								email.send(copy);
-							}
-							catch(Exception e) {
-								event.query().put("error", Sprout.i18n("That's not an e-mail!"));
-								System.out.println(e.getMessage());
-								Sprout.redirect(event);
-							}
+							send(event, copy, Sprout.i18n("Welcome!"));
 
 							user.update();
 
@@ -230,6 +221,19 @@ public class User extends Node {
 		}
 	}
 
+	static void send(Event event, String title, String text) throws Event, Exception {
+		try {
+			eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title);
+			email.addRecipient(eMail.TO, mail);
+			email.send(text);
+		}
+		catch(Exception e) {
+			event.query().put("error", Sprout.i18n("That's not an e-mail!"));
+			System.out.println(e.getMessage());
+			Sprout.redirect(event);
+		}
+	}
+	
 	public static class Remind extends Service {
 		public String path() { return "/remind"; }
 		public void filter(Event event) throws Event, Exception {
@@ -246,16 +250,7 @@ public class User extends Node {
 						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
 						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
 						
-						try {
-							eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), Sprout.i18n("Reminder!"));
-							email.addRecipient(eMail.TO, mail);
-							email.send(copy);
-						}
-						catch(Exception e) {
-							event.query().put("error", Sprout.i18n("That's not an e-mail!"));
-							System.out.println(e.getMessage());
-							Sprout.redirect(event);
-						}
+						send(event, copy, Sprout.i18n("Reminder!"));
 
 						event.query().put("error", Sprout.i18n("Reminder sent!"));
 					}
