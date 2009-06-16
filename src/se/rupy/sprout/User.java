@@ -14,6 +14,265 @@ import se.rupy.mail.*;
 
 public class User extends Node {
 	public static String host;
+	public static final String[] month = {
+		"January", 
+		"February", 
+		"Mars", 
+		"April", 
+		"May", 
+		"June", 
+		"July", 
+		"August", 
+		"September", 
+		"October", 
+		"November", 
+		"December"
+	};
+	public static final String[] country = {
+		"Afghanistan",
+		"Aland Islands",
+		"Albania",
+		"Algeria",
+		"American Samoa",
+		"Andorra",
+		"Angola",
+		"Anguilla",
+		"Antarctica",
+		"Antigua and Barbuda",
+		"Argentina",
+		"Armenia",
+		"Aruba",
+		"Australia",
+		"Austria",
+		"Azerbaijan",
+		"Bahamas",
+		"Bahrain",
+		"Bangladesh",
+		"Barbados",
+		"Belarus",
+		"Belgium",
+		"Belize",
+		"Benin",
+		"Bermuda",
+		"Bhutan",
+		"Bolivia",
+		"Bosnia and Herzegovina",
+		"Botswana",
+		"Bouvet Island",
+		"Brazil",
+		"British Indian Ocean Territory",
+		"Brunei Darussalam",
+		"Bulgaria",
+		"Burkina Faso",
+		"Burundi",
+		"Cambodia",
+		"Cameroon",
+		"Canada",
+		"Cape Verde",
+		"Cayman Islands",
+		"Central African Republic",
+		"Chad",
+		"Chile",
+		"China",
+		"Christmas Island",
+		"Cocos (Keeling) Islands",
+		"Colombia",
+		"Comoros",
+		"Congo",
+		"Congo, The Democratic Republic of the",
+		"Cook Islands",
+		"Costa Rica",
+		"Cote D'Ivoire",
+		"Croatia",
+		"Cuba",
+		"Cyprus",
+		"Czech Republic",
+		"Denmark",
+		"Djibouti",
+		"Dominica",
+		"Dominican Republic",
+		"Ecuador",
+		"Egypt",
+		"El Salvador",
+		"Equatorial Guinea",
+		"Eritrea",
+		"Estonia",
+		"Ethiopia",
+		"Falkland Islands (Malvinas)",
+		"Faroe Islands",
+		"Fiji",
+		"Finland",
+		"France",
+		"French Guiana",
+		"French Polynesia",
+		"French Southern Territories",
+		"Gabon",
+		"Gambia",
+		"Georgia",
+		"Germany",
+		"Ghana",
+		"Gibraltar",
+		"Greece",
+		"Greenland",
+		"Grenada",
+		"Guadeloupe",
+		"Guam",
+		"Guatemala",
+		"Guernsey",
+		"Guinea",
+		"Guinea-Bissau",
+		"Guyana",
+		"Haiti",
+		"Heard Island and McDonald Islands",
+		"Holy See (Vatican City State)",
+		"Honduras",
+		"Hong Kong",
+		"Hungary",
+		"Iceland",
+		"India",
+		"Indonesia",
+		"Iran, Islamic Republic of",
+		"Iraq",
+		"Ireland",
+		"Isle of Man",
+		"Israel",
+		"Italy",
+		"Jamaica",
+		"Japan",
+		"Jersey",
+		"Jordan",
+		"Kazakstan",
+		"Kenya",
+		"Kiribati",
+		"Korea, Democratic People's Republic of",
+		"Korea, Republic of",
+		"Kuwait",
+		"Kyrgyzstan",
+		"Lao People's Democratic Republic",
+		"Latvia",
+		"Lebanon",
+		"Lesotho",
+		"Liberia",
+		"Libyan Arab Jamahiriya",
+		"Liechtenstein",
+		"Lithuania",
+		"Luxembourg",
+		"Macau",
+		"Macedonia",
+		"Madagascar",
+		"Malawi",
+		"Malaysia",
+		"Maldives",
+		"Mali",
+		"Malta",
+		"Marshall Islands",
+		"Martinique",
+		"Mauritania",
+		"Mauritius",
+		"Mayotte",
+		"Mexico",
+		"Micronesia, Federated States of",
+		"Moldova, Republic of",
+		"Monaco",
+		"Mongolia",
+		"Montenegro",
+		"Montserrat",
+		"Morocco",
+		"Mozambique",
+		"Myanmar",
+		"Namibia",
+		"Nauru",
+		"Nepal",
+		"Netherlands",
+		"Netherlands Antilles",
+		"New Caledonia",
+		"New Zealand",
+		"Nicaragua",
+		"Niger",
+		"Nigeria",
+		"Niue",
+		"Norfolk Island",
+		"Northern Mariana Islands",
+		"Norway",
+		"Oman",
+		"Pakistan",
+		"Palau",
+		"Palestinian Territory",
+		"Panama",
+		"Papua New Guinea",
+		"Paraguay",
+		"Peru",
+		"Philippines",
+		"Poland",
+		"Portugal",
+		"Puerto Rico",
+		"Qatar",
+		"Reunion",
+		"Romania",
+		"Russian Federation",
+		"Rwanda",
+		"Saint Helena",
+		"Saint Kitts and Nevis",
+		"Saint Lucia",
+		"Saint Pierre and Miquelon",
+		"Saint Vincent and the Grenadines",
+		"Samoa",
+		"San Marino",
+		"Sao Tome and Principe",
+		"Saudi Arabia",
+		"Senegal",
+		"Serbia",
+		"Seychelles",
+		"Sierra Leone",
+		"Singapore",
+		"Slovakia",
+		"Slovenia",
+		"Solomon Islands",
+		"Somalia",
+		"South Africa",
+		"South Georgia and the South Sandwich Islands",
+		"Spain",
+		"Sri Lanka",
+		"Sudan",
+		"Suriname",
+		"Svalbard and Jan Mayen",
+		"Swaziland",
+		"Sweden",
+		"Switzerland",
+		"Syrian Arab Republic",
+		"Taiwan",
+		"Tajikistan",
+		"Tanzania, United Republic of",
+		"Thailand",
+		"Togo",
+		"Tokelau",
+		"Tonga",
+		"Trinidad and Tobago",
+		"Tunisia",
+		"Turkey",
+		"Turkmenistan",
+		"Turks and Caicos Islands",
+		"Tuvalu",
+		"Uganda",
+		"Ukraine",
+		"United Arab Emirates",
+		"United Kingdom",
+		"United States",
+		"United States Minor Outlying Islands",
+		"Uruguay",
+		"Uzbekistan",
+		"Vanuatu",
+		"Venezuela",
+		"Vietnam",
+		"Virgin Islands, British",
+		"Virgin Islands, U.S.",
+		"Wallis and Futuna",
+		"Western Sahara",
+		"Yemen",
+		"Zambia",
+		"Zimbabwe"
+		};
+
 	private static String mail;
 	private static String content, remind;
 
@@ -22,11 +281,14 @@ public class User extends Node {
 	private static HashMap cache = new HashMap();
 
 	static {
-		Data unverified = new Data(USER_STATE, "UNVERIFIED");
-		Data verified = new Data(USER_STATE, "VERIFIED");
-
-		Data.cache(USER, unverified);
-		Data.cache(USER, verified);
+		Data.cache(USER, new Data(USER_STATE, "UNVERIFIED"));
+		Data.cache(USER, new Data(USER_STATE, "VERIFIED"));
+		Data.cache(USER, new Data(USER_GENDER, "MALE"));
+		Data.cache(USER, new Data(USER_GENDER, "FEMALE"));
+		
+		for(int i = 0; i < country.length; i++) {
+			Data.cache(USER, new Data(USER_COUNTRY, country[i]));
+		}
 
 		host = System.getProperty("host", "localhost:9000");
 		mail = System.getProperty("mail", "mail1.comhem.se");
@@ -169,14 +431,80 @@ public class User extends Node {
 				String name = event.string("name");
 				String pass = event.string("pass");
 				String word = event.string("word");
+				
+				System.out.println(mail);
+				
+				int day = event.medium("day");
+				int month = event.medium("month");
+				int year = event.medium("year");
 
-				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0) {
+				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && day > 0 && month > 0 && year > 0) {
 					if(pass.equals(word)) {
 						User user = new User();
 						if(!user.query(USER_MAIL, mail)) {
 							user.add(USER_MAIL, mail);
 							user.add(USER_NAME, name);
 							user.add(USER_PASS, pass);
+							
+							user.add(USER_BIRTHDAY, day + "/" + month + "-" + year);
+							
+							if(event.medium("country") > 0) {
+								user.add(Data.cache(USER, country[event.medium("country") - 1]));
+							}
+							
+							if(event.string("first").length() > 0) {
+								user.add(USER_FIRST_NAME, event.string("first"));
+							}
+							
+							if(event.string("last").length() > 0) {
+								user.add(USER_LAST_NAME, event.string("last"));
+							}
+
+							String show = "";
+							
+							if(event.string("show_first_name").length() > 0) {
+								show += "1";
+							}
+							else {
+								show += "0";
+							}
+							
+							if(event.string("show_last_name").length() > 0) {
+								show += "1";
+							}
+							else {
+								show += "0";
+							}
+							
+							if(event.string("show_country").length() > 0) {
+								show += "1";
+							}
+							else {
+								show += "0";
+							}
+							
+							if(event.string("show_birthday").length() > 0) {
+								show += "1";
+							}
+							else {
+								show += "0";
+							}
+							
+							if(event.string("show_gender").length() > 0) {
+								show += "1";
+							}
+							else {
+								show += "0";
+							}
+							
+							Data data = Data.cache(USER, show);
+							
+							if(data == null) {
+								Data.cache(USER, new Data(USER_SHOW, show));
+								data = Data.cache(USER, show);
+							}
+							
+							user.add(data);
 							user.add(Sprout.generate(USER_KEY, 16));
 							user.add(USER_IP, event.remote());
 
@@ -189,6 +517,9 @@ public class User extends Node {
 							if(live == null || !live.equals("true")) {
 								user.add(Data.cache(USER, "VERIFIED"));
 								user.update();
+								
+								System.out.println(user);
+								
 								save(event.session(), user, false);
 								Sprout.redirect(event, "/");
 							}
@@ -201,8 +532,8 @@ public class User extends Node {
 							String copy = content.replaceAll("@@url@@", url);
 							copy = copy.replaceAll("@@key@@", key);
 
-							send(event, Sprout.i18n("Welcome!"), copy);
-
+							send(event, mail, Sprout.i18n("Welcome!"), copy);
+							
 							user.update();
 
 							Sprout.redirect(event, "/verify");
@@ -221,7 +552,7 @@ public class User extends Node {
 		}
 	}
 
-	static void send(Event event, String title, String text) throws Event, Exception {
+	static void send(Event event, String mail, String title, String text) throws Event, Exception {
 		try {
 			eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title);
 			email.addRecipient(eMail.TO, mail);
@@ -233,7 +564,7 @@ public class User extends Node {
 			Sprout.redirect(event);
 		}
 	}
-	
+
 	public static class Remind extends Service {
 		public String path() { return "/remind"; }
 		public void filter(Event event) throws Event, Exception {
@@ -246,11 +577,11 @@ public class User extends Node {
 					User user = new User();
 					if(user.query(USER_MAIL, mail)) {
 						user.meta();
-						
+
 						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
 						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
-						
-						send(event, Sprout.i18n("Reminder!"), copy);
+
+						send(event, mail, Sprout.i18n("Reminder!"), copy);
 
 						event.query().put("error", Sprout.i18n("Reminder sent!"));
 					}

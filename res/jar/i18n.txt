@@ -2,7 +2,7 @@
  */
 language = swedish // mysql collation: general, czech, danish, estonian, hungarian, icelandic, latvian, lithuanian, persian, polish, roman, romanian, slovak, slovenian, spanish, swedish, turkish
 Welcome! = Välkommen! // welcome mail subject, see mail.txt
-Reminder! = Påminnelse! // welcome mail subject, see mail.txt
+Reminder! = Påminnelse! // remind mail subject, see remind.txt
 Forgot password? = Glömt lösenord?
 Pings = Pingar
 
@@ -25,11 +25,23 @@ All = Alla
 
 // Fields
 Comments = Kommentarer
-Mail = E-Post
-Name = Namn
-Pass = Lösen
-Word = Ord
+E-Mail = E-Post
+Nickname = Smeknamn
+Password = Lösenord
+Confirm = Upprepa
 Body = Brödtext
+Public = Publikt
+Country = Land
+Earth = Jorden
+Birthday = Födelsedag
+Year = År
+Month = Månad
+Day = Dag
+First&nbsp;Name = Förnamn
+Last&nbsp;Name = Efternamn
+Gender = Kön
+Female = Flicka
+Male = Pojke
 
 // Pagination
 First page = Första sidan

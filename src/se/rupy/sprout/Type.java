@@ -22,9 +22,22 @@ public interface Type {
 	public final static short USER_KEY			= 103;
 	public final static short USER_IP			= 104;
 	public final static short USER_STATE		= 105;
+	
+	// bodybug
+	public final static short USER_FIRST_NAME	= 106;
+	public final static short USER_LAST_NAME	= 107;
+	public final static short USER_BUG_ID		= 108;
+	public final static short USER_BUG_NAME		= 109;
+	public final static short USER_COUNTRY		= 110;
+	public final static short USER_BIRTHDAY		= 111;
+	public final static short USER_GENDER		= 112;
+	public final static short USER_SHOW			= 113;
+	
 	public final static short ARTICLE_TITLE		= 200;
 	public final static short ARTICLE_BODY		= 201;
 	public final static short ARTICLE_READ		= 202;
+	public final static short ARTICLE_RATING	= 203; // bodybug
+	public final static short ARTICLE_TYPE		= 204; // bodybug
 	public final static short COMMENT_BODY		= 300;
 	public final static short COMMENT_IP		= 301;
 	public final static short COMMENT_STATE		= 302;

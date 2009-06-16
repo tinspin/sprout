@@ -4,8 +4,11 @@ a:link, a:hover, a:active, a:visited { color: #000; }
 select, input, textarea { font-size: 1.0em; }
 input.tiny { width: 45px; }
 input.small { width: 100px; }
-input.large { width: 145px; }
-select.small { width: 106px; }
+input.large { width: 165px; }
+select.tiny { width: 45px; }
+select.small { width: 65px; }
+select.medium { width: 55px; }
+select.large { width: 171px; }
 textarea.large { width: 175px; }
 td { font-size: 0.6em; }
 

@@ -7,17 +7,9 @@ public class register extends Sprout {
 	public int index() { return 2; }
 	public String path() { return "/register"; }
 	public void filter(Event event) throws Event, Exception {
-		Output out = event.output(); ]]
+		Output out = event.output();
+		event.daemon().chain("/header").filter(event); ]]
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <title>Sprout</title>
-  <link rel="stylesheet" type="text/css" href="res/sprout.css">
-  <script type="text/javascript" src="res/sprout.js"></script>
-</head>
-<body onLoad="document.forms[0].elements[0].focus();">
-<div id="page" style="padding: 10px 10px 10px 10px;">
   <table border="0" width="100">
     <form name="register" action="register" method="post">
 
@@ -32,27 +24,111 @@ public class register extends Sprout {
 [[		} ]]
 
       <tr>
-        <td>[[ i18n("Mail") ]]&nbsp;&nbsp;</td>
+        <td>[[ i18n("E-Mail") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
         <td>
-          <input type="text" class="small" name="mail" value="[[ event.string("mail") ]]" tabindex="1"/>
+          <input type="text" class="large" name="mail" value="[[ event.string("mail") ]]" tabindex="1"/>
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Name") ]]&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>[[ i18n("Nickname") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
         <td>
           <input type="text" class="small" name="name" value="[[ event.string("name") ]]" tabindex="2"/>
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Pass") ]]&nbsp;&nbsp;</td>
+        <td>[[ i18n("Password") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
         <td>
           <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="3"/>
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Word") ]]&nbsp;&nbsp;</td>
+        <td>[[ i18n("Confirm") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
         <td>
           <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="4"/>
+        </td>
+      </tr>
+      <tr>
+        <td>[[ i18n("Birthday") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
+        <td>
+          <select name="day" class="tiny" tabindex="5">
+            <option value="0">[[ i18n("Day") ]]</option>
+            
+[[		for(int i = 1; i < 32; i++) { ]]
+
+            <option value="[[ i ]]"[[ event.medium("day") == i ? " selected" : "" ]]>[[ i ]]</option>
+
+[[		} ]]
+
+          </select>
+          <select name="month" class="small" tabindex="6">
+            <option value="0">[[ i18n("Month") ]]</option>
+            
+[[		for(int i = 1; i < 13; i++) { ]]
+
+            <option value="[[ i ]]"[[ event.medium("month") == i ? " selected" : "" ]]>[[ User.month[i - 1] ]]</option>
+
+[[		} ]]
+
+          </select>
+          <select name="year" class="medium" tabindex="7">
+            <option value="0">[[ i18n("Year") ]]</option>
+            
+[[		for(int i = 1900; i < 2009; i++) { ]]
+
+            <option value="[[ i ]]"[[ event.query().medium("year", 1990) == i ? " selected" : "" ]]>[[ i ]]</option>
+
+[[		} ]]
+
+          </select>
+        </td>
+        <td>
+          <input type="checkbox" name="show_birthday"[[ event.string("show_birthday").equals("on") ? " checked" : "" ]]/>
+        </td>
+      </tr>
+      <tr>
+        <td>[[ i18n("Country") ]]&nbsp;&nbsp;</td>
+        <td>
+          <select name="country" class="large" tabindex="8">
+            <option value="0">[[ i18n("Earth") ]]</option>
+            
+[[		for(int i = 1; i < User.country.length + 1; i++) { ]]
+
+            <option value="[[ i ]]"[[ event.medium("country") == i ? " selected" : "" ]]>[[ User.country[i - 1] ]]</option>
+
+[[		} ]]
+
+          </select>
+        </td>
+        <td>
+          <input type="checkbox" name="show_country"[[ event.string("show_country").equals("on") ? " checked" : "" ]]/>
+        </td>
+      </tr>
+      <tr>
+        <td>[[ out.print(i18n("First&nbsp;Name")); ]]&nbsp;&nbsp;</td>
+        <td>
+          <input type="first" class="small" name="first" value="[[ event.string("first") ]]" tabindex="9"/>
+        </td>
+        <td>
+          <input type="checkbox" name="show_first_name"[[ event.string("show_first_name").equals("on") ? " checked" : "" ]]/>
+        </td>
+      </tr>
+      <tr>
+        <td>[[ out.print(i18n("Last&nbsp;Name")); ]]&nbsp;&nbsp;</td>
+        <td>
+          <input type="last" class="small" name="last" value="[[ event.string("last") ]]" tabindex="10"/>
+        </td>
+        <td>
+          <input type="checkbox" name="show_last_name"[[ event.string("show_last_name").equals("on") ? " checked" : "" ]]/>
+        </td>
+      </tr>
+      <tr>
+        <td>[[ i18n("Gender") ]]&nbsp;&nbsp;</td>
+        <td>
+          <input type="radio" name="gender" value="female"[[ event.string("gender").equals("female") ? " checked" : "" ]]/>[[ i18n("Female") ]]
+          <input type="radio" name="gender" value="male"[[ event.string("gender").equals("male") ? " checked" : "" ]]/>[[ i18n("Male") ]]
+        </td>
+        <td>
+          <input type="checkbox" name="show_gender"[[ event.string("show_gender").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
