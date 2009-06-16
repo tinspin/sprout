@@ -20,7 +20,8 @@ on your OS and build sprout with ant:
   
   # IMPORTANT: If you use unix derivative for development 
   # you should probably remove the -live flag from the .sh 
-  # script.
+  # script. The live flag affects e-mail verification upon 
+  # registering and hard caching of static HTTP requests.
   
   # Default mysql user is root with empty string as 
   # password if you want to use other credentials just 
