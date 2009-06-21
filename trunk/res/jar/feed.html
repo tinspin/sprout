@@ -29,7 +29,7 @@ public class feed extends Sprout {
 			boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
 		
     <item>
-      <title>[[ article.meta(ARTICLE_TITLE).getValue() ]]</title>
+      <title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
       <link>http://[[ User.host ]]/article?id=[[ article.getId() ]]</link>
       <description>[[ print(User.host, article, out); ]]</description>
       <pubDate>[[ clean(article.time()) ]]</pubDate>
