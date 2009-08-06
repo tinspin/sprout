@@ -188,7 +188,8 @@ public class Node extends NodeBean implements Type {
 			if((what & PARENT) == PARENT || 
 			   (what & CHILD) == CHILD || 
 			   (what & META) == META) {
-				Sprout.update(Base.DELETE, this);
+				System.out.println("DELETE");
+				Sprout.update(Base.DELETE, this, connection);
 				connection.commit();
 				success = true;
 			}
