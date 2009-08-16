@@ -28,13 +28,18 @@ public class article extends Sprout {
   <title>[[ article.meta(ARTICLE_TITLE).getValue() ]]</title>
   <link rel="stylesheet" type="text/css" href="res/sprout.css">
   <script type="text/javascript" src="res/sprout.js"></script>
+  <script type="text/javascript" src="res/cufon.js"></script>
+  <script type="text/javascript" src="res/EasyScript.js"></script>
+  <script type="text/javascript">
+    Cufon.replace('h2');
+  </script>
 </head>
 <body>
 <div id="page" style="padding: 10px 10px 10px 10px;">
   <div class="single">
     <table>
       <tr>
-        <td colspan="2" class="title">[[ article.meta(ARTICLE_TITLE).getValue() ]]</td>
+        <td colspan="2"><h2>[[ article.meta(ARTICLE_TITLE).getValue() ]]</h2></td>
       </tr>
       <tr>
         <td colspan="2"><i>[[ article.time() ]]</i></td>
@@ -239,6 +244,8 @@ pageTracker._trackPageview();
 } catch(err) {}</script>
 
 [[ } ]]
+
+<script type="text/javascript"> Cufon.now(); </script>
 
 </body>
 </html>
