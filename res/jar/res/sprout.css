@@ -22,6 +22,25 @@ img.icon {
 	display: block;
 }
 
+h1 {
+	font-family: 'georgia';
+	font-size: 7em;
+	letter-spacing: -0.04em;
+	color: #76a700;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+h2 {
+	font-family: 'georgia';
+	font-size: 4em;
+	padding: 0px;
+	border: 0px;
+	margin: 0px;
+	color: #76a700;
+	letter-spacing: 0.3pt
+}
+
 .column {
 	float: left;
 	margin: 5px;
@@ -39,6 +58,7 @@ img.icon {
 	background-color: #fff;
 	padding: 5px;
 	margin: 5px;
+	visibility: hidden;
 }
 
 .single {

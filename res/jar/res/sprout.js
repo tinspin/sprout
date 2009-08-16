@@ -39,6 +39,7 @@ function columnize(content, parent, push) {
       
       div[j].style.marginLeft = 225 * mod + 'px';
       div[j].style.marginTop = col[mod] + 10 * Math.floor(art / col.length) + 'px';
+      div[j].style.visibility = 'visible';
       col[mod] = col[mod] + height;
       
       if(col[mod] > max) {
