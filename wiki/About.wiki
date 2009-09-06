@@ -16,4 +16,4 @@ To host a rupy/sprout site you need a server provider that can meet the followin
   * Production: One person for one week full-time.
   * Performance: The site currently uses MySQL cache, to keep the memory usage low, all pages are served in ~200ms the first time and 20ms the remaining times, data is scraped every hour.
 
-  The production value on this project is high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boligan.se Boligan]. Only one competitor is a hobbyist [http://www.bospindeln.se Bospindeln].
+  The production value on this project is high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boliga.se Boliga].
