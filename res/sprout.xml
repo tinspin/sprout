@@ -1,43 +1,43 @@
 <logic>
   <element size="24">
-    <poll id="1" node="1" type="1" open="true" x="97" y="141">
-      <node id="2" node="0" type="1">*</node>
-      <value id="3" node="0" type="7"></value>
-      <type id="4" node="0" type="3"></type>
-      <date id="5" node="0" type="1"></date>
-    </poll>
-    <data id="6" node="1" type="0" open="true" x="301" y="95">
-      <id id="7" node="0" type="1">*</id>
-      <value id="8" node="0" type="0"></value>
-      <type id="9" node="0" type="3"></type>
-      <date id="10" node="0" type="1"></date>
-    </data>
-    <meta id="11" node="1" type="1" open="true" x="195" y="141">
-      <node id="12" node="0" type="1">*</node>
-      <data id="13" node="0" type="1">*</data>
-      <type id="14" node="0" type="3">~</type>
-      <date id="15" node="0" type="1">~</date>
-    </meta>
-    <link id="16" node="1" type="1" open="true" x="153" y="17">
-      <parent id="17" node="0" type="1">*</parent>
-      <child id="18" node="0" type="1">*</child>
-      <type id="19" node="0" type="2" comment="The bitwise AND of the parent and child types.">~</type>
-      <date id="20" node="0" type="1">~</date>
-    </link>
-    <node id="21" node="1" type="0" open="true" x="15" y="73">
-      <id id="22" node="0" type="1">*</id>
-      <type id="23" node="0" type="2"></type>
-      <date id="24" node="0" type="1"></date>
+    <node id="1" node="1" type="0" open="true" x="15" y="73">
+      <id id="2" node="0" type="1">*</id>
+      <type id="3" node="0" type="2"></type>
+      <date id="4" node="0" type="1"></date>
     </node>
+    <poll id="5" node="1" type="1" open="true" x="97" y="141">
+      <node id="6" node="0" type="1">*</node>
+      <value id="7" node="0" type="7"></value>
+      <type id="8" node="0" type="3"></type>
+      <date id="9" node="0" type="1"></date>
+    </poll>
+    <data id="10" node="1" type="0" open="true" x="301" y="95">
+      <id id="11" node="0" type="1">*</id>
+      <value id="12" node="0" type="0"></value>
+      <type id="13" node="0" type="3"></type>
+      <date id="14" node="0" type="1"></date>
+    </data>
+    <meta id="15" node="1" type="1" open="true" x="195" y="141">
+      <node id="16" node="0" type="1">*</node>
+      <data id="17" node="0" type="1">*</data>
+      <type id="18" node="0" type="3">~</type>
+      <date id="19" node="0" type="1">~</date>
+    </meta>
+    <link id="20" node="1" type="1" open="true" x="153" y="17">
+      <parent id="21" node="0" type="1">*</parent>
+      <child id="22" node="0" type="1">*</child>
+      <type id="23" node="0" type="2" comment="The bitwise AND of the parent and child types.">~</type>
+      <date id="24" node="0" type="1">~</date>
+    </link>
   </element>
   <relation>
-    <element id="11">
-      <link id="6"/>
+    <element id="1">
+      <link id="20"/>
+      <link id="15"/>
+      <link id="5"/>
     </element>
-    <element id="21">
-      <link id="16"/>
-      <link id="11"/>
-      <link id="1"/>
+    <element id="15">
+      <link id="10"/>
     </element>
   </relation>
 </logic>
