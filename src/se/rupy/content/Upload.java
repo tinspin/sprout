@@ -47,7 +47,7 @@ public class Upload extends Sprout {
 				file.add(File.type("IMAGE"));
 			}
 
-			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4")) {
+			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
 				video(item);
 				file.add(File.type("VIDEO"));
 			}
