@@ -16,17 +16,51 @@ public class feed extends Sprout {
 		LinkedList list = Article.get("article", 0, 5);
 		Iterator it = list.iterator(); ]]
 
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+
+[[		if(event.bit("atom")) { ]]
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>Sprout</title>
+	<subtitle>Sprout</subtitle>
+	<link href="http://[[ User.host ]]/feed" rel="self" />
+	<link href="http://[[ User.host ]]" />
+	<id>urn:uuid:1234</id>
+	<updated></updated>
+	<author>
+		<name></name>
+		<email></email>
+	</author>
+
+[[			while(it.hasNext()) {
+				Article article = (Article) it.next();
+				Node user = (Node) article.child(USER).getFirst();
+				boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
+
+	<entry>
+		<title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
+		<link href="http://[[ User.host ]]/article?id=[[ article.getId() ]]" />
+		<id>urn:uuid:[[ article.getId() ]]</id>
+		<updated>[[ clean(article.time()) ]]</updated>
+		<summary>[[ print(User.host, article, out); ]]</summary>
+	</entry>
+
+[[ 			} ]]
+
+</feed>
+
+[[		} else { ]]
+
 <rss version="2.0">
   <channel>
     <title>Sprout</title>
     <link>http://[[ User.host ]]</link>
-    <description>Blog/Community/CMS Lite</description>
+    <description>Sprout</description>
     
-[[		while(it.hasNext()) {
-			Article article = (Article) it.next();
-			Node user = (Node) article.child(USER).getFirst();
-			boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
+[[			while(it.hasNext()) {
+				Article article = (Article) it.next();
+				Node user = (Node) article.child(USER).getFirst();
+				boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
 		
     <item>
       <title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
@@ -35,12 +69,13 @@ public class feed extends Sprout {
       <pubDate>[[ clean(article.time()) ]]</pubDate>
     </item>
 
-[[ 		} ]]
+[[ 			} ]]
 
   </channel>
 </rss>
 
-[[	}
+[[		}
+	}
 
 	static void print(String host, Article article, Output out) throws Exception {
 		Iterator it = article.child(FILE).iterator();

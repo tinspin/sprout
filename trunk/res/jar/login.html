@@ -24,7 +24,7 @@ public class login extends Sprout {
 
         <tr>
           <td colspan="2">
-            <input type="text" class="small" name="mail" value="[[ event.string("mail") ]]" tabindex="1"/>
+            <input type="text" class="small" name="mail" title="[[ Sprout.i18n("eMail") ]]" value="[[ event.string("mail").length() > 0 ? event.string("mail") : Sprout.i18n("eMail") ]]" onfocus="if(this.value == this.title) this.value = ''" onblur="if(this.value == '') this.value = this.title;" tabindex="1"/>
           </td>
         </tr>
         <tr>
