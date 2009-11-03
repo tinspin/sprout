@@ -20,7 +20,7 @@ public class Node extends NodeBean implements Type {
 	public final static byte CHILD = 1 << 1;
 	public final static byte META = 1 << 2;
 	
-	static Format time = new SimpleDateFormat("yy/MM/dd'&nbsp;'HH:mm:ss");
+	static Format time = new SimpleDateFormat("yy/MM/dd'&nbsp;'HH:mm");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
 
 	private LinkBean link;
