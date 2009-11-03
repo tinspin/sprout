@@ -47,8 +47,70 @@ function columnize(content, parent, push) {
       }
       
       art++;
+      
+      makeDraggable(div[j]);
     }
   }
   
   content.style.height = max + 100 + 'px';
+}
+document.onmousemove = mouseMove;
+document.onmouseup   = mouseUp;
+var dragObject  = null;
+var mouseOffset = null;
+var topIndex    = 1;
+function getMouseOffset(target, ev) {
+  ev = ev || window.event;
+
+  var docPos    = getPosition(target);
+  var mousePos  = mouseCoords(ev);
+  return {x:mousePos.x - docPos.x, y:mousePos.y - docPos.y};
+}
+function getPosition(e) {
+  var left = 0;
+  var top  = 0;
+
+  while (e.offsetParent) {
+    left += e.offsetLeft;
+    top  += e.offsetTop;
+    e     = e.offsetParent;
+  }
+
+  left += e.offsetLeft;
+  top  += e.offsetTop;
+
+  return {x:left, y:top};
+}
+function mouseMove(ev) {
+  ev           = ev || window.event;
+  var mousePos = mouseCoords(ev);
+
+  if(dragObject) {
+    //dragObject.style.position = 'absolute';
+    dragObject.style.top      = mousePos.y - mouseOffset.y - dragObject.style.marginTop.replace('px', '') + 'px';
+    dragObject.style.left     = mousePos.x - mouseOffset.x - dragObject.style.marginLeft.replace('px', '') + 'px';
+
+    return false;
+  }
+}
+function mouseCoords(ev) {
+  if(ev.pageX || ev.pageY) {
+    return {x:ev.pageX, y:ev.pageY};
+  }
+  return {
+    x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+    y:ev.clientY + document.body.scrollTop  - document.body.clientTop
+  };
+}
+function mouseUp() {
+  dragObject = null;
+}
+function makeDraggable(item) {
+  if(!item) return;
+  item.onmousedown = function(ev) {
+    dragObject              = this;
+    dragObject.style.zIndex = topIndex++;
+    mouseOffset             = getMouseOffset(this, ev);
+    return false;
+  }
 }
