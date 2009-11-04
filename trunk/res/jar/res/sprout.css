@@ -10,7 +10,7 @@ select.small { width: 65px; }
 select.medium { width: 55px; }
 select.large { width: 171px; }
 textarea.large { width: 195px; }
-td { font-size: 0.6em; }
+td { font-size: 0.6em; cursor: default; }
 
 .white { background-color: #fff; }
 
@@ -79,6 +79,7 @@ span.clear {
 
 .page {
 	padding: 10px;
+	cursor: default;
 }
 
 input.file {
