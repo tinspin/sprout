@@ -131,12 +131,13 @@ Happy Hacking!
       - Password Reminder
       - User Profile (Birthday, Country, First Name, Last Name and 
         Gender with public options)
-      - Profile Image
+      - Drag'n Drop articles on frontpage. (just for fun)
 
 ----------------------------------------------
 
 5. Todo:
 
+  - Profile Image
   - Session lock on ARTICLE_READ.
   - Delete files.
   - Make a new video player to match the audio player (that does not autostart).
