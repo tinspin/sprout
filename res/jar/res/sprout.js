@@ -97,13 +97,10 @@ function mouseCoords(ev) {
   if(ev.pageX || ev.pageY) {
     return {x:ev.pageX, y:ev.pageY};
   }
-  if(document.body) {
-    return {
-      x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
-      y:ev.clientY + document.body.scrollTop  - document.body.clientTop
-    };
-  }
-  return {0, 0};
+  return {
+    x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+    y:ev.clientY + document.body.scrollTop  - document.body.clientTop
+  };
 }
 function mouseUp() {
   dragObject = null;
