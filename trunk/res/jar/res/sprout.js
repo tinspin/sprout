@@ -6,6 +6,14 @@ function myKeyPressed(e) {
     return false;
   }
 }
+function myLoginKeyPressed(e) {
+  e = e || window.event;
+  var unicode = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+  if(unicode == 13) {
+    _query('POST', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value);
+    return false;
+  }
+}
 function remind() {
   if(document.getElementById('mail').value != '') {
     document.getElementById('login').action = 'remind';
@@ -113,4 +121,45 @@ function makeDraggable(item) {
     mouseOffset             = getMouseOffset(this, ev);
     return false;
   }
+}
+var request;
+function _query(method, url, data) {
+  request = create();
+  request.open(method, url, true);
+  request.onreadystatechange = callback;
+  request.send(data);
+}
+function _reply(data) {
+  if(data.url) {
+    self.location.href = data.url;
+  }
+  if(data.error) {
+    document.getElementById('error').innerHTML = '<font color="red"><i>' + data.error + '</i></font>';
+  }
+  if(data.remind) {
+    document.getElementById('remind').style.display = 'block';
+  }
+}
+function callback() {
+  try {
+    if(request.readyState == 4) {
+      if(request.status == 200) {
+        //alert(request.responseText);
+        _reply(eval('(' + request.responseText + ')'));
+      }
+      else if(request.status == 500) {
+        alert(request.responseText);
+      }
+    }
+  } catch (e) {
+    alert(e);
+  }
+}
+function create() {
+  try { return new XMLHttpRequest(); } catch (e) {
+    try { return new ActiveXObject('microsoft.xmlhttp'); } catch (e) {
+      try { return new ActiveXObject('msxml2.xmlhttp'); } catch (e) {}
+    }
+  }
+  return null;
 }

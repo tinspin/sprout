@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.json.JSONObject;
+
 import se.rupy.http.*;
 import se.rupy.mail.*;
 
@@ -362,6 +364,12 @@ public class User extends Node {
 			event.query().parse();
 
 			if(event.query().method() == Query.POST) {
+				JSONObject ajax = null;
+				
+				if(event.bit("ajax")) {
+					ajax = new JSONObject();
+				}
+				
 				String mail = event.string("mail").toLowerCase();
 				String pass = event.string("pass");
 
@@ -373,14 +381,22 @@ public class User extends Node {
 						if(user.meta(USER_PASS).getValue().equals(pass)) {
 							if(user.meta(USER_STATE).getValue().equals("VERIFIED")) {
 								save(event.session(), user, event.bit("remember"));
+								
+								if(ajax != null) {
+									ajax.put("url", "/");
+								}
 							}
 							else {
-								event.query().put("error", Sprout.i18n("Verify your e-mail first!"));
+								event.query().put("error", Sprout.i18n("Check your inbox!"));
 							}
 						}
 						else {
 							event.query().put("error", Sprout.i18n("Wrong password!"));
 							event.query().put("remind", "yes");
+							
+							if(ajax != null) {
+								ajax.put("remind", "yes");
+							}
 						}
 					}
 					else {
@@ -388,7 +404,17 @@ public class User extends Node {
 					}
 				}
 
-				Sprout.redirect(event);
+				if(ajax != null) {
+					if(event.query().string("error").length() > 0) {
+						ajax.put("error", event.query().string("error"));
+					}
+					
+					event.output().print(ajax.toString());
+					throw event;
+				}
+				else {
+					Sprout.redirect(event);
+				}
 			}
 			else if(event.query().method() == Query.GET) {
 				String key = event.string("key");

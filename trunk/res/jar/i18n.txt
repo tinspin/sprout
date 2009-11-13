@@ -55,7 +55,7 @@ Reminder sent! = Påminnelse skickad!
 Are you sure you want to delete the article? = Är du säker på att du vill ta bort artikeln?
 
 // Benine errors
-Verify your e-mail first! = Verifiera din e-post först!
+Check your inbox! = Kolla din inbox!
 Wrong password! = Fel lösenord!
 User not found! = Användare ej funnen!
 Key not found! = Nyckel ej funnen!

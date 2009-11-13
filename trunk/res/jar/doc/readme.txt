@@ -132,6 +132,7 @@ Happy Hacking!
       - User Profile (Birthday, Country, First Name, Last Name and 
         Gender with public options)
       - Drag'n Drop articles on frontpage. (just for fun)
+      - AJAX Login. (just for fun)
 
 ----------------------------------------------
 
