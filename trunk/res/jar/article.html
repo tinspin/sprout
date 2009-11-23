@@ -174,7 +174,8 @@ public class article extends Sprout {
             <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
           </a>
         </td>
-      </tr>
+        <td>
+
 [[				try {
 					String address = ip.getValue();
 					int index = ip.getValue().indexOf(",");
@@ -182,10 +183,13 @@ public class article extends Sprout {
 					if(index > 0) {
 						address = address.substring(index + 1).trim();
 					} ]]
-      <!-- [[ Ip.reverse(address) ]] -->
+          [[ Ip.reverse(address) ]]
 [[				} catch(Exception e) { ]]
-      <!-- [[ e.getMessage() ]] -- >
+          [[ e.getMessage() ]]
 [[				} ]]
+
+        </td>
+      </tr>
 
 [[			} else if(show) { ]]
 
@@ -215,12 +219,12 @@ public class article extends Sprout {
 
         <tr>
           <td colspan="2">
-            <textarea class="large" name="body" rows="5" tabindex="2">[[ event.string("body") ]]</textarea>
+            <textarea id="body" class="large" name="body" rows="5" tabindex="2">[[ event.string("body") ]]</textarea>
           </td>
         </tr>
         <tr>
           <td colspan="2">
-            <a href="" class="arrow" onclick="document.comment.submit(); return false;">
+            <a href="" class="arrow" onclick="ajaxPost([[ article.getId() ]]); return false;">
               <span>[[ i18n("Post") ]]</span>
             </a>
           </td>

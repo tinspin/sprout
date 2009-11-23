@@ -10,9 +10,15 @@ function myLoginKeyPressed(e) {
   e = e || window.event;
   var unicode = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
   if(unicode == 13) {
-    _query('POST', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value);
+    ajaxLogin();
     return false;
   }
+}
+function ajaxLogin() {
+	_query('POST', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value);
+}
+function ajaxPost(id) {
+	_query('POST', '/comment', 'ajax=true&body=' + document.getElementById('body').value + '&id=' + id);
 }
 function remind() {
   if(document.getElementById('mail').value != '') {

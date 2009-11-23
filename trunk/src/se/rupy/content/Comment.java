@@ -1,5 +1,7 @@
 package se.rupy.content;
 
+import org.json.JSONObject;
+
 import se.rupy.http.Event;
 import se.rupy.http.Query;
 import se.rupy.sprout.Data;
@@ -12,11 +14,23 @@ public class Comment extends Node {
 		super(COMMENT);
 	}
 	
+	/*
+            <!--a href="" class="arrow" onclick="document.comment.submit(); return false;">
+              <span>[[ i18n("Post") ]]</span>
+            </a-->
+	 */
+	
 	public static class Post extends Sprout {
 		public String path() { return "/comment"; }
 		public void filter(Event event) throws Event, Exception {
 			if(event.query().method() == Query.POST) {
 				event.query().parse();
+				
+				JSONObject ajax = null;
+				
+				if(event.bit("ajax")) {
+					ajax = new JSONObject();
+				}
 				
 				String body = event.string("body");
 				Object key = event.session().get("key");
@@ -39,9 +53,19 @@ public class Comment extends Node {
 					article.update();
 					
 					Article.invalidate(article);
+					
+					if(ajax != null) {
+						ajax.put("url", "/article?id=" + article.getId());
+					}
 				}
 
-				Sprout.redirect(event);
+				if(ajax != null) {
+					event.output().print(ajax.toString());
+					throw event;
+				}
+				else {
+					Sprout.redirect(event);
+				}
 			}
 		}
 	}

@@ -132,12 +132,13 @@ Happy Hacking!
       - User Profile (Birthday, Country, First Name, Last Name and 
         Gender with public options)
       - Drag'n Drop articles on frontpage. (just for fun)
-      - AJAX Login. (just for fun)
+      - AJAX Login and Post. (just for fun)
 
 ----------------------------------------------
 
 5. Todo:
 
+  - Javascript mouse movement captcha!?
   - Profile Image
   - Session lock on ARTICLE_READ.
   - Delete files.
