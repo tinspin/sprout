@@ -695,8 +695,14 @@ public class Node extends NodeBean implements Type {
 		print(buffer, 0);
 		return buffer.toString();
 	}
+	
+	public String toXML(int padding) {
+		StringBuffer buffer = new StringBuffer();
+		print(buffer, padding);
+		return buffer.toString();
+	}
 
-	void padding(StringBuffer buffer, int level) {
+	protected void padding(StringBuffer buffer, int level) {
 		for(int i = 0; i < level; i++) {
 			buffer.append("  ");
 		}

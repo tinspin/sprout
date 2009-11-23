@@ -517,14 +517,22 @@ public class Article extends Node {
 	}
 	
 	protected void print(StringBuffer buffer, int level) {
-		buffer.append("  <item>");
-		buffer.append("    <head>" + Sprout.clean(meta(ARTICLE_TITLE).getValue()) + "</head>");
-		buffer.append("    <link>");
-		buffer.append("      <html>/article?id=" + getId() + "</html>");
-		buffer.append("      <json>/article.js?id=" + getId() + "</json>");
-		buffer.append("    </link>");
-		buffer.append("    <body>" + Sprout.clean(meta(ARTICLE_BODY).getValue()) + "</body>");
-		buffer.append("    <date>" + getDate() + "</date>");
+		padding(buffer, level);
+		buffer.append("<item>\n");
+		padding(buffer, level + 1);
+		buffer.append("<head>" + Sprout.clean(meta(ARTICLE_TITLE).getValue()) + "</head>\n");
+		padding(buffer, level + 1);
+		buffer.append("<link>\n");
+		padding(buffer, level + 2);
+		buffer.append("<html>/article?id=" + getId() + "</html>\n");
+		padding(buffer, level + 2);
+		buffer.append("<json>/article.js?id=" + getId() + "</json>\n");
+		padding(buffer, level + 1);
+		buffer.append("</link>\n");
+		padding(buffer, level + 1);
+		buffer.append("<body>" + Sprout.clean(meta(ARTICLE_BODY).getValue()) + "</body>\n");
+		padding(buffer, level + 1);
+		buffer.append("<date>" + getDate() + "</date>\n");
 		
 		LinkedList children = null;
 		
@@ -543,32 +551,40 @@ public class Article extends Node {
 			
 			switch(child.getType()) {
 			case USER: {
-				buffer.append("    <user>" + child.meta(USER_NAME).getValue() + "</user>");
+				padding(buffer, level + 1);
+				buffer.append("<user>" + child.meta(USER_NAME).getValue() + "</user>\n");
 			} break;
 			case COMMENT: { 
 				Data state = child.meta(COMMENT_STATE);
 				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
 				if(show) {
-					buffer.append("    <post>" + child.meta(COMMENT_BODY).getValue() + "</post>");
+					padding(buffer, level + 1);
+					buffer.append("<post>" + child.meta(COMMENT_BODY).getValue() + "</post>\n");
 				}
 			} break;
 			case FILE: {
-				buffer.append("    <file>");
-				buffer.append("      <type>" + child.meta(FILE_TYPE).getValue() + "</type>");
-				buffer.append("      <path>" + child.path() + Sprout.clean(child.meta(FILE_NAME).getValue()) + "</path>");
-				buffer.append("    </file>");
+				padding(buffer, level + 1);
+				buffer.append("<file>\n");
+				padding(buffer, level + 2);
+				buffer.append("<type>" + child.meta(FILE_TYPE).getValue() + "</type>\n");
+				padding(buffer, level + 2);
+				buffer.append("<path>" + child.path() + Sprout.clean(child.meta(FILE_NAME).getValue()) + "</path>\n");
+				padding(buffer, level + 1);
+				buffer.append("</file>\n");
 			} break;
 			case PING: {
 				Data state = child.meta(PING_STATE);
 				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
 				if(show) {
-					buffer.append("    <ping>" + Sprout.clean(child.meta(PING_URL).getValue()) + "</ping>");
+					padding(buffer, level + 1);
+					buffer.append("<ping>" + Sprout.clean(child.meta(PING_URL).getValue()) + "</ping>\n");
 				}
 			} break;
 			}
 		}
 
-		buffer.append("    </item>");
+		padding(buffer, level);
+		buffer.append("</item>\n");
 	}
 
 	public class Category extends Node {
