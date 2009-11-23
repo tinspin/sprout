@@ -357,6 +357,12 @@ public class User extends Node {
 		return user;
 	}
 
+	/*
+            <!--a href="" class="arrow" onclick="document.login.submit(); return false;">
+              <span>[[ i18n("Login") ]]</span>
+            </a-->
+	 */
+	
 	public static class Login extends Service {
 		public int index() { return 1; }
 		public String path() { return "/login"; }
