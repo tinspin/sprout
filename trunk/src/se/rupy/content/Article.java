@@ -12,6 +12,10 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+
 import se.rupy.http.Event;
 import se.rupy.http.Query;
 import se.rupy.http.Service;
@@ -39,7 +43,7 @@ public class Article extends Node {
 	public static HashMap cache2 = new HashMap(); // by page
 	public static HashMap cache3 = new HashMap(); // by user
 	public static FontMetrics metric = Toolkit.getDefaultToolkit().getFontMetrics(new Font("Sans", Font.PLAIN, 8));
-	
+
 	public LinkedList columns;
 	public int comments, pings;
 
@@ -51,18 +55,18 @@ public class Article extends Node {
 			s.printStackTrace();
 		}
 	}
-	
+
 	public Article() {
 		super(ARTICLE);
 	}
 
 	public int permit(Object key) throws SQLException {
 		User user = User.get(key);
-		
+
 		if(user == null) {
 			return NO;
 		}
-		
+
 		try {
 			Node node = (Node) child(USER).getFirst();
 
@@ -75,10 +79,10 @@ public class Article extends Node {
 		if(user.child(GROUP, GROUP_NAME, "ADMIN") != null) {
 			return ADMIN;
 		}
-		
+
 		return NO;
 	}
-	
+
 	public static long max(short type) throws Exception {
 		Connection conn = Sprout.connection(false);
 		PreparedStatement stmt = null;
@@ -107,11 +111,11 @@ public class Article extends Node {
 
 		return 0;
 	}
-	
+
 	public static LinkedList most(short type, int start, int limit) throws SQLException {
 		return most(type, start, limit, "ORDER BY value DESC");
 	}
-	
+
 	public static LinkedList most(short type, int start, int limit, String order) throws SQLException {
 		LinkedList list = new LinkedList();
 		Connection conn = Sprout.connection(false);
@@ -141,7 +145,7 @@ public class Article extends Node {
 
 		return list;
 	}
-	
+
 	static String from(String query) {
 		/*
 		 * poor performing but easier to understand query
@@ -161,8 +165,8 @@ public class Article extends Node {
 		"(d1.type = 400 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
 		"(d2.type = 401 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
 		"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\")" + // name
-		*/
-		
+		 */
+
 		return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
 		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
 		"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
@@ -199,7 +203,7 @@ public class Article extends Node {
 
 		return 0;
 	}
-	
+
 	public static LinkedList query(String query, int start, int limit) throws Exception {
 		LinkedList list = new LinkedList();
 		Connection conn = Sprout.connection(false);
@@ -229,40 +233,40 @@ public class Article extends Node {
 
 		return list;
 	}
-	
+
 	protected static void invalidate(Article article) throws SQLException {
 		cache2.clear();
 		article.invalidate();
 		cache1.put(new Long(article.getId()), article);
 		article.count();
 	}
-	
+
 	public void count() throws SQLException {
 		comments = count(COMMENT, COMMENT_STATE);
 		pings = count(PING, PING_STATE);
 	}
-	
+
 	int count(int type, short state) throws SQLException {
 		Iterator it = child(type).iterator();
 		int count = 0;
-		
+
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
 			Data data = node.meta(state);
-			
+
 			if(data != null && data.getValue().equals("SHOW")) {
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
-	
+
 	public static Article find(long id) throws SQLException {
 		if(id == 0) {
 			return null;
 		}
-		
+
 		Article old = (Article) cache1.get(new Long(id));
 
 		if(old == null) {
@@ -272,23 +276,23 @@ public class Article extends Node {
 			Sprout.update(Base.SELECT, old);
 
 			old.fill(10, 0, 100);
-			
+
 			cache1.put(new Long(id), old);
-			
+
 			old.count();
 		}
-		
+
 		return old;
 	}
-	
+
 	public static Cache get(String type, int start, int limit) throws SQLException {
 		String key = type + "|" + start + "|" + limit;
 		Cache old = (Cache) cache2.get(key);
-		
+
 		if(old == null) {
 			old = new Cache(true);
 		}
-		
+
 		if(old.invalid) {
 			old = new Cache(false);
 			old.setType(ARTICLE | USER);
@@ -296,33 +300,33 @@ public class Article extends Node {
 			old.setStart(start);
 			old.setLimit(limit);
 			Sprout.update(Base.SELECT, old);
-			
+
 			int index = 0;
 			Iterator it = old.iterator();
-			
+
 			while(it.hasNext()) {
 				NodeBean node = (NodeBean) it.next();
 				Article article = new Article();
-				
+
 				article.copy(node);
 				article.fill(10, 0, 100);
 
 				cache1.put(new Long(article.getId()), article);
-				
+
 				article.count();
-				
+
 				//Node user = (Node) article.child(USER).getFirst();
 				//user.meta();
-				
+
 				old.set(index++, article);
 			}
-			
+
 			cache2.put(key, old);
 		}
-		
+
 		return old;
 	}
-	
+
 	public static Object remove(Object key) {
 		return cache3.remove(key);
 	}
@@ -330,7 +334,7 @@ public class Article extends Node {
 	public static Article get(Object key) throws SQLException {
 		Article article = (Article) cache3.get(key);
 		User user = (User) User.get(key);
-		
+
 		if(article == null && user != null) {
 			article = new Article();
 			article.add(user);
@@ -398,24 +402,24 @@ public class Article extends Node {
 
 				if(key != null) {
 					Article article = find(id);
-					
+
 					if(article.permit(key) == NO) {
 						throw new Exception(Sprout.i18n("You are not authorized!"));
 					}
-					
+
 					article.delete(ALL);
-					
+
 					cache1.remove(new Long(id));
 					cache2.clear();
-					
+
 					MAX--;
 				}
-				
+
 				Sprout.redirect(event);
 			}
 		}
 	}
-	
+
 	public static class Publish extends Service {
 		public int index() { return 2; }
 		public String path() { return "/publish"; }
@@ -438,7 +442,7 @@ public class Article extends Node {
 					if(article.getId() == 0) {
 						MAX++;
 					}
-					
+
 					article.add(ARTICLE_TITLE, title);
 					article.add(ARTICLE_BODY, body);
 					article.update();
@@ -463,10 +467,10 @@ public class Article extends Node {
 
 			long id = event.big("id");
 			Object key = event.session().get("key");
-			
+
 			if(key != null) {
 				Article article = (Article) Article.get(key);
-				
+
 				if(id > 0 && article.getId() != id) {
 					article = find(id);
 				}
@@ -487,7 +491,86 @@ public class Article extends Node {
 			Sprout.redirect(event, "/");
 		}
 	}
+
+	public static class Widget extends Service {
+		public String path() { return "/article.js"; }
+		public void filter(Event event) throws Event, Exception {
+			event.query().parse();
+
+			long id = event.big("id");
+
+			if(id > 0) {
+				Article article = find(id);
+				
+				if(article != null) {
+					event.reply().type("application/javascript");
+					event.output().print(article.json());
+				}
+			}
+		}
+	}
 	
+	public JSONObject json() throws JSONException {
+		StringBuffer buffer = new StringBuffer();
+		print(buffer, 0);
+		return XML.toJSONObject(buffer.toString());
+	}
+	
+	protected void print(StringBuffer buffer, int level) {
+		buffer.append("  <item>");
+		buffer.append("    <head>" + Sprout.clean(meta(ARTICLE_TITLE).getValue()) + "</head>");
+		buffer.append("    <link>");
+		buffer.append("      <html>/article?id=" + getId() + "</html>");
+		buffer.append("      <json>/article.js?id=" + getId() + "</json>");
+		buffer.append("    </link>");
+		buffer.append("    <body>" + Sprout.clean(meta(ARTICLE_BODY).getValue()) + "</body>");
+		buffer.append("    <date>" + getDate() + "</date>");
+		
+		LinkedList children = null;
+		
+		try {
+			children = child(Node.ALL);
+			System.out.println(children);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Iterator it = children.iterator();
+		
+		while(it.hasNext()) {
+			Node child = (Node) it.next();
+			
+			switch(child.getType()) {
+			case USER: {
+				buffer.append("    <user>" + child.meta(USER_NAME).getValue() + "</user>");
+			} break;
+			case COMMENT: { 
+				Data state = child.meta(COMMENT_STATE);
+				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+				if(show) {
+					buffer.append("    <post>" + child.meta(COMMENT_BODY).getValue() + "</post>");
+				}
+			} break;
+			case FILE: {
+				buffer.append("    <file>");
+				buffer.append("      <type>" + child.meta(FILE_TYPE).getValue() + "</type>");
+				buffer.append("      <path>" + child.path() + Sprout.clean(child.meta(FILE_NAME).getValue()) + "</path>");
+				buffer.append("    </file>");
+			} break;
+			case PING: {
+				Data state = child.meta(PING_STATE);
+				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+				if(show) {
+					buffer.append("    <ping>" + Sprout.clean(child.meta(PING_URL).getValue()) + "</ping>");
+				}
+			} break;
+			}
+		}
+
+		buffer.append("    </item>");
+	}
+
 	public class Category extends Node {
 		public Category() {
 			super(CATEGORY);

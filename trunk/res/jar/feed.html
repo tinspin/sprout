@@ -34,9 +34,7 @@ public class feed extends Sprout {
 	</author>
 
 [[			while(it.hasNext()) {
-				Article article = (Article) it.next();
-				Node user = (Node) article.child(USER).getFirst();
-				boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
+				Article article = (Article) it.next(); ]]
 
 	<entry>
 		<title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
@@ -59,9 +57,7 @@ public class feed extends Sprout {
     <description>Sprout</description>
     
 [[			while(it.hasNext()) {
-				Article article = (Article) it.next();
-				Node user = (Node) article.child(USER).getFirst();
-				boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
+				Article article = (Article) it.next(); ]]
 		
     <item>
       <title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
@@ -82,60 +78,8 @@ public class feed extends Sprout {
 
 [[			while(it.hasNext()) {
 				Article article = (Article) it.next();
-				Node user = (Node) article.child(USER).getFirst();
-				boolean edit = user.meta(USER_KEY).getValue().equals(key); ]]
-
-  <item>
-    <head>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</head>
-    <link>
-      <html>/article?id=[[ article.getId() ]]</html>
-      <json>/article?id=[[ article.getId() ]]&amp;json=true</json>
-    </link>
-    <body>[[ clean(article.meta(ARTICLE_BODY).getValue()) ]]</body>
-    <date>[[ article.getDate() ]]</date>
-    
-[[				LinkedList children = article.child(ALL);
-				Iterator it2 = children.iterator();
-				while(it2.hasNext()) {
-					Node child = (Node) it2.next();
-					switch(child.getType()) {
-						case USER: { ]]
-
-    <user>[[ child.meta(USER_NAME).getValue() ]]</user>
-
-[[						} break;
-						case COMMENT: { 
-							Data state = child.meta(COMMENT_STATE);
-							boolean show = (state == null ? false : state.getValue().equals("SHOW"));
-							if(show) { ]]
-
-    <post>[[ child.meta(COMMENT_BODY).getValue() ]]</post>
-
-[[							}
-						} break;
-						case FILE: { ]]
-
-    <file>
-      <type>[[ child.meta(FILE_TYPE).getValue() ]]</type>
-      <path>[[ child.path() + clean(child.meta(FILE_NAME).getValue()) ]]</path>
-    </file>
-    
-[[						} break;
-						case PING: {
-							Data state = child.meta(PING_STATE);
-							boolean show = (state == null ? false : state.getValue().equals("SHOW"));
-							if(show) { ]]
-
-    <ping>[[ clean(child.meta(PING_URL).getValue()) ]]</ping>
-
-[[							}
-						} break;
-					}
-				} ]]
-
-  </item>
-
-[[ 			} ]]
+				out.print(article);
+ 			} ]]
 
 </data>
 

@@ -698,11 +698,11 @@ public class Node extends NodeBean implements Type {
 
 	void padding(StringBuffer buffer, int level) {
 		for(int i = 0; i < level; i++) {
-			buffer.append("    ");
+			buffer.append("  ");
 		}
 	}
 
-	void print(StringBuffer buffer, int level) {
+	protected void print(StringBuffer buffer, int level) {
 		padding(buffer, level);
 		buffer.append("<node id=\"" + getId() + "\" type=\"" + getType() + "\">\n");
 
