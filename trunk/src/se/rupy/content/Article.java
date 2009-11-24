@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.json.XML;
 
 import se.rupy.http.Event;
+import se.rupy.http.Output;
 import se.rupy.http.Query;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
@@ -501,24 +502,27 @@ public class Article extends Node {
 
 			if(id > 0) {
 				Article article = find(id);
-				
+
 				if(article != null) {
+					StringBuffer buffer = new StringBuffer();
+					article.print(buffer, 0);
+					JSONObject json = XML.toJSONObject(buffer.toString());
 					event.reply().type("application/javascript");
-					event.output().print(article.json());
+					Output out = event.output();
+					String element = User.host.replace('.', '_') + "_" + article.getId();
+					out.println("var article = " + json + ";");
+					out.println("document.getElementById('" + element + "_head').innerHTML = article.item.head;");
+					out.println("document.getElementById('" + element + "_body').innerHTML = article.item.body;");
 				}
 			}
 		}
 	}
-	
-	public JSONObject json() throws JSONException {
-		StringBuffer buffer = new StringBuffer();
-		print(buffer, 0);
-		return XML.toJSONObject(buffer.toString());
-	}
-	
+// TODO: remove meta for json loading and aggregate by date...
 	protected void print(StringBuffer buffer, int level) {
 		padding(buffer, level);
 		buffer.append("<item>\n");
+		padding(buffer, level + 1);
+		buffer.append("<id>" + getId() + "</id>\n");
 		padding(buffer, level + 1);
 		buffer.append("<head>" + Sprout.clean(meta(ARTICLE_TITLE).getValue()) + "</head>\n");
 		padding(buffer, level + 1);
@@ -533,33 +537,51 @@ public class Article extends Node {
 		buffer.append("<body>" + Sprout.clean(meta(ARTICLE_BODY).getValue()) + "</body>\n");
 		padding(buffer, level + 1);
 		buffer.append("<date>" + getDate() + "</date>\n");
-		
+
 		LinkedList children = null;
-		
+
 		try {
 			children = child(Node.ALL);
-			System.out.println(children);
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		Iterator it = children.iterator();
-		
+
 		while(it.hasNext()) {
 			Node child = (Node) it.next();
-			
+
 			switch(child.getType()) {
 			case USER: {
 				padding(buffer, level + 1);
 				buffer.append("<user>" + child.meta(USER_NAME).getValue() + "</user>\n");
 			} break;
-			case COMMENT: { 
+			case COMMENT: {
 				Data state = child.meta(COMMENT_STATE);
 				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
 				if(show) {
+					Data from = child.meta(COMMENT_IP);
+
+					if(from == null) {
+						try {
+							from = ((Node) child.child(USER).getFirst()).meta(USER_NAME);
+						}
+						catch(SQLException e) {
+							e.printStackTrace();
+						}
+					}
+
 					padding(buffer, level + 1);
-					buffer.append("<post>" + child.meta(COMMENT_BODY).getValue() + "</post>\n");
+					buffer.append("<post>\n");
+					padding(buffer, level + 2);
+					buffer.append("<body>" + child.meta(COMMENT_BODY).getValue() + "</body>\n");
+					padding(buffer, level + 2);
+					buffer.append("<from>" + from.getValue() + "</from>\n");
+					padding(buffer, level + 2);
+					buffer.append("<date>" + child.getDate() + "</date>\n");
+					padding(buffer, level + 1);
+					buffer.append("</post>\n");
 				}
 			} break;
 			case FILE: {
