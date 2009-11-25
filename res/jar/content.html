@@ -95,9 +95,7 @@ public class content extends Sprout {
 			if(type != null) {
 				if(type.getValue().equals("IMAGE") && !image) { ]]
 
-          <div>
-            <a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + name.getValue() ]]" border="0"/></a>
-          </div>
+          <div><a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + name.getValue() ]]" /></a></div>
 
 [[					image = true;
 				} else if(type.getValue().equals("AUDIO") && !audio) {
