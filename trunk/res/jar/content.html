@@ -45,7 +45,7 @@ public class content extends Sprout {
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
-          <td align="right"><img src="res/comment.gif"/>&nbsp;<i>[[ article.comments ]]</i>&nbsp;[[ i18n("Comments") ]]</td>
+          <td align="right"><i style="vertical-align: top;">[[ article.comments ]]</i>&nbsp;<a href="article?id=[[ article.getId() ]]"><img src="res/comment.gif"/></a></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -95,7 +95,7 @@ public class content extends Sprout {
 			if(type != null) {
 				if(type.getValue().equals("IMAGE") && !image) { ]]
 
-          <div><a class="title" href="article?id=[[ article.getId() ]]"><img src="[[ file.path() + "SMALL_" + name.getValue() ]]" /></a></div>
+          <div><a class="title" href="article?id=[[ article.getId() ]]"><img class="rounded" src="[[ file.path() + "SMALL_" + name.getValue() ]]" /></a></div>
 
 [[					image = true;
 				} else if(type.getValue().equals("AUDIO") && !audio) {

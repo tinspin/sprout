@@ -15,9 +15,7 @@ public class Comment extends Node {
 	}
 	
 	/*
-            <!--a href="" class="arrow" onclick="document.comment.submit(); return false;">
-              <span>[[ i18n("Post") ]]</span>
-            </a-->
+
 	 */
 	
 	public static class Post extends Sprout {
@@ -36,7 +34,7 @@ public class Comment extends Node {
 				Object key = event.session().get("key");
 				Article article = Article.find(event.big("id"));
 				
-				if(article != null && body.length() > 0) {
+				if(article != null && ajax != null && body.length() > 0) {
 					Comment comment = new Comment();
 					User user = User.get(key);
 

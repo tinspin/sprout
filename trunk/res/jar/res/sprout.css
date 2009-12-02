@@ -18,12 +18,10 @@ img {
 	border: none;
 }
 
-a img {
+.rounded {
 	display: block;
-}
-
-img.icon {
-	display: block;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 
 h1 {
