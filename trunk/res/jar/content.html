@@ -45,7 +45,7 @@ public class content extends Sprout {
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
-          <td align="right"><i style="vertical-align: top;">[[ article.comments ]]</i>&nbsp;<a href="article?id=[[ article.getId() ]]"><img src="res/comment.gif"/></a></td>
+          <td align="right">[[ if(article.comments > 0) { ]]<i style="vertical-align: top;">[[ article.comments ]]</i>&nbsp;[[ } ]]<a href="article?id=[[ article.getId() ]]"><img src="res/comment.gif" alt="[[ i18n("Comment") ]]"/></a></td>
         </tr>
         <tr>
           <td colspan="2">
