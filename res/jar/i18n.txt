@@ -25,6 +25,7 @@ All = Alla
 
 // Fields
 Comments = Kommentarer
+Comment = Kommentera
 eMail = ePost
 Nickname = Smeknamn
 Password = Lösenord
