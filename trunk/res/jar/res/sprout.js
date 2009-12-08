@@ -14,6 +14,17 @@ function myLoginKeyPressed(e) {
     return false;
   }
 }
+function changeFlag(country) {
+  var flag = document.getElementById('flag');
+  var code = country[country.selectedIndex].value.toLowerCase();
+  if(code == '--') {
+    flag.style.display = 'none';
+  }
+  else {
+    flag.src = 'res/flag/' + code + '.png';
+    flag.style.display = 'inline';
+  }
+}
 function ajaxLogin() {
 	_query('POST', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value);
 }
