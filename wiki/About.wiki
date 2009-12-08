@@ -3,7 +3,7 @@
 
 To host a rupy/sprout site you need a server provider that can meet the following [http://code.google.com/p/sprout/wiki/Hosting hosting] requirements.
 
-[http://singel.spraydate.se Singel] _Valentines day campaign site for Swedish match-making site [http://www.spraydate.se Spraydate]._
+Singel _Valentines day campaign site for Swedish match-making site [http://www.spraydate.se Spraydate]._
 
   * Production: Three people for one week full-time.
   * Statistics: ~10000 pageviews and ~5 GB of data transfered; per day.
