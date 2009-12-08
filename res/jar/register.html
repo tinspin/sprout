@@ -3,11 +3,23 @@
 import se.rupy.http.*;
 import se.rupy.sprout.*;
 
+import com.maxmind.geoip.*;
+
 public class register extends Sprout {
 	public int index() { return 2; }
 	public String path() { return "/register"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
+		String country = event.string("country");
+		
+		if(country.length() == 0) {
+			country = User.lookup.getCountry(event.remote()).getCode();
+		}
+		
+		if(country.equals("--")) {
+			country = "";
+		}
+		
 		event.daemon().chain("/header").filter(event); ]]
 
   <table border="0" width="100">
@@ -86,14 +98,14 @@ public class register extends Sprout {
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Country") ]]&nbsp;&nbsp;</td>
+        <td>[[ i18n("Country") ]]&nbsp;<img id="flag" src="res/flag/[[ country.toLowerCase() ]].png"[[ out.print(country.length() == 0 ? " style=\"display: none;\"" : ""); ]]/></td>
         <td>
-          <select name="country" class="large" tabindex="8">
-            <option value="0">[[ i18n("Earth") ]]</option>
+          <select name="country" class="large" onChange="changeFlag(this);" tabindex="8">
+            <option value="--">N/A</option>
             
-[[		for(int i = 1; i < User.country.length + 1; i++) { ]]
+[[		for(int i = 0; i < User.countryCode.length; i++) { ]]
 
-            <option value="[[ i ]]"[[ event.medium("country") == i ? " selected" : "" ]]>[[ User.country[i - 1] ]]</option>
+            <option value="[[ User.countryCode[i] ]]"[[ country.equals(User.countryCode[i]) ? " selected" : "" ]]>[[ User.countryName[i] ]]</option>
 
 [[		} ]]
 

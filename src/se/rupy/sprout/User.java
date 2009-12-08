@@ -8,8 +8,11 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.json.JSONObject;
+
+import com.maxmind.geoip.LookupService;
 
 import se.rupy.http.*;
 import se.rupy.mail.*;
@@ -30,266 +33,88 @@ public class User extends Node {
 		"November", 
 		"December"
 	};
-	public static final String[] country = {
-		"Afghanistan",
-		"Aland Islands",
-		"Albania",
-		"Algeria",
-		"American Samoa",
-		"Andorra",
-		"Angola",
-		"Anguilla",
-		"Antarctica",
-		"Antigua and Barbuda",
-		"Argentina",
-		"Armenia",
-		"Aruba",
-		"Australia",
-		"Austria",
-		"Azerbaijan",
-		"Bahamas",
-		"Bahrain",
-		"Bangladesh",
-		"Barbados",
-		"Belarus",
-		"Belgium",
-		"Belize",
-		"Benin",
-		"Bermuda",
-		"Bhutan",
-		"Bolivia",
-		"Bosnia and Herzegovina",
-		"Botswana",
-		"Bouvet Island",
-		"Brazil",
-		"British Indian Ocean Territory",
-		"Brunei Darussalam",
-		"Bulgaria",
-		"Burkina Faso",
-		"Burundi",
-		"Cambodia",
-		"Cameroon",
-		"Canada",
-		"Cape Verde",
-		"Cayman Islands",
-		"Central African Republic",
-		"Chad",
-		"Chile",
-		"China",
-		"Christmas Island",
-		"Cocos (Keeling) Islands",
-		"Colombia",
-		"Comoros",
-		"Congo",
-		"Congo, The Democratic Republic of the",
-		"Cook Islands",
-		"Costa Rica",
-		"Cote D'Ivoire",
-		"Croatia",
-		"Cuba",
-		"Cyprus",
-		"Czech Republic",
-		"Denmark",
-		"Djibouti",
-		"Dominica",
-		"Dominican Republic",
-		"Ecuador",
-		"Egypt",
-		"El Salvador",
-		"Equatorial Guinea",
-		"Eritrea",
-		"Estonia",
-		"Ethiopia",
-		"Falkland Islands (Malvinas)",
-		"Faroe Islands",
-		"Fiji",
-		"Finland",
-		"France",
-		"French Guiana",
-		"French Polynesia",
-		"French Southern Territories",
-		"Gabon",
-		"Gambia",
-		"Georgia",
-		"Germany",
-		"Ghana",
-		"Gibraltar",
-		"Greece",
-		"Greenland",
-		"Grenada",
-		"Guadeloupe",
-		"Guam",
-		"Guatemala",
-		"Guernsey",
-		"Guinea",
-		"Guinea-Bissau",
-		"Guyana",
-		"Haiti",
-		"Heard Island and McDonald Islands",
-		"Holy See (Vatican City State)",
-		"Honduras",
-		"Hong Kong",
-		"Hungary",
-		"Iceland",
-		"India",
-		"Indonesia",
-		"Iran, Islamic Republic of",
-		"Iraq",
-		"Ireland",
-		"Isle of Man",
-		"Israel",
-		"Italy",
-		"Jamaica",
-		"Japan",
-		"Jersey",
-		"Jordan",
-		"Kazakstan",
-		"Kenya",
-		"Kiribati",
-		"Korea, Democratic People's Republic of",
-		"Korea, Republic of",
-		"Kuwait",
-		"Kyrgyzstan",
-		"Lao People's Democratic Republic",
-		"Latvia",
-		"Lebanon",
-		"Lesotho",
-		"Liberia",
-		"Libyan Arab Jamahiriya",
-		"Liechtenstein",
-		"Lithuania",
-		"Luxembourg",
-		"Macau",
-		"Macedonia",
-		"Madagascar",
-		"Malawi",
-		"Malaysia",
-		"Maldives",
-		"Mali",
-		"Malta",
-		"Marshall Islands",
-		"Martinique",
-		"Mauritania",
-		"Mauritius",
-		"Mayotte",
-		"Mexico",
-		"Micronesia, Federated States of",
-		"Moldova, Republic of",
-		"Monaco",
-		"Mongolia",
-		"Montenegro",
-		"Montserrat",
-		"Morocco",
-		"Mozambique",
-		"Myanmar",
-		"Namibia",
-		"Nauru",
-		"Nepal",
-		"Netherlands",
-		"Netherlands Antilles",
-		"New Caledonia",
-		"New Zealand",
-		"Nicaragua",
-		"Niger",
-		"Nigeria",
-		"Niue",
-		"Norfolk Island",
-		"Northern Mariana Islands",
-		"Norway",
-		"Oman",
-		"Pakistan",
-		"Palau",
-		"Palestinian Territory",
-		"Panama",
-		"Papua New Guinea",
-		"Paraguay",
-		"Peru",
-		"Philippines",
-		"Poland",
-		"Portugal",
-		"Puerto Rico",
-		"Qatar",
-		"Reunion",
-		"Romania",
-		"Russian Federation",
-		"Rwanda",
-		"Saint Helena",
-		"Saint Kitts and Nevis",
-		"Saint Lucia",
-		"Saint Pierre and Miquelon",
-		"Saint Vincent and the Grenadines",
-		"Samoa",
-		"San Marino",
-		"Sao Tome and Principe",
-		"Saudi Arabia",
-		"Senegal",
-		"Serbia",
-		"Seychelles",
-		"Sierra Leone",
-		"Singapore",
-		"Slovakia",
-		"Slovenia",
-		"Solomon Islands",
-		"Somalia",
-		"South Africa",
-		"South Georgia and the South Sandwich Islands",
-		"Spain",
-		"Sri Lanka",
-		"Sudan",
-		"Suriname",
-		"Svalbard and Jan Mayen",
-		"Swaziland",
-		"Sweden",
-		"Switzerland",
-		"Syrian Arab Republic",
-		"Taiwan",
-		"Tajikistan",
-		"Tanzania, United Republic of",
-		"Thailand",
-		"Togo",
-		"Tokelau",
-		"Tonga",
-		"Trinidad and Tobago",
-		"Tunisia",
-		"Turkey",
-		"Turkmenistan",
-		"Turks and Caicos Islands",
-		"Tuvalu",
-		"Uganda",
-		"Ukraine",
-		"United Arab Emirates",
-		"United Kingdom",
-		"United States",
-		"United States Minor Outlying Islands",
-		"Uruguay",
-		"Uzbekistan",
-		"Vanuatu",
-		"Venezuela",
-		"Vietnam",
-		"Virgin Islands, British",
-		"Virgin Islands, U.S.",
-		"Wallis and Futuna",
-		"Western Sahara",
-		"Yemen",
-		"Zambia",
-		"Zimbabwe"
-		};
 
 	private static String mail;
 	private static String content, remind;
 
 	private final static String EOL = "\r\n";
-
+	public static LookupService lookup;
 	private static HashMap cache = new HashMap();
+	public static String[] countryCode;
+	public static String[] countryName;
 
 	static {
+		String[] exclude = {"N/A",
+				"Asia/Pacific Region", 
+				"Antarctica", 
+				"Europe", 
+				"France, Metropolitan", 
+				"Guernsey", 
+				"Jersey", 
+				"Isle of Man", 
+				"Saint Barthelemy", 
+				"Saint Martin", 
+				"Anonymous Proxy", 
+				"Satellite Provider", 
+		"Other"};
+
+		try {
+			lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);
+
+			Vector name = new Vector();
+			Vector code = new Vector();
+			boolean flag = true, add = true;
+			String tempName, tempCode;
+
+			for(int i = 0; i < LookupService.countryName.length; i++) {
+				for(int j = 0; j < exclude.length; j++) {
+					if(LookupService.countryName[i].equals(exclude[j])) {
+						add = false;
+					}
+				}
+				if(add) {
+					name.add(LookupService.countryName[i]);
+					code.add(LookupService.countryCode[i]);
+				}
+				add = true;
+			}
+
+			String[] x = new String[name.size()];
+			name.toArray(x);
+			String[] y = new String[code.size()];
+			code.toArray(y);
+
+			while(flag) {
+				flag = false;
+				for(int j = 0; j < x.length - 1; j++) {
+					if(x[j].compareToIgnoreCase(x[j + 1]) > 0) {
+						tempName = x[j];
+						x[j] = x[j + 1];
+						x[j + 1] = tempName;
+
+						tempCode = y[j];
+						y[j] = y[j + 1];
+						y[j + 1] = tempCode;
+
+						flag = true;
+					}
+				}
+			}
+
+			User.countryName = x;
+			User.countryCode = y;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		Data.cache(USER, new Data(USER_STATE, "UNVERIFIED"));
 		Data.cache(USER, new Data(USER_STATE, "VERIFIED"));
 		Data.cache(USER, new Data(USER_GENDER, "MALE"));
 		Data.cache(USER, new Data(USER_GENDER, "FEMALE"));
-		
-		for(int i = 0; i < country.length; i++) {
-			Data.cache(USER, new Data(USER_COUNTRY, country[i]));
+
+		for(int i = 0; i < countryName.length; i++) {
+			Data.cache(USER, new Data(USER_COUNTRY, countryName[i]));
 		}
 
 		host = System.getProperty("host", "localhost:9000");
@@ -362,7 +187,7 @@ public class User extends Node {
               <span>[[ i18n("Login") ]]</span>
             </a-->
 	 */
-	
+
 	public static class Login extends Service {
 		public int index() { return 1; }
 		public String path() { return "/login"; }
@@ -371,11 +196,11 @@ public class User extends Node {
 
 			if(event.query().method() == Query.POST) {
 				JSONObject ajax = null;
-				
+
 				if(event.bit("ajax")) {
 					ajax = new JSONObject();
 				}
-				
+
 				String mail = event.string("mail").toLowerCase();
 				String pass = event.string("pass");
 
@@ -387,7 +212,7 @@ public class User extends Node {
 						if(user.meta(USER_PASS).getValue().equals(pass)) {
 							if(user.meta(USER_STATE).getValue().equals("VERIFIED")) {
 								save(event.session(), user, event.bit("remember"));
-								
+
 								if(ajax != null) {
 									ajax.put("url", "/");
 								}
@@ -399,7 +224,7 @@ public class User extends Node {
 						else {
 							event.query().put("error", Sprout.i18n("Wrong password!"));
 							event.query().put("remind", "yes");
-							
+
 							if(ajax != null) {
 								ajax.put("remind", "yes");
 							}
@@ -414,7 +239,7 @@ public class User extends Node {
 					if(event.query().string("error").length() > 0) {
 						ajax.put("error", event.query().string("error"));
 					}
-					
+
 					event.output().print(ajax.toString());
 					throw event;
 				}
@@ -463,9 +288,9 @@ public class User extends Node {
 				String name = event.string("name");
 				String pass = event.string("pass");
 				String word = event.string("word");
-				
+
 				System.out.println(mail);
-				
+
 				int day = event.medium("day");
 				int month = event.medium("month");
 				int year = event.medium("year");
@@ -477,65 +302,72 @@ public class User extends Node {
 							user.add(USER_MAIL, mail);
 							user.add(USER_NAME, name);
 							user.add(USER_PASS, pass);
-							
+
 							user.add(USER_BIRTHDAY, day + "/" + month + "-" + year);
-							
-							if(event.medium("country") > 0) {
-								user.add(Data.cache(USER, country[event.medium("country") - 1]));
+
+							String country = event.string("country");
+
+							if(country != null) {
+								for(int i = 0; i < countryCode.length; i++) {
+									if(countryCode[i].equals(country)) {
+										user.add(Data.cache(USER, countryName[i]));
+										break;
+									}
+								}
 							}
-							
+
 							if(event.string("first").length() > 0) {
 								user.add(USER_FIRST_NAME, event.string("first"));
 							}
-							
+
 							if(event.string("last").length() > 0) {
 								user.add(USER_LAST_NAME, event.string("last"));
 							}
 
 							String show = "";
-							
+
 							if(event.string("show_first_name").length() > 0) {
 								show += "1";
 							}
 							else {
 								show += "0";
 							}
-							
+
 							if(event.string("show_last_name").length() > 0) {
 								show += "1";
 							}
 							else {
 								show += "0";
 							}
-							
+
 							if(event.string("show_country").length() > 0) {
 								show += "1";
 							}
 							else {
 								show += "0";
 							}
-							
+
 							if(event.string("show_birthday").length() > 0) {
 								show += "1";
 							}
 							else {
 								show += "0";
 							}
-							
+
 							if(event.string("show_gender").length() > 0) {
 								show += "1";
 							}
 							else {
 								show += "0";
 							}
-							
+
 							Data data = Data.cache(USER, show);
-							
+
 							if(data == null) {
 								Data.cache(USER, new Data(USER_SHOW, show));
 								data = Data.cache(USER, show);
 							}
-							
+
 							user.add(data);
 							user.add(Sprout.generate(USER_KEY, 16));
 							user.add(USER_IP, event.remote());
@@ -549,9 +381,9 @@ public class User extends Node {
 							if(live == null || !live.equals("true")) {
 								user.add(Data.cache(USER, "VERIFIED"));
 								user.update();
-								
+
 								System.out.println(user);
-								
+
 								save(event.session(), user, false);
 								Sprout.redirect(event, "/");
 							}
@@ -565,7 +397,7 @@ public class User extends Node {
 							copy = copy.replaceAll("@@key@@", key);
 
 							send(event, mail, Sprout.i18n("Welcome!"), copy);
-							
+
 							user.update();
 
 							Sprout.redirect(event, "/verify");
