@@ -1,6 +1,6 @@
 Glad to see you joined!<br>
 <br>
-You need to verify this e-mail address by<br>
+You need to verify this eMail address by<br>
 browsing to the following address:<br>
 <br>
 &nbsp;&nbsp;<a href="@@url@@">@@url@@</a><br>

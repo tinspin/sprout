@@ -1,7 +1,9 @@
 ﻿/* Translation file.
  */
 // Uncomment to enable translation!!!
-//language = swedish // mysql collation: general, czech, danish, estonian, hungarian, icelandic, latvian, lithuanian, persian, polish, roman, romanian, slovak, slovenian, spanish, swedish, turkish
+translate = true
+
+language = swedish // mysql collation: general, czech, danish, estonian, hungarian, icelandic, latvian, lithuanian, persian, polish, roman, romanian, slovak, slovenian, spanish, swedish, turkish
 Welcome! = Välkommen! // welcome mail subject, see mail.txt
 Reminder! = Påminnelse! // remind mail subject, see remind.txt
 Forgot password? = Glömt lösenord?
@@ -45,11 +47,11 @@ Gender = Kön
 Female = Flicka
 Male = Pojke
 
-Show e-mail? = Visa e-post?
+Show eMail? = Visa ePost?
 Show birthday? = Visa födelsedag?
 Show country? = Visa land?
-Show firstname? = Visa förnamn?
-Show lastname? = Visa efternamn?
+Show first name? = Visa förnamn?
+Show last name? = Visa efternamn?
 
 // Pagination
 First page = Första sidan
@@ -67,10 +69,11 @@ Check your inbox! = Kolla din inbox!
 Wrong password! = Fel lösenord!
 User not found! = Användare ej funnen!
 Key not found! = Nyckel ej funnen!
-That's not an e-mail! = Ogiltig e-post!
-Mail already in use! = E-post används redan!
+That's not an eMail! = Ogiltig ePost!
+eMail already in use! = ePost används redan!
+Nickname already in use! = Smeknamn används redan!
 Passwords don't match! = Lösenorden stämmer inte överens!
-E-mail not found! = E-post ej funnen!
+eMail not found! = ePost ej funnen!
 
 // Malign errors
 You are not authorized! = Du saknar rättigheter!
@@ -78,7 +81,7 @@ You are not an administrator! = Du är inte administratör!
 You need to login! = Du måste logga in!
 
 // See verify.html
-Verify your E-mail address by clicking on the link sent in a mail to you. = Verifiera din e-post adress genom att klicka på länken i mailet vi skickat.
+Verify your eMail address by clicking on the link sent in a mail to you. = Verifiera din ePost adress genom att klicka på länken i mailet vi skickat.
 
 // Months
 January = Januari

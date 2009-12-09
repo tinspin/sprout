@@ -69,7 +69,7 @@ public abstract class Sprout extends Service implements Type {
 			e.printStackTrace();
 		}
 		
-		translate = i18n.getProperty("language", null) != null;
+		translate = i18n.getProperty("translate", null) != null;
 	}
 
 	public static String i18n(String text) {
