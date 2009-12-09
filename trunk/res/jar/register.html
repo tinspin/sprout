@@ -22,13 +22,13 @@ public class register extends Sprout {
 		
 		event.daemon().chain("/header").filter(event); ]]
 
-  <table border="0" width="100">
+  <table>
     <form name="register" action="register" method="post">
 
 [[		if(event.string("error").length() > 0) { ]]
 
       <tr>
-        <td colspan="2">
+        <td colspan="3">
           <font color="red"><i>[[ event.string("error") ]]</i></font>
         </td>
       </tr>
@@ -36,32 +36,15 @@ public class register extends Sprout {
 [[		} ]]
 
       <tr>
-        <td>[[ i18n("eMail") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
-        <td>
+        <td colspan="2"><font color="#F88017">[[ i18n("eMail") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="2">
           <input type="text" class="large" name="mail" value="[[ event.string("mail") ]]" tabindex="1"/>
+          <input type="checkbox" title="[[ i18n("Show e-mail?") ]]" name="show_mail"[[ event.string("show_mail").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Nickname") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
-        <td>
-          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" tabindex="2"/>
-        </td>
-      </tr>
-      <tr>
-        <td>[[ i18n("Password") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
-        <td>
-          <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="3"/>
-        </td>
-      </tr>
-      <tr>
-        <td>[[ i18n("Confirm") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
-        <td>
-          <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="4"/>
-        </td>
-      </tr>
-      <tr>
-        <td>[[ i18n("Birthday") ]]&nbsp;<font color="red">*</font>&nbsp;&nbsp;</td>
-        <td>
+        <td colspan="2"><font color="#F88017">[[ i18n("Birthday") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="2">
           <select name="day" class="tiny" tabindex="5">
             <option value="0">[[ i18n("Day") ]]</option>
             
@@ -82,7 +65,7 @@ public class register extends Sprout {
 [[		} ]]
 
           </select>
-          <select name="year" class="medium" tabindex="7">
+          <select name="year" class="year" tabindex="7">
             <option value="0">[[ i18n("Year") ]]</option>
             
 [[		for(int i = 1900; i < 2009; i++) { ]]
@@ -92,15 +75,55 @@ public class register extends Sprout {
 [[		} ]]
 
           </select>
-        </td>
-        <td>
-          <input type="checkbox" name="show_birthday"[[ event.string("show_birthday").equals("on") ? " checked" : "" ]]/>
+          <input type="checkbox" title="[[ i18n("Show birthday?") ]]" name="show_birthday"[[ event.string("show_birthday").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Country") ]]&nbsp;<img id="flag" src="res/flag/[[ country.toLowerCase() ]].png"[[ out.print(country.length() == 0 ? " style=\"display: none;\"" : ""); ]]/></td>
+        <td colspan="2"><font color="#F88017">[[ i18n("Nickname") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td>
-          <select name="country" class="large" onChange="changeFlag(this);" tabindex="8">
+          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" tabindex="2"/>
+        </td>
+        <td rowspan="3">
+          <table>
+            <tr>
+              <td>
+                <img src="res/female.png" alt="[[ i18n("Female") ]]"/>
+              </td>
+              <td>
+                <img src="res/male.png" alt="[[ i18n("Male") ]]"/>
+              </td>
+              <!--td>
+                <input type="checkbox" name="show_gender"[[ event.string("show_gender").equals("on") ? " checked" : "" ]]/>
+              </td-->
+            </tr>
+            <tr>
+              <td align="center">
+                <input type="radio" title="[[ i18n("Female") ]]" name="gender" value="female" tabindex="11"[[ event.string("gender").equals("female") ? " checked" : "" ]]/>
+              </td>
+              <td align="center">
+                <input type="radio" title="[[ i18n("Male") ]]" name="gender" value="male" tabindex="12"[[ event.string("gender").equals("male") ? " checked" : "" ]]/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><font color="#F88017">[[ i18n("Password") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>
+          <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="3"/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><font color="#F88017">[[ i18n("Confirm") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>
+          <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="4"/>
+        </td>
+      </tr>
+      <tr>
+        <td><font color="#3B9C9C">[[ i18n("Country") ]]</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td width="16"><img id="flag" src="res/flag/[[ country.toLowerCase() ]].png" align="right" style="vertical-align: middle;[[ out.print(country.length() == 0 ? " display: none;" : ""); ]]"/></td>
+        <td>
+          <select name="country" class="medium" onChange="changeFlag(this);" tabindex="8">
             <option value="--">N/A</option>
             
 [[		for(int i = 0; i < User.countryCode.length; i++) { ]]
@@ -112,39 +135,29 @@ public class register extends Sprout {
           </select>
         </td>
         <td>
-          <input type="checkbox" name="show_country"[[ event.string("show_country").equals("on") ? " checked" : "" ]]/>
+          <input type="checkbox" title="[[ i18n("Show country?") ]]" name="show_country"[[ event.string("show_country").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
-        <td>[[ out.print(i18n("First&nbsp;Name")); ]]&nbsp;&nbsp;</td>
+        <td colspan="2"><font color="#3B9C9C">[[ out.print(i18n("First&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
         <td>
           <input type="first" class="small" name="first" value="[[ event.string("first") ]]" tabindex="9"/>
         </td>
         <td>
-          <input type="checkbox" name="show_first_name"[[ event.string("show_first_name").equals("on") ? " checked" : "" ]]/>
+          <input type="checkbox" title="[[ i18n("Show firstname?") ]]" name="show_first_name"[[ event.string("show_first_name").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
-        <td>[[ out.print(i18n("Last&nbsp;Name")); ]]&nbsp;&nbsp;</td>
+        <td colspan="2"><font color="#3B9C9C">[[ out.print(i18n("Last&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
         <td>
           <input type="last" class="small" name="last" value="[[ event.string("last") ]]" tabindex="10"/>
         </td>
         <td>
-          <input type="checkbox" name="show_last_name"[[ event.string("show_last_name").equals("on") ? " checked" : "" ]]/>
+          <input type="checkbox" title="[[ i18n("Show lastname?") ]]" name="show_last_name"[[ event.string("show_last_name").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
-        <td>[[ i18n("Gender") ]]&nbsp;&nbsp;</td>
-        <td>
-          <input type="radio" name="gender" value="female" tabindex="11"[[ event.string("gender").equals("female") ? " checked" : "" ]]/>[[ i18n("Female") ]]
-          <input type="radio" name="gender" value="male" tabindex="12"[[ event.string("gender").equals("male") ? " checked" : "" ]]/>[[ i18n("Male") ]]
-        </td>
-        <td>
-          <input type="checkbox" name="show_gender"[[ event.string("show_gender").equals("on") ? " checked" : "" ]]/>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
+        <td colspan="3">
           <a href="" class="arrow" onclick="document.register.submit(); return false;">
             <span>[[ i18n("Register") ]]</span>
           </a>

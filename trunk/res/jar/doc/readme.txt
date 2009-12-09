@@ -84,7 +84,7 @@ d. Server properties
 3. Development tunings:
 
 To localise your site; edit i18n.txt, mail.txt and uncomment the 
-Sprout.i18n() method.
+languge in the i18n.txt file.
 
 To view the database structure, double click lib/logic.jar and
 open res/sprout.xml, you should not need to modify the database
@@ -133,6 +133,7 @@ Happy Hacking!
         Gender with public options)
       - Drag'n Drop articles on frontpage. (just for fun)
       - AJAX Login and Post. (just for fun)
+      - GeoIP and country flags.
 
 ----------------------------------------------
 
@@ -143,17 +144,15 @@ Happy Hacking!
   - Image upload path and name (with size?).
   - Image size query to resize and redirect service.
   - Licence for feed.
-  - Javascript mouse movement captcha!?
+  - Captcha!?
   - Profile image.
   - Session lock on ARTICLE_READ.
   - Delete files.
   - Make a new video player to match the audio player (that does not autostart).
-  - Cascade delete for article child nodes (except user!), link bug.
   - Delete comment for admin.
   - Edit and/or hide comment for session.
   - Cache timeout.
-  - Add editor privilege, disable it by default.
-  - Generic admin.
+  - Add editor privilege, enable by default.
   - Categories, test with swedish/english.
   - Localized dates.
   - Hide/show articles, with selective select, apply to comments.

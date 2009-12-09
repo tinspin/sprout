@@ -58,55 +58,53 @@ public class User extends Node {
 				"Satellite Provider", 
 		"Other"};
 
-		try {
-			lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);
+		Vector name = new Vector();
+		Vector code = new Vector();
+		boolean flag = true, add = true;
+		String tempName, tempCode;
 
-			Vector name = new Vector();
-			Vector code = new Vector();
-			boolean flag = true, add = true;
-			String tempName, tempCode;
-
-			for(int i = 0; i < LookupService.countryName.length; i++) {
-				for(int j = 0; j < exclude.length; j++) {
-					if(LookupService.countryName[i].equals(exclude[j])) {
-						add = false;
-					}
+		for(int i = 0; i < LookupService.countryName.length; i++) {
+			for(int j = 0; j < exclude.length; j++) {
+				if(LookupService.countryName[i].equals(exclude[j])) {
+					add = false;
 				}
-				if(add) {
+			}
+			if(add) {
+				if(Sprout.translate()) {
+					name.add(Sprout.i18n(LookupService.countryCode[i]));
+				}
+				else {
 					name.add(LookupService.countryName[i]);
-					code.add(LookupService.countryCode[i]);
 				}
-				add = true;
+				code.add(LookupService.countryCode[i]);
 			}
+			add = true;
+		}
 
-			String[] x = new String[name.size()];
-			name.toArray(x);
-			String[] y = new String[code.size()];
-			code.toArray(y);
+		String[] x = new String[name.size()];
+		name.toArray(x);
+		String[] y = new String[code.size()];
+		code.toArray(y);
 
-			while(flag) {
-				flag = false;
-				for(int j = 0; j < x.length - 1; j++) {
-					if(x[j].compareToIgnoreCase(x[j + 1]) > 0) {
-						tempName = x[j];
-						x[j] = x[j + 1];
-						x[j + 1] = tempName;
+		while(flag) {
+			flag = false;
+			for(int j = 0; j < x.length - 1; j++) {
+				if(x[j].compareToIgnoreCase(x[j + 1]) > 0) {
+					tempName = x[j];
+					x[j] = x[j + 1];
+					x[j + 1] = tempName;
 
-						tempCode = y[j];
-						y[j] = y[j + 1];
-						y[j + 1] = tempCode;
+					tempCode = y[j];
+					y[j] = y[j + 1];
+					y[j + 1] = tempCode;
 
-						flag = true;
-					}
+					flag = true;
 				}
 			}
+		}
 
-			User.countryName = x;
-			User.countryCode = y;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		User.countryName = x;
+		User.countryCode = y;
 
 		Data.cache(USER, new Data(USER_STATE, "UNVERIFIED"));
 		Data.cache(USER, new Data(USER_STATE, "VERIFIED"));
@@ -280,6 +278,17 @@ public class User extends Node {
 	public static class Register extends Service {
 		public int index() { return 1; }
 		public String path() { return "/register"; }
+		public void create() throws Exception {
+			try {
+				lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		public void destroy() throws Exception {
+			lookup.close();
+		}
 		public void filter(Event event) throws Event, Exception {
 			if(event.query().method() == Query.POST) {
 				event.query().parse();
@@ -288,127 +297,139 @@ public class User extends Node {
 				String name = event.string("name");
 				String pass = event.string("pass");
 				String word = event.string("word");
-
-				System.out.println(mail);
+				String gender = event.string("gender").toUpperCase();
 
 				int day = event.medium("day");
 				int month = event.medium("month");
 				int year = event.medium("year");
 
-				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && day > 0 && month > 0 && year > 0) {
-					if(pass.equals(word)) {
-						User user = new User();
-						if(!user.query(USER_MAIL, mail)) {
-							user.add(USER_MAIL, mail);
-							user.add(USER_NAME, name);
-							user.add(USER_PASS, pass);
+				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && gender.length() > 0 && day > 0 && month > 0 && year > 0) {
+					if(!pass.equals(word)) {
+						event.query().put("error", Sprout.i18n("Passwords don't match!"));
+						Sprout.redirect(event);
+					}
 
-							user.add(USER_BIRTHDAY, day + "/" + month + "-" + year);
+					User user = new User();
 
-							String country = event.string("country");
+					if(!user.query(USER_MAIL, mail)) {
+						event.query().put("error", Sprout.i18n("Mail already in use!"));
+						Sprout.redirect(event);
+					}
 
-							if(country != null) {
-								for(int i = 0; i < countryCode.length; i++) {
-									if(countryCode[i].equals(country)) {
-										user.add(Data.cache(USER, countryName[i]));
-										break;
-									}
-								}
+					if(!user.query(USER_NAME, name)) {
+						event.query().put("error", Sprout.i18n("Nickname already in use!"));
+						Sprout.redirect(event);
+					}
+
+					user.add(USER_MAIL, mail);
+					user.add(USER_NAME, name);
+					user.add(USER_PASS, pass);
+					user.add(Data.cache(USER, gender));
+					user.add(USER_BIRTHDAY, day + "/" + month + "-" + year);
+
+					String country = event.string("country");
+
+					if(country != null) {
+						for(int i = 0; i < countryCode.length; i++) {
+							if(countryCode[i].equals(country)) {
+								user.add(Data.cache(USER, countryName[i]));
+								break;
 							}
-
-							if(event.string("first").length() > 0) {
-								user.add(USER_FIRST_NAME, event.string("first"));
-							}
-
-							if(event.string("last").length() > 0) {
-								user.add(USER_LAST_NAME, event.string("last"));
-							}
-
-							String show = "";
-
-							if(event.string("show_first_name").length() > 0) {
-								show += "1";
-							}
-							else {
-								show += "0";
-							}
-
-							if(event.string("show_last_name").length() > 0) {
-								show += "1";
-							}
-							else {
-								show += "0";
-							}
-
-							if(event.string("show_country").length() > 0) {
-								show += "1";
-							}
-							else {
-								show += "0";
-							}
-
-							if(event.string("show_birthday").length() > 0) {
-								show += "1";
-							}
-							else {
-								show += "0";
-							}
-
-							if(event.string("show_gender").length() > 0) {
-								show += "1";
-							}
-							else {
-								show += "0";
-							}
-
-							Data data = Data.cache(USER, show);
-
-							if(data == null) {
-								Data.cache(USER, new Data(USER_SHOW, show));
-								data = Data.cache(USER, show);
-							}
-
-							user.add(data);
-							user.add(Sprout.generate(USER_KEY, 16));
-							user.add(USER_IP, event.remote());
-
-							if(Sprout.value("SELECT count(*) FROM node WHERE type = " + Type.USER) == 0) {
-								user.add(Group.name("ADMIN"));
-							}
-
-							String live = event.daemon().properties.getProperty("live");
-
-							if(live == null || !live.equals("true")) {
-								user.add(Data.cache(USER, "VERIFIED"));
-								user.update();
-
-								System.out.println(user);
-
-								save(event.session(), user, false);
-								Sprout.redirect(event, "/");
-							}
-							else {
-								user.add(Data.cache(USER, "UNVERIFIED"));
-							}
-
-							String key = user.meta(USER_KEY).getValue();
-							String url = "http://" + host + "/login?key=" + key;
-							String copy = content.replaceAll("@@url@@", url);
-							copy = copy.replaceAll("@@key@@", key);
-
-							send(event, mail, Sprout.i18n("Welcome!"), copy);
-
-							user.update();
-
-							Sprout.redirect(event, "/verify");
 						}
-						else {
-							event.query().put("error", Sprout.i18n("Mail already in use!"));
-						}
+					}
+
+					if(event.string("first").length() > 0) {
+						user.add(USER_FIRST_NAME, event.string("first"));
+					}
+
+					if(event.string("last").length() > 0) {
+						user.add(USER_LAST_NAME, event.string("last"));
+					}
+
+					String show = "";
+
+					if(event.string("show_first_name").length() > 0) {
+						show += "1";
 					}
 					else {
-						event.query().put("error", Sprout.i18n("Passwords don't match!"));
+						show += "0";
 					}
+
+					if(event.string("show_last_name").length() > 0) {
+						show += "1";
+					}
+					else {
+						show += "0";
+					}
+
+					if(event.string("show_country").length() > 0) {
+						show += "1";
+					}
+					else {
+						show += "0";
+					}
+
+					if(event.string("show_birthday").length() > 0) {
+						show += "1";
+					}
+					else {
+						show += "0";
+					}
+
+					if(event.string("show_gender").length() > 0) {
+						show += "1";
+					}
+					else {
+						show += "0";
+					}
+
+					if(event.string("show_mail").length() > 0) {
+						show += "1";
+					}
+					else {
+						show += "0";
+					}
+
+					Data data = Data.cache(USER, show);
+
+					if(data == null) {
+						Data.cache(USER, new Data(USER_SHOW, show));
+						data = Data.cache(USER, show);
+					}
+
+					user.add(data);
+					user.add(Sprout.generate(USER_KEY, 16));
+					user.add(USER_IP, event.remote());
+
+					if(Sprout.value("SELECT count(*) FROM node WHERE type = " + Type.USER) == 0) {
+						user.add(Group.name("ADMIN"));
+					}
+
+					String live = event.daemon().properties.getProperty("live");
+
+					if(live == null || !live.equals("true")) {
+						user.add(Data.cache(USER, "VERIFIED"));
+						user.update();
+
+						System.out.println(user);
+
+						save(event.session(), user, false);
+						Sprout.redirect(event, "/");
+					}
+					else {
+						user.add(Data.cache(USER, "UNVERIFIED"));
+					}
+
+					String key = user.meta(USER_KEY).getValue();
+					String url = "http://" + host + "/login?key=" + key;
+					String copy = content.replaceAll("@@url@@", url);
+					copy = copy.replaceAll("@@key@@", key);
+
+					send(event, mail, Sprout.i18n("Welcome!"), copy);
+
+					user.update();
+
+					Sprout.redirect(event, "/verify");
 				}
 
 				Sprout.redirect(event);

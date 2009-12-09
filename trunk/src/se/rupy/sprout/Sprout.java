@@ -25,6 +25,7 @@ import se.rupy.util.Log;
 public abstract class Sprout extends Service implements Type {
 	public static String root = "app" + java.io.File.separator + "content";
 	private static Properties i18n;
+	private static boolean translate;
 	private static Base db;
 
 	static {
@@ -67,12 +68,21 @@ public abstract class Sprout extends Service implements Type {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		translate = i18n.getProperty("language", null) != null;
 	}
 
 	public static String i18n(String text) {
-		return text; // i18n.getProperty(text, text); // uncomment to translate from i18n.txt
+		if(translate()) {
+			return i18n.getProperty(text, text);
+		}
+		return text;
 	}
 
+	public static boolean translate() {
+		return translate;
+	}
+	
 	public static String language() {
 		return i18n.getProperty("language", "general");
 	}
