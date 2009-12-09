@@ -39,7 +39,13 @@ public class Data extends DataBean implements Type {
 			System.out.println("Data cache for '" + name + "' is empty. (" + link + ")");
 		}
 		else {
-			return (Data) hash.get(name);
+			Data data = (Data) hash.get(name);
+			
+			if(data == null) {
+				//System.out.println("Data cache for '" + name + "' is empty. (" + hash + ")");
+			}
+			
+			return data;
 		}
 		
 		return null;

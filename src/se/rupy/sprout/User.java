@@ -112,7 +112,7 @@ public class User extends Node {
 		Data.cache(USER, new Data(USER_GENDER, "FEMALE"));
 
 		for(int i = 0; i < countryName.length; i++) {
-			Data.cache(USER, new Data(USER_COUNTRY, countryName[i]));
+			Data.cache(USER, new Data(USER_COUNTRY, countryCode[i]));
 		}
 
 		host = System.getProperty("host", "localhost:9000");
@@ -204,7 +204,7 @@ public class User extends Node {
 
 				if(mail.length() > 0 && pass.length() > 0) {
 					User user = new User();
-					if(user.query(USER_MAIL, mail)) {
+					if(user.query(USER_MAIL, mail) || user.query(USER_NAME, mail)) {
 						user.fill(10, 0, 10);
 
 						if(user.meta(USER_PASS).getValue().equals(pass)) {
@@ -294,7 +294,7 @@ public class User extends Node {
 				event.query().parse();
 
 				String mail = event.string("mail").toLowerCase();
-				String name = event.string("name");
+				String name = event.string("name").toLowerCase();
 				String pass = event.string("pass");
 				String word = event.string("word");
 				String gender = event.string("gender").toUpperCase();
@@ -311,12 +311,12 @@ public class User extends Node {
 
 					User user = new User();
 
-					if(!user.query(USER_MAIL, mail)) {
-						event.query().put("error", Sprout.i18n("Mail already in use!"));
+					if(user.query(USER_MAIL, mail)) {
+						event.query().put("error", Sprout.i18n("eMail already in use!"));
 						Sprout.redirect(event);
 					}
 
-					if(!user.query(USER_NAME, name)) {
+					if(user.query(USER_NAME, name)) {
 						event.query().put("error", Sprout.i18n("Nickname already in use!"));
 						Sprout.redirect(event);
 					}
@@ -327,15 +327,8 @@ public class User extends Node {
 					user.add(Data.cache(USER, gender));
 					user.add(USER_BIRTHDAY, day + "/" + month + "-" + year);
 
-					String country = event.string("country");
-
-					if(country != null) {
-						for(int i = 0; i < countryCode.length; i++) {
-							if(countryCode[i].equals(country)) {
-								user.add(Data.cache(USER, countryName[i]));
-								break;
-							}
-						}
+					if(event.string("country").length() > 0 && !event.string("country").equals("--")) {
+						user.add(Data.cache(USER, event.string("country")));
 					}
 
 					if(event.string("first").length() > 0) {
@@ -444,7 +437,7 @@ public class User extends Node {
 			email.send(text);
 		}
 		catch(Exception e) {
-			event.query().put("error", Sprout.i18n("That's not an e-mail!"));
+			event.query().put("error", Sprout.i18n("That's not an eMail!"));
 			System.out.println(e.getMessage());
 			Sprout.redirect(event);
 		}
@@ -471,7 +464,7 @@ public class User extends Node {
 						event.query().put("error", Sprout.i18n("Reminder sent!"));
 					}
 					else {
-						event.query().put("error", Sprout.i18n("E-mail not found!"));
+						event.query().put("error", Sprout.i18n("eMail not found!"));
 					}
 				}
 
