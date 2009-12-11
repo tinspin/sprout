@@ -52,6 +52,7 @@ Show birthday? = Visa födelsedag?
 Show country? = Visa land?
 Show first name? = Visa förnamn?
 Show last name? = Visa efternamn?
+Show twitter? = Visa twitter?
 
 // Pagination
 First page = Första sidan
