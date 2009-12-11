@@ -338,6 +338,10 @@ public class User extends Node {
 					if(event.string("last").length() > 0) {
 						user.add(USER_LAST_NAME, event.string("last"));
 					}
+					
+					if(event.string("twitter").length() > 0) {
+						user.add(USER_TWITTER, event.string("twitter"));
+					}
 
 					String show = "";
 

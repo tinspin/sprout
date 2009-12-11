@@ -30,6 +30,7 @@ public interface Type {
 	public final static short USER_BIRTHDAY		= 111;
 	public final static short USER_GENDER		= 112;
 	public final static short USER_SHOW			= 113;
+	public final static short USER_TWITTER		= 114;
 	
 	public final static short ARTICLE_TITLE		= 200;
 	public final static short ARTICLE_BODY		= 201;

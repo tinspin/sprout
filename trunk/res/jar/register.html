@@ -83,7 +83,7 @@ public class register extends Sprout {
         <td>
           <input type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" tabindex="2"/>
         </td>
-        <td rowspan="3">
+        <td rowspan="3" width="100">
           <table>
             <tr>
               <td>
@@ -141,7 +141,7 @@ public class register extends Sprout {
       <tr>
         <td colspan="2"><font color="#3B9C9C">[[ out.print(i18n("First&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
         <td>
-          <input type="first" class="small" name="first" value="[[ event.string("first") ]]" tabindex="9"/>
+          <input type="text" class="small" name="first" value="[[ event.string("first") ]]" tabindex="9"/>
         </td>
         <td>
           <input type="checkbox" title="[[ i18n("Show first name?") ]]" name="show_first_name"[[ event.string("show_first_name").equals("on") ? " checked" : "" ]]/>
@@ -150,10 +150,19 @@ public class register extends Sprout {
       <tr>
         <td colspan="2"><font color="#3B9C9C">[[ out.print(i18n("Last&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
         <td>
-          <input type="last" class="small" name="last" value="[[ event.string("last") ]]" tabindex="10"/>
+          <input type="text" class="small" name="last" value="[[ event.string("last") ]]" tabindex="10"/>
         </td>
         <td>
           <input type="checkbox" title="[[ i18n("Show last name?") ]]" name="show_last_name"[[ event.string("show_last_name").equals("on") ? " checked" : "" ]]/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><img src="res/twitter.png" alt="Twitter"></td>
+        <td>
+          <input type="text" class="small" name="twitter" value="[[ event.string("twitter") ]]" tabindex="11"/>
+        </td>
+        <td>
+          <input type="checkbox" title="[[ i18n("Show twitter?") ]]" name="show_twitter"[[ event.string("show_twitter").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
