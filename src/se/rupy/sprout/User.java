@@ -303,7 +303,7 @@ public class User extends Node {
 				int month = event.medium("month");
 				int year = event.medium("year");
 
-				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && gender.length() > 0 && day > 0 && month > 0 && year > 0) {
+				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && day > 0 && month > 0 && year > 0) {
 					if(!pass.equals(word)) {
 						event.query().put("error", Sprout.i18n("Passwords don't match!"));
 						Sprout.redirect(event);
