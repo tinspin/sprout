@@ -528,6 +528,26 @@ public class User extends Node {
 		}
 	}
 
+	public static class Folder extends Service {
+		public String path() { return null; }
+		public void filter(Event event) throws Event, Exception {
+			System.out.println(event.query().path());
+			
+			User user = new User();
+			
+			if(user.query(USER_NAME, event.query().path().substring(1))) {
+				user.fill(10, 0, 10);
+				// TODO: Really show articles...
+				event.output().print("<pre>Show " + user.meta(USER_NAME).getValue() + "s articles!</pre>");
+			}
+			else {
+				event.reply().code("404 Not Found");
+				event.reply().output().print(
+						"<pre>'" + event.query().path() + "' was not found.</pre>");
+			}
+		}
+	}
+	
 	public static class Identify extends Service {
 		public int index() { return 1; }
 		public String path() { return "/publish:/upload:/edit:/admin:/search"; }

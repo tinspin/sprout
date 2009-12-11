@@ -139,6 +139,7 @@ Happy Hacking!
 
 5. Todo:
 
+  - Username path listing.
   - Vote!!!
   - Privacy settings.
   - Image upload path and name (with size?).
