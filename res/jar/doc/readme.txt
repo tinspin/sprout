@@ -83,8 +83,8 @@ d. Server properties
 
 3. Development tunings:
 
-To localise your site; edit i18n.txt, mail.txt and uncomment the 
-languge in the i18n.txt file.
+To localise your site; edit i18n.txt, mail.txt and change the 
+translate property in the i18n.txt file to true.
 
 To view the database structure, double click lib/logic.jar and
 open res/sprout.xml, you should not need to modify the database
