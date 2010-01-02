@@ -37,8 +37,11 @@ function remind() {
     document.getElementById('login').submit();
   }
   return false;
-}									
-function columnize(content, parent, push) {
+}							
+function columnize(push) {
+  var content = document.getElementById("content");
+  var parent = document.getElementById("page");
+
   var max = 0, art = 0;
   var div = content.getElementsByTagName('div');
   
@@ -62,8 +65,8 @@ function columnize(content, parent, push) {
       var height = div[j].offsetHeight;
       var mod = art % col.length;
       
-      div[j].style.marginLeft = 225 * mod + 'px';
-      div[j].style.marginTop = col[mod] + 10 * Math.floor(art / col.length) + 'px';
+      div[j].style.left = 10 + 225 * mod + 'px';
+      div[j].style.top = 10 + col[mod] + 10 * Math.floor(art / col.length) + 'px';
       div[j].style.visibility = 'visible';
       col[mod] = col[mod] + height;
       
@@ -73,7 +76,8 @@ function columnize(content, parent, push) {
       
       art++;
       
-      makeDraggable(div[j]);
+      new DragObject(div[j]);
+      //makeDraggable(div[j]);
     }
   }
   
