@@ -40,9 +40,11 @@ public class Upload extends Sprout {
 			
 			if(old != null) {
 				file = old;
+				file.setDate(System.currentTimeMillis());
+				Article.invalidate(article);
 			}
 			
-			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg")) {
+			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg") || item.name.endsWith(".bmp")) {
 				resize(item, 50);
 				file.add(File.type("IMAGE"));
 			}

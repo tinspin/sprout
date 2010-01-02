@@ -234,7 +234,7 @@ public class Article extends Node {
 
 		return list;
 	}
-
+	
 	protected static void invalidate(Article article) throws SQLException {
 		cache2.clear();
 		article.invalidate();
