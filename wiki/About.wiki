@@ -16,3 +16,9 @@ Singel _Valentines day campaign site for Swedish match-making site [http://www.s
   * Production: One person for one week full-time.
 
   The production value on this project is high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boliga.se Boliga].
+
+[http://www.facebook.com/apps/application.php?id=28010374714] _Tentacle is a social bookmarking application._
+
+  * Production: One person for four weeks full-time.
+
+  The integration to facebook was very easy to setup using rupy.
