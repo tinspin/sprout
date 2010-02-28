@@ -139,7 +139,7 @@ public class Upload extends Sprout {
 		try {
 			String line;
 			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
-			System.out.println(item.path + item.name);
+			System.out.println(path + item.name);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " " + path + item.name.substring(0, item.name.indexOf('.')) + ".mp3");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
