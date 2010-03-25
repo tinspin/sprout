@@ -136,7 +136,7 @@ public class Ping extends Node {
 			String body = article.meta(ARTICLE_BODY).getValue();
 			String url = find("a", "href", body);
 
-			while(url.length() > 0) {
+			while(url.length() > 0 && url.startsWith("http://")) {
 				System.out.println(url);
 
 				conn = (HttpURLConnection) new URL(url).openConnection();
