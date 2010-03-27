@@ -52,10 +52,13 @@ public class footer extends Sprout {
 
 [[		} ]]
 
+            </td>
+
 [[		if(max > total) { ]]
 
-            <td width="100%" valign="middle" align="right">
-
+            <!--td width="100%" valign="middle" align="right"-->
+            <td>
+			
 [[			int first = page > 2 ? page - 2 : 0;
 			int last = (int) (max / total) + (max % total > 0 ? 1 : 0);
 			int start = last < first + 5 && last > 5 ? last - 5 : first;
@@ -85,6 +88,7 @@ public class footer extends Sprout {
 [[			} ]]
 
             </td>
+            <td width="100%"></td>
 
 [[		} else { ]]
 
@@ -94,7 +98,7 @@ public class footer extends Sprout {
 [[		} ]]
 
           </tr>
-          <tr><td></td><td><img src="res/pixel.gif" width="400" height="1"></td></tr>
+          <tr><td></td><td colspan="2"><img src="res/pixel.gif" width="160" height="1"></td></tr>
         </table>
       </form>
     </div>
