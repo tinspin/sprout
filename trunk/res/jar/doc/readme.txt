@@ -134,6 +134,7 @@ Happy Hacking!
       - Drag'n Drop articles on frontpage. (just for fun)
       - AJAX Login and Post. (just for fun)
       - GeoIP and country flags.
+      - Comet Chat. Download dependency from rupy project and deploy on server!
 
 ----------------------------------------------
 
