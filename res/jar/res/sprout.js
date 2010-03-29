@@ -76,7 +76,8 @@ function columnize(push) {
       
       art++;
       
-      new DragObject(div[j]);
+      if(div[j])
+      	new DragObject(div[j]);
       //makeDraggable(div[j]);
     }
   }
