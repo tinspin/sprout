@@ -45,9 +45,9 @@ public class index extends Sprout {
   </script>
   <script type="text/javascript">
     function init() {
-      //document.forms[0].elements[0].focus();
+      document.forms[0].elements[0].focus();
       size();
-      start('res/');
+      setTimeout("start('res/')", 100);
     }
     function size() {
       columnize([[ key == null ? "140" : "240" ]]);
@@ -58,43 +58,6 @@ public class index extends Sprout {
 
   <link rel="stylesheet" type="text/css" href="res/talk.css"></link>
   <script type="text/javascript" src="res/talk.js"></script>
-  <!--[if IE]><script type="text/javascript" for="window" event="onunload">
-    stop();
-  </script><![endif]-->
-  <!--[if lte IE 6]>
-  <style type="text/css">
-
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow-y: hidden;
-      overflow-x: hidden;
-    }
-
-    * html #page {
-      height: 100%;
-      width: 100%;
-      overflow-y: scroll;
-      overflow-x: scroll;
-      position: relative;
-    }
-
-    .fixed {
-      position: absolute;
-    }
-    
-    #blob {
-      right: 40px;
-      bottom: 40px;
-    }
-
-    #spur {
-      right: 50px;
-      bottom: 20px;
-    }
-
-  </style>
-  <![endif]-->
 
   <!-- end talk head -->
   
