@@ -148,7 +148,7 @@ var request;
 function _query(method, url, data) {
   request = create();
   request.open(method, url, true);
-  request.onreadystatechange = callback;
+  request.onreadystatechange = sproutCallback;
   request.send(data);
 }
 function _reply(data) {
@@ -162,7 +162,7 @@ function _reply(data) {
     document.getElementById('remind').style.display = 'block';
   }
 }
-function callback() {
+function sproutCallback() {
   try {
     if(request.readyState == 4) {
       if(request.status == 200) {
