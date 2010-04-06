@@ -47,22 +47,34 @@ public class index extends Sprout {
     function init() {
       document.forms[0].elements[0].focus();
       size();
-      setTimeout("start('res/')", 100);
+      talk();
     }
     function size() {
       columnize([[ key == null ? "140" : "240" ]]);
     }
   </script>
   
-  <!-- start talk head -->
-
+  <!-- copy this --><!-- start -->
+  
   <link rel="stylesheet" type="text/css" href="res/talk.css"></link>
   <script type="text/javascript" src="res/talk.js"></script>
-
-  <!-- end talk head -->
+  <script type="text/javascript">
+    function talk() {
+      setTimeout("start('res/')", 100); // XHR
+      //setTimeout("start('res/', 'localhost:8000', 'talk')", 100); // XSS
+    }
+  </script>
+  
+  <!-- stop --><!-- copy this -->
   
 </head>
+
+<!-- copy this --><!-- start -->
+
 <body onload="init();" onbeforeunload="stop();">
+
+<!-- stop --><!-- copy this -->
+
 <div id="page" class="page">
   <div style="float: right;">
 
@@ -85,7 +97,7 @@ else {
 
 </div>
 
-<!-- start talk body -->
+<!-- copy this --><!-- start -->
 
 <div>
   <object id="player" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="1" height="1">
@@ -104,7 +116,7 @@ else {
   <img src="res/cone.gif">
 </div>
 
-<!-- end talk body -->
+<!-- stop --><!-- copy this -->
 
 <script type="text/javascript"> Cufon.now(); </script>
 
