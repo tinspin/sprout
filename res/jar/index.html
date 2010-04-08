@@ -47,13 +47,14 @@ public class index extends Sprout {
     function init() {
       document.forms[0].elements[0].focus();
       size();
-      talk();
     }
     function size() {
       columnize([[ key == null ? "140" : "240" ]]);
     }
   </script>
-  
+
+[[ if(event.daemon().deployed("talk")) { ]]
+
   <!-- copy this --><!-- start -->
   
   <link rel="stylesheet" type="text/css" href="res/talk.css"></link>
@@ -62,18 +63,29 @@ public class index extends Sprout {
     function talk() {
       setTimeout("start('res/')", 100); // XHR
       //setTimeout("start('res/', 'localhost:8000', 'talk')", 100); // XSS
+      init();
     }
   </script>
   
   <!-- stop --><!-- copy this -->
   
+[[ } ]]
+  
 </head>
+
+[[ if(event.daemon().deployed("talk")) { ]]
 
 <!-- copy this --><!-- start -->
 
-<body onload="init();" onbeforeunload="stop();">
+<body onload="talk();" onbeforeunload="stop();">
 
 <!-- stop --><!-- copy this -->
+
+[[ } else { ]]
+
+<body onload="init();">
+
+[[ } ]]
 
 <div id="page" class="page">
   <div style="float: right;">
@@ -97,6 +109,8 @@ else {
 
 </div>
 
+[[ if(event.daemon().deployed("talk")) { ]]
+
 <!-- copy this --><!-- start -->
 
 <div>
@@ -117,6 +131,8 @@ else {
 </div>
 
 <!-- stop --><!-- copy this -->
+
+[[ } ]]
 
 <script type="text/javascript"> Cufon.now(); </script>
 

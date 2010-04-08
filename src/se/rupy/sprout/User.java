@@ -324,9 +324,15 @@ public class User extends Node {
 					user.add(USER_MAIL, mail);
 					user.add(USER_NAME, name);
 					user.add(USER_PASS, pass);
-					user.add(Data.cache(USER, gender));
+					
 					user.add(USER_BIRTHDAY, year + "-" + month + "-" + day); // ISO 8601
 
+					System.out.println(gender);
+					
+					if(gender.length() > 0) {
+						user.add(Data.cache(USER, gender));
+					}
+					
 					if(event.string("country").length() > 0 && !event.string("country").equals("--")) {
 						user.add(Data.cache(USER, event.string("country")));
 					}
