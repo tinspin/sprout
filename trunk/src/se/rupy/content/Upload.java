@@ -121,7 +121,7 @@ public class Upload extends Sprout {
 	static void video(Item item) {
 		try {
 			String line;
-			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
+			String path = "app" + java.io.File.separator + "content" + item.path + java.io.File.separator;
 			System.out.println(path + item.name);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + path + item.name.substring(0, item.name.indexOf('.')) + ".flv");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -138,7 +138,7 @@ public class Upload extends Sprout {
 	static void audio(Item item) {
 		try {
 			String line;
-			String path = "app" + java.io.File.separator + "content" + java.io.File.separator + item.path.replace('\\', '/') + java.io.File.separator;
+			String path = "app" + java.io.File.separator + "content" + item.path + java.io.File.separator;
 			System.out.println(path + item.name);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " " + path + item.name.substring(0, item.name.indexOf('.')) + ".mp3");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -146,6 +146,7 @@ public class Upload extends Sprout {
 				System.out.println(line);
 			}
 			input.close();
+			System.out.println(path + item.name);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
