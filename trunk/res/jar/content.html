@@ -103,8 +103,9 @@ public class content extends Sprout {
 					String mp3 = URLEncoder.encode(tmp.substring(0, tmp.indexOf('.')), "UTF-8"); ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
-            <param name="movie" value="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4" />
-            <embed src="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+            <param name="movie" value="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4"/>
+            <param name="wmode" value="opaque"/>
+            <embed src="audio.swf?audio_file=[[ file.encoded() + mp3 + ".mp3" ]]&color=E4E4E4" wmode="opaque" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/>
           </object>
 
 [[					audio = true;
