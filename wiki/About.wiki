@@ -22,3 +22,9 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
   * Production: One person for four weeks full-time.
 
   The integration to facebook was very easy to setup using rupy.
+
+[http://www.sofreeto.com Sofreeto] _is Hilario's design portolio._
+
+  * Production: Hilario installed the XSS chat in 30 minutes without ANY programming knowledge.
+
+  You only need to know how to copy files to your webserver to be able to use the XSS chat.
