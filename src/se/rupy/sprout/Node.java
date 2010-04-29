@@ -493,7 +493,23 @@ public class Node extends NodeBean implements Type {
 
 		return false;
 	}
-
+	
+	/**
+	 * Get meta-data safely.
+	 * Call {@link #fill(int, int, int)} or {@link #meta()} first.
+	 * @param type
+	 * @return
+	 */
+	public String safe(short type) {
+		Data safe = meta(type);
+		
+		if(safe != null) {
+			return safe.getValue();
+		}
+		
+		return "";
+	}
+	
 	/**
 	 * Get meta-data.
 	 * Call {@link #fill(int, int, int)} or {@link #meta()} first.

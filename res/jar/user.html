@@ -5,9 +5,9 @@ import se.rupy.sprout.*;
 
 import com.maxmind.geoip.*;
 
-public class register extends Sprout {
+public class user extends Sprout {
 	public int index() { return 2; }
-	public String path() { return "/register"; }
+	public String path() { return "/user:/register"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 		String country = event.string("country");
@@ -19,11 +19,11 @@ public class register extends Sprout {
 		if(country.equals("--")) {
 			country = "";
 		}
-		
+
 		event.daemon().chain("/header").filter(event); ]]
 
   <table>
-    <form name="register" action="register" method="post">
+    <form name="user" action="[[ event.query().path() ]]" method="post">
 
 [[		if(event.string("error").length() > 0) { ]]
 
@@ -45,7 +45,7 @@ public class register extends Sprout {
       <tr>
         <td colspan="2"><font color="#F88017">[[ i18n("Birthday") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="2">
-          <select name="day" class="tiny" tabindex="5">
+          <select name="day" class="tiny" tabindex="2">
             <option value="0">[[ i18n("Day") ]]</option>
             
 [[		for(int i = 1; i < 32; i++) { ]]
@@ -55,7 +55,7 @@ public class register extends Sprout {
 [[		} ]]
 
           </select>
-          <select name="month" class="small" tabindex="6">
+          <select name="month" class="small" tabindex="3">
             <option value="0">[[ i18n("Month") ]]</option>
             
 [[		for(int i = 1; i < 13; i++) { ]]
@@ -65,7 +65,7 @@ public class register extends Sprout {
 [[		} ]]
 
           </select>
-          <select name="year" class="year" tabindex="7">
+          <select name="year" class="year" tabindex="4">
             <option value="0">[[ i18n("Year") ]]</option>
             
 [[		for(int i = 1900; i < 2009; i++) { ]]
@@ -81,7 +81,7 @@ public class register extends Sprout {
       <tr>
         <td colspan="2"><font color="#F88017">[[ i18n("Nickname") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td>
-          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" tabindex="2"/>
+          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" tabindex="5"/>
         </td>
         <td rowspan="3" width="100">
           <table>
@@ -110,13 +110,13 @@ public class register extends Sprout {
       <tr>
         <td colspan="2"><font color="#F88017">[[ i18n("Password") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td>
-          <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="3"/>
+          <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="6"/>
         </td>
       </tr>
       <tr>
         <td colspan="2"><font color="#F88017">[[ i18n("Confirm") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td>
-          <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="4"/>
+          <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="7"/>
         </td>
       </tr>
       <tr>
@@ -157,18 +157,9 @@ public class register extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2"><img src="res/twitter.png" alt="Twitter"></td>
-        <td>
-          <input type="text" class="small" name="twitter" value="[[ event.string("twitter") ]]" tabindex="11"/>
-        </td>
-        <td>
-          <input type="checkbox" title="[[ i18n("Show twitter?") ]]" name="show_twitter"[[ event.string("show_twitter").equals("on") ? " checked" : "" ]]/>
-        </td>
-      </tr>
-      <tr>
         <td colspan="3">
-          <a href="" class="arrow" onclick="document.register.submit(); return false;">
-            <span>[[ i18n("Register") ]]</span>
+          <a href="" class="arrow" onclick="document.user.submit(); return false;">
+            <span>[[ event.query().path().equals("/user") ? i18n("Update") : i18n("Register") ]]</span>
           </a>
         </td>
       </tr>

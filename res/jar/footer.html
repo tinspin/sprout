@@ -26,7 +26,7 @@ public class footer extends Sprout {
 
     <div class="footer">
       <form name="query" action="" method="get">
-        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <table border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td>
               <input type="text" class="small" name="query" value="[[ event.string("query") ]]"/>
@@ -56,8 +56,7 @@ public class footer extends Sprout {
 
 [[		if(max > total) { ]]
 
-            <!--td width="100%" valign="middle" align="right"-->
-            <td>
+            <td>&nbsp;
 			
 [[			int first = page > 2 ? page - 2 : 0;
 			int last = (int) (max / total) + (max % total > 0 ? 1 : 0);
@@ -85,20 +84,11 @@ public class footer extends Sprout {
 
               <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ (last - 1) ]]" title="[[ Sprout.i18n("Last page") ]]">&raquo;</a>
 
-[[			} ]]
+[[			}
+		} ]]
 
             </td>
-            <td width="100%"></td>
-
-[[		} else { ]]
-
-            </td>
-            <td width="100%"></td>
-
-[[		} ]]
-
           </tr>
-          <tr><td></td><td colspan="2"><img src="res/pixel.gif" width="160" height="1"></td></tr>
         </table>
       </form>
     </div>

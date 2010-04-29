@@ -83,6 +83,7 @@ You need to login! = Du måste logga in!
 
 // See verify.html
 Verify your eMail address by clicking on the link sent in a mail to you. = Verifiera din ePost adress genom att klicka på länken i mailet vi skickat.
+Profile saved! = Profilen sparad!
 
 // Months
 January = Januari
