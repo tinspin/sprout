@@ -396,12 +396,12 @@ public class User extends Node {
 					if(send) {
 						user.add(Sprout.generate(USER_KEY, 16));
 					}
-					
+
 					if(live == null || !live.equals("true")) {
 						user.add(Data.cache(USER, "VERIFIED"));
 
 						save(event.session(), user, false);
-						
+
 						send = false;
 					}
 
@@ -415,51 +415,49 @@ public class User extends Node {
 						send(event, mail, Sprout.i18n("Welcome!"), copy);
 
 						user.update();
-						
+
 						Sprout.redirect(event, "/verify");
 					}
 					else {
 						user.update();
 					}
 
-					if(!event.query().path().equals("/user")) {
+					if(event.query().path().equals("/user")) {
+						event.query().put("error", Sprout.i18n("Profile saved!"));
+					}
+					else {
 						Sprout.redirect(event, "/");
 					}
 				}
 
 				Sprout.redirect(event);
 			}
-			else if(event.query().path().equals("/user") && user != null) {
-				if(mail.length() > 0) {
-					event.query().put("error", Sprout.i18n("Profile saved!"));
+			else if(event.query().path().equals("/user") && user != null && mail.length() == 0) {
+				event.query().put("mail", user.safe(USER_MAIL));
+				event.query().put("name", user.safe(USER_NAME));
+				event.query().put("country", user.safe(USER_COUNTRY));
+				event.query().put("first", user.safe(USER_FIRST_NAME));
+				event.query().put("last", user.safe(USER_LAST_NAME));
+				event.query().put("gender", user.safe(USER_GENDER).toLowerCase());
+				event.query().put("pass", user.safe(USER_PASS));
+				event.query().put("word", user.safe(USER_PASS));
+
+				String birthday = user.safe(USER_BIRTHDAY);
+
+				if(birthday.length() > 0) {
+					StringTokenizer token = new StringTokenizer(birthday, "-");
+
+					event.query().put("year", token.nextToken());
+					event.query().put("month", token.nextToken());
+					event.query().put("day", token.nextToken());
 				}
-				else {
-					event.query().put("mail", user.safe(USER_MAIL));
-					event.query().put("name", user.safe(USER_NAME));
-					event.query().put("country", user.safe(USER_COUNTRY));
-					event.query().put("first", user.safe(USER_FIRST_NAME));
-					event.query().put("last", user.safe(USER_LAST_NAME));
-					event.query().put("gender", user.safe(USER_GENDER).toLowerCase());
-					event.query().put("pass", user.safe(USER_PASS));
-					event.query().put("word", user.safe(USER_PASS));
 
-					String birthday = user.safe(USER_BIRTHDAY);
+				String show = user.safe(USER_SHOW);
 
-					if(birthday.length() > 0) {
-						StringTokenizer token = new StringTokenizer(birthday, "-");
-
-						event.query().put("year", token.nextToken());
-						event.query().put("month", token.nextToken());
-						event.query().put("day", token.nextToken());
-					}
-
-					String show = user.safe(USER_SHOW);
-
-					if(show.length() > 0) {
-						for(int i = 0; i < User.show.length; i++) {
-							if(show.charAt(i) == '1') {
-								event.query().put(User.show[i], "on");
-							}
+				if(show.length() > 0) {
+					for(int i = 0; i < User.show.length; i++) {
+						if(show.charAt(i) == '1') {
+							event.query().put(User.show[i], "on");
 						}
 					}
 				}

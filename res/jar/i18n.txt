@@ -20,11 +20,13 @@ Title = Titel
 Publish = Publicera
 Upload = Ladda&nbsp;upp
 Login = Logga&nbsp;in
+Create = Skapa
 Register = Registrera
 Hide = Göm
 Show = Visa
 Most&nbsp;Read = Mest&nbsp;Lästa
 All = Alla
+Save = Spara
 
 // Fields
 Comments = Kommentarer
