@@ -60,7 +60,7 @@ public class register extends Sprout {
             
 [[		for(int i = 1; i < 13; i++) { ]]
 
-            <option value="[[ i ]]"[[ event.medium("month") == i ? " selected" : "" ]]>[[ i18n(User.month[[ - 1]) ]]</option>
+            <option value="[[ i ]]"[[ event.medium("month") == i ? " selected" : "" ]]>[[ i18n(User.month[i - 1]) ]]</option>
 
 [[		} ]]
 
@@ -121,14 +121,14 @@ public class register extends Sprout {
       </tr>
       <tr>
         <td><font color="#3B9C9C">[[ i18n("Country") ]]</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td width="16"><img id="flag" src="res/flag/[[ country.toLowerCase() .[[png" align="right" style="vertical-align: middle;[[ out.print(country.length() == 0 ? " display: none;" : ""); ]]"/></td>
+        <td width="16"><img id="flag" src="res/flag/[[ country.toLowerCase() ]].png" align="right" style="vertical-align: middle;[[ out.print(country.length() == 0 ? " display: none;" : ""); ]]"/></td>
         <td>
           <select name="country" class="medium" onChange="changeFlag(this);" tabindex="8">
             <option value="--">N/A</option>
             
 [[		for(int i = 0; i < User.countryCode.length; i++) { ]]
 
-            <option value="[[ User.countryCode[[] ]]"[[ country.equals(User.countryCode[[]) ? " selected" : "" ]]>[[ User.countryName[[] ]]</option>
+            <option value="[[ User.countryCode[i] ]]"[[ country.equals(User.countryCode[i]) ? " selected" : "" ]]>[[ User.countryName[i] ]]</option>
 
 [[		} ]]
 
