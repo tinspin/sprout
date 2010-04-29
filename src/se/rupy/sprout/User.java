@@ -286,7 +286,7 @@ public class User extends Node {
 		}
 	}
 
-	public static class Register extends Service {
+	public static class Update extends Service {
 		public int index() { return 1; }
 		public String path() { return "/user:/register"; }
 		public void create() throws Exception {
