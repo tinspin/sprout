@@ -30,6 +30,10 @@ public class publish extends Sprout {
               <span>[[ i18n("Logout") ]]</span>
             </a>
 
+            <a href="/user" class="button">
+              <span>[[ i18n("Edit") ]]</span>
+            </a>
+
 [[		if(user != null && user.permit("ADMIN")) { ]]
 
             <a href="/admin" class="button">

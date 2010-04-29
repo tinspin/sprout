@@ -8,12 +8,14 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.json.JSONObject;
 
 import com.maxmind.geoip.LookupService;
 
+import se.rupy.content.Article;
 import se.rupy.http.*;
 import se.rupy.mail.*;
 
@@ -32,6 +34,15 @@ public class User extends Node {
 		"October", 
 		"November", 
 		"December"
+	};
+
+	public static final String[] show = {
+		"show_first_name", 
+		"show_last_name", 
+		"show_country", 
+		"show_birthday", 
+		"show_gender", 
+		"show_mail", 
 	};
 
 	private static String mail;
@@ -277,7 +288,7 @@ public class User extends Node {
 
 	public static class Register extends Service {
 		public int index() { return 1; }
-		public String path() { return "/register"; }
+		public String path() { return "/user:/register"; }
 		public void create() throws Exception {
 			try {
 				lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);
@@ -290,10 +301,13 @@ public class User extends Node {
 			lookup.close();
 		}
 		public void filter(Event event) throws Event, Exception {
-			if(event.query().method() == Query.POST) {
-				event.query().parse();
+			Object key = event.session().get("key");
+			User user = User.get(key);
+			event.query().parse();
 
-				String mail = event.string("mail").toLowerCase();
+			String mail = event.string("mail").toLowerCase();
+
+			if(event.query().method() == Query.POST) {
 				String name = event.string("name").toLowerCase();
 				String pass = event.string("pass");
 				String word = event.string("word");
@@ -309,30 +323,37 @@ public class User extends Node {
 						Sprout.redirect(event);
 					}
 
-					User user = new User();
+					if(user == null) {
+						user = new User();
+					}
 
-					if(user.query(USER_MAIL, mail)) {
+					boolean send = !user.safe(USER_MAIL).equals(mail);
+
+					if(send && user.query(USER_MAIL, mail)) {
 						event.query().put("error", Sprout.i18n("eMail already in use!"));
 						Sprout.redirect(event);
 					}
 
-					if(user.query(USER_NAME, name)) {
-						event.query().put("error", Sprout.i18n("Nickname already in use!"));
-						Sprout.redirect(event);
+					if(!user.safe(USER_NAME).equals(name)) {
+						if(user.query(USER_NAME, name)) {
+							event.query().put("error", Sprout.i18n("Nickname already in use!"));
+							Sprout.redirect(event);
+						}
+						else {
+							Article.reset();
+						}
 					}
 
 					user.add(USER_MAIL, mail);
 					user.add(USER_NAME, name);
 					user.add(USER_PASS, pass);
-					
+
 					user.add(USER_BIRTHDAY, year + "-" + month + "-" + day); // ISO 8601
 
-					System.out.println(gender);
-					
 					if(gender.length() > 0) {
 						user.add(Data.cache(USER, gender));
 					}
-					
+
 					if(event.string("country").length() > 0 && !event.string("country").equals("--")) {
 						user.add(Data.cache(USER, event.string("country")));
 					}
@@ -344,53 +365,16 @@ public class User extends Node {
 					if(event.string("last").length() > 0) {
 						user.add(USER_LAST_NAME, event.string("last"));
 					}
-					
-					if(event.string("twitter").length() > 0) {
-						user.add(USER_TWITTER, event.string("twitter"));
-					}
 
 					String show = "";
 
-					if(event.string("show_first_name").length() > 0) {
-						show += "1";
-					}
-					else {
-						show += "0";
-					}
-
-					if(event.string("show_last_name").length() > 0) {
-						show += "1";
-					}
-					else {
-						show += "0";
-					}
-
-					if(event.string("show_country").length() > 0) {
-						show += "1";
-					}
-					else {
-						show += "0";
-					}
-
-					if(event.string("show_birthday").length() > 0) {
-						show += "1";
-					}
-					else {
-						show += "0";
-					}
-
-					if(event.string("show_gender").length() > 0) {
-						show += "1";
-					}
-					else {
-						show += "0";
-					}
-
-					if(event.string("show_mail").length() > 0) {
-						show += "1";
-					}
-					else {
-						show += "0";
+					for(int i = 0; i < User.show.length; i++) {
+						if(event.string(User.show[i]).length() > 0) {
+							show += "1";
+						}
+						else {
+							show += "0";
+						}
 					}
 
 					Data data = Data.cache(USER, show);
@@ -401,7 +385,6 @@ public class User extends Node {
 					}
 
 					user.add(data);
-					user.add(Sprout.generate(USER_KEY, 16));
 					user.add(USER_IP, event.remote());
 
 					if(Sprout.value("SELECT count(*) FROM node WHERE type = " + Type.USER) == 0) {
@@ -410,32 +393,76 @@ public class User extends Node {
 
 					String live = event.daemon().properties.getProperty("live");
 
+					if(send) {
+						user.add(Sprout.generate(USER_KEY, 16));
+					}
+					
 					if(live == null || !live.equals("true")) {
 						user.add(Data.cache(USER, "VERIFIED"));
-						user.update();
-
-						System.out.println(user);
 
 						save(event.session(), user, false);
-						Sprout.redirect(event, "/");
+						
+						send = false;
+					}
+
+					if(send) {
+						user.add(Data.cache(USER, "UNVERIFIED"));
+
+						String url = "http://" + host + "/login?key=" + user.safe(USER_KEY);
+						String copy = content.replaceAll("@@url@@", url);
+						copy = copy.replaceAll("@@key@@", user.safe(USER_KEY));
+
+						send(event, mail, Sprout.i18n("Welcome!"), copy);
+
+						user.update();
+						
+						Sprout.redirect(event, "/verify");
 					}
 					else {
-						user.add(Data.cache(USER, "UNVERIFIED"));
+						user.update();
 					}
 
-					String key = user.meta(USER_KEY).getValue();
-					String url = "http://" + host + "/login?key=" + key;
-					String copy = content.replaceAll("@@url@@", url);
-					copy = copy.replaceAll("@@key@@", key);
-
-					send(event, mail, Sprout.i18n("Welcome!"), copy);
-
-					user.update();
-
-					Sprout.redirect(event, "/verify");
+					if(!event.query().path().equals("/user")) {
+						Sprout.redirect(event, "/");
+					}
 				}
 
 				Sprout.redirect(event);
+			}
+			else if(event.query().path().equals("/user") && user != null) {
+				if(mail.length() > 0) {
+					event.query().put("error", Sprout.i18n("Profile saved!"));
+				}
+				else {
+					event.query().put("mail", user.safe(USER_MAIL));
+					event.query().put("name", user.safe(USER_NAME));
+					event.query().put("country", user.safe(USER_COUNTRY));
+					event.query().put("first", user.safe(USER_FIRST_NAME));
+					event.query().put("last", user.safe(USER_LAST_NAME));
+					event.query().put("gender", user.safe(USER_GENDER).toLowerCase());
+					event.query().put("pass", user.safe(USER_PASS));
+					event.query().put("word", user.safe(USER_PASS));
+
+					String birthday = user.safe(USER_BIRTHDAY);
+
+					if(birthday.length() > 0) {
+						StringTokenizer token = new StringTokenizer(birthday, "-");
+
+						event.query().put("year", token.nextToken());
+						event.query().put("month", token.nextToken());
+						event.query().put("day", token.nextToken());
+					}
+
+					String show = user.safe(USER_SHOW);
+
+					if(show.length() > 0) {
+						for(int i = 0; i < User.show.length; i++) {
+							if(show.charAt(i) == '1') {
+								event.query().put(User.show[i], "on");
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -499,7 +526,7 @@ public class User extends Node {
 	}
 
 	public static class Timeout extends Service {
-		public String path() { return "/:/login:/register:/publish:/upload:/edit:/admin:/search"; }
+		public String path() { return "/:/login:/user:/register:/publish:/upload:/edit:/admin:/search"; }
 		public void session(Session session, int type) throws Exception {
 			String key = (String) session.get("key");
 
@@ -517,7 +544,7 @@ public class User extends Node {
 		public void filter(Event event) throws Event, Exception {
 			event.reply().header("Cache-Control", "no-cache");
 			event.reply().header("X-UA-Compatible", "IE=7");
-			
+
 			HashMap post = (HashMap) event.session().get("post");
 
 			if(post != null) {
@@ -539,9 +566,9 @@ public class User extends Node {
 		public String path() { return null; }
 		public void filter(Event event) throws Event, Exception {
 			System.out.println(event.query().path());
-			
+
 			User user = new User();
-			
+
 			if(user.query(USER_NAME, event.query().path().substring(1))) {
 				user.fill(10, 0, 10);
 				// TODO: Really show articles...
@@ -554,7 +581,7 @@ public class User extends Node {
 			}
 		}
 	}
-	
+
 	public static class Identify extends Service {
 		public int index() { return 1; }
 		public String path() { return "/publish:/upload:/edit:/admin:/search"; }

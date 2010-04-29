@@ -135,24 +135,20 @@ Happy Hacking!
       - AJAX Login and Post. (just for fun)
       - GeoIP and country flags.
       - Comet Chat. Download dependency from rupy project and deploy on server!
-
+      - Edit profile.
+      
 ----------------------------------------------
 
 5. Todo:
 
   - Username path listing.
-  - Vote!!!
-  - Privacy settings.
-  - Image upload path and name (with size?).
-  - Image size query to resize and redirect service.
-  - Licence for feed.
-  - Captcha!?
+  - Vote!
+  - Captcha?
   - Profile image.
   - Session lock on ARTICLE_READ.
   - Delete files.
   - Make a new video player to match the audio player (that does not autostart).
-  - Delete comment for admin.
-  - Edit and/or hide comment for session.
+  - Hide comment for session.
   - Cache timeout.
   - Add editor privilege, enable by default.
   - Categories, test with swedish/english.
