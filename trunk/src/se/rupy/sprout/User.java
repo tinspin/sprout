@@ -22,18 +22,18 @@ import se.rupy.mail.*;
 public class User extends Node {
 	public static String host;
 	public static final String[] month = {
-		"January", 
-		"February", 
-		"Mars", 
-		"April", 
+		"Jan", 
+		"Feb", 
+		"Mar", 
+		"Apr", 
 		"May", 
-		"June", 
-		"July", 
-		"August", 
-		"September", 
-		"October", 
-		"November", 
-		"December"
+		"Jun", 
+		"Jul", 
+		"Aug", 
+		"Sep", 
+		"Oct", 
+		"Nov", 
+		"Dec"
 	};
 
 	public static final String[] show = {

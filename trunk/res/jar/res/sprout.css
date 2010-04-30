@@ -5,12 +5,14 @@ select, input, textarea { font-size: 1.0em; }
 table { border: 0px; }
 input.tiny { width: 45px; }
 input.small { width: 100px; }
-input.large { width: 165px; }
-select.tiny { width: 45px; }
+input.large { width: 160px; }
 select.small { width: 65px; }
 select.medium { width: 106px; }
-select.year { width: 55px; }
 select.large { width: 171px; }
+input.mail { width: 140px; }
+select.day { width: 40px; }
+select.month { width: 49px; }
+select.year { width: 51px; }
 textarea.large { width: 195px; }
 td { font-size: 0.6em; cursor: default; }
 

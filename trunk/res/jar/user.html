@@ -38,25 +38,25 @@ public class user extends Sprout {
       <tr>
         <td colspan="2"><font color="#F88017">[[ i18n("eMail") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="2">
-          <input type="text" class="large" name="mail" value="[[ event.string("mail") ]]" style="text-transform: lowercase;" tabindex="1"/>
+          <input type="text" class="mail" name="mail" value="[[ event.string("mail") ]]" style="text-transform: lowercase;" tabindex="1"/>
           <input type="checkbox" title="[[ i18n("Show eMail?") ]]" name="show_mail"[[ event.string("show_mail").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
         <td colspan="2"><font color="#F88017">[[ i18n("Birthday") ]]</font>&nbsp;<font color="red">*</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td colspan="2">
-          <select name="day" class="tiny" tabindex="2">
-            <option value="0">[[ i18n("Day") ]]</option>
+          <select name="year" class="year" tabindex="4"><!-- // ISO 8601 -->
+            <option value="0">[[ i18n("Year") ]]</option>
             
-[[		for(int i = 1; i < 32; i++) { ]]
+[[		for(int i = 1900; i < 2009; i++) { ]]
 
-            <option value="[[ i ]]"[[ event.medium("day") == i ? " selected" : "" ]]>[[ i ]]</option>
+            <option value="[[ i ]]"[[ event.query().medium("year", 1990) == i ? " selected" : "" ]]>[[ i ]]</option>
 
 [[		} ]]
 
           </select>
-          <select name="month" class="small" tabindex="3">
-            <option value="0">[[ i18n("Month") ]]</option>
+          <select name="month" class="month" tabindex="3">
+            <option value="0">[[ i18n("Mon") ]]</option>
             
 [[		for(int i = 1; i < 13; i++) { ]]
 
@@ -65,12 +65,12 @@ public class user extends Sprout {
 [[		} ]]
 
           </select>
-          <select name="year" class="year" tabindex="4">
-            <option value="0">[[ i18n("Year") ]]</option>
+          <select name="day" class="day" tabindex="2">
+            <option value="0">[[ i18n("D") ]]</option>
             
-[[		for(int i = 1900; i < 2009; i++) { ]]
+[[		for(int i = 1; i < 32; i++) { ]]
 
-            <option value="[[ i ]]"[[ event.query().medium("year", 1990) == i ? " selected" : "" ]]>[[ i ]]</option>
+            <option value="[[ i ]]"[[ event.medium("day") == i ? " selected" : "" ]]>[[ i ]]</option>
 
 [[		} ]]
 
