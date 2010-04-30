@@ -27,6 +27,7 @@ Show = Visa
 Most&nbsp;Read = Mest&nbsp;Lästa
 All = Alla
 Save = Spara
+Profile = Profil
 
 // Fields
 Comments = Kommentarer
