@@ -306,8 +306,7 @@ public class User extends Node {
 			event.query().parse();
 
 			String mail = event.string("mail").toLowerCase();
-			String old = "";
-
+			
 			if(event.query().method() == Query.POST) {
 				String name = event.string("name").toLowerCase();
 				String pass = event.string("pass");
@@ -319,6 +318,9 @@ public class User extends Node {
 				int year = event.medium("year");
 
 				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && day > 0 && month > 0 && year > 0) {
+					String old_mail = "";
+					String old_key = "";
+					
 					if(!pass.equals(word)) {
 						event.query().put("error", Sprout.i18n("Passwords don't match!"));
 						Sprout.redirect(event);
@@ -328,7 +330,8 @@ public class User extends Node {
 						user = new User();
 					}
 					else {
-						old = user.safe(USER_MAIL);
+						old_mail = user.safe(USER_MAIL);
+						old_key = user.safe(USER_KEY);
 					}
 
 					boolean send = !user.safe(USER_MAIL).equals(mail);
@@ -410,19 +413,21 @@ public class User extends Node {
 					}
 
 					if(send) {
-						user.add(Data.cache(USER, "UNVERIFIED"));
-
 						String url = "http://" + host + "/login?key=" + user.safe(USER_KEY);
 						String copy = content.replaceAll("@@url@@", url);
 						copy = copy.replaceAll("@@key@@", user.safe(USER_KEY));
 
 						if(send(event, mail, Sprout.i18n("Welcome!"), copy)) {
+							user.add(Data.cache(USER, "UNVERIFIED"));
 							user.update();
+							
 							Sprout.redirect(event, "/verify");
 						}
 						else {
-							event.query().put("mail", old);
-							user.add(USER_MAIL, old);
+							event.query().put("mail", old_mail);
+							user.add(USER_MAIL, old_mail);
+							user.add(USER_KEY, old_key);
+							
 							Sprout.redirect(event);
 						}
 					}
