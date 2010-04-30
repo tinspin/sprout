@@ -306,6 +306,7 @@ public class User extends Node {
 			event.query().parse();
 
 			String mail = event.string("mail").toLowerCase();
+			String old = "";
 
 			if(event.query().method() == Query.POST) {
 				String name = event.string("name").toLowerCase();
@@ -325,6 +326,9 @@ public class User extends Node {
 
 					if(user == null) {
 						user = new User();
+					}
+					else {
+						old = user.safe(USER_MAIL);
 					}
 
 					boolean send = !user.safe(USER_MAIL).equals(mail);
@@ -412,11 +416,15 @@ public class User extends Node {
 						String copy = content.replaceAll("@@url@@", url);
 						copy = copy.replaceAll("@@key@@", user.safe(USER_KEY));
 
-						send(event, mail, Sprout.i18n("Welcome!"), copy);
-
-						user.update();
-
-						Sprout.redirect(event, "/verify");
+						if(send(event, mail, Sprout.i18n("Welcome!"), copy)) {
+							user.update();
+							Sprout.redirect(event, "/verify");
+						}
+						else {
+							event.query().put("mail", old);
+							user.add(USER_MAIL, old);
+							Sprout.redirect(event);
+						}
 					}
 					else {
 						user.update();
@@ -465,7 +473,7 @@ public class User extends Node {
 		}
 	}
 
-	static void send(Event event, String mail, String title, String text) throws Event, Exception {
+	static boolean send(Event event, String mail, String title, String text) throws Event, Exception {
 		try {
 			eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title);
 			email.addRecipient(eMail.TO, mail);
@@ -474,8 +482,10 @@ public class User extends Node {
 		catch(Exception e) {
 			event.query().put("error", Sprout.i18n("That's not an eMail!"));
 			System.out.println(e.getMessage());
-			Sprout.redirect(event);
+			return false;
 		}
+
+		return true;
 	}
 
 	public static class Remind extends Service {
@@ -494,9 +504,12 @@ public class User extends Node {
 						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
 						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
 
-						send(event, mail, Sprout.i18n("Reminder!"), copy);
-
-						event.query().put("error", Sprout.i18n("Reminder sent!"));
+						if(send(event, mail, Sprout.i18n("Reminder!"), copy)) {
+							event.query().put("error", Sprout.i18n("Reminder sent!"));
+						}
+						else {
+							Sprout.redirect(event);
+						}
 					}
 					else {
 						event.query().put("error", Sprout.i18n("eMail not found!"));
