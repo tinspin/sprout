@@ -41,9 +41,6 @@ Public = Publikt
 Country = Land
 Earth = Jorden
 Birthday = Födelsedag
-Year = År
-Mon = Mån
-D = D
 First&nbsp;Name = Förnamn
 Last&nbsp;Name = Efternamn
 Gender = Kön
@@ -89,18 +86,18 @@ Verify your eMail address by clicking on the link sent in a mail to you. = Verif
 Profile saved! = Profilen sparad!
 
 // Months
-January = Januari
-February = Februari
-Mars = Mars
-April = April
+Jan = Jan
+Feb = Feb
+Mar = Mar
+Apr = Apr
 May = Maj
-June = Juni
-July = Juli
-August = Augusti
-September = September
-October = Oktober
-November = November
-December = December
+Jun = Jun
+Jul = Jul
+Aug = Aug
+Sep = Sep
+Oct = Okt
+Nov = Nov
+Dec = Dec
 
 // Countries (this makes little sense since all international sites 
 // where you can choose country should be in english) duh...
