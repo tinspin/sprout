@@ -25,7 +25,7 @@ public class publish extends Sprout {
     <table border="0" width="100">
       <form name="article" action="publish" method="post">
         <tr>
-          <td colspan="2">
+          <td colspan="3">
             <a href="/logout" class="button">
               <span>[[ i18n("Logout") ]]</span>
             </a>
@@ -36,8 +36,8 @@ public class publish extends Sprout {
 
 [[		if(user != null && user.permit("ADMIN")) { ]]
 
-            <a href="/admin" class="button">
-              <span>[[ i18n("Admin") ]]</span>
+            <a href="/label" class="button">
+              <span>[[ i18n("Labels") ]]</span>
             </a>
 
 [[		} ]]
@@ -48,7 +48,7 @@ public class publish extends Sprout {
 [[		if(event.string("error").length() > 0) { ]]
 
         <tr>
-          <td colspan="2">
+          <td colspan="3">
             <font color="red"><i>[[ event.string("error") ]]</i></font>
           </td>
         </tr>
@@ -56,19 +56,69 @@ public class publish extends Sprout {
 [[		} ]]
 
         <tr>
-          <td>[[ i18n("Title") ]]</td>
-          <td align="right">
+          <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Title") ]]</font>&nbsp;&nbsp;</td>
+          <td colspan="2" align="right">
             <input type="text" class="large" name="title" value="[[ event.string("title") ]]" tabindex="1"/>
           </td>
         </tr>
         <tr>
-          <td colspan="2">
-            <textarea class="large" name="body" rows="5" tabindex="2">[[ event.string("body") ]]</textarea>
+          <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Date") ]]</font>&nbsp;&nbsp;</td>
+          <td colspan="2" align="right">
+            <!-- // ISO 8601 -->
+            <select name="year" class="year" tabindex="2">
+            
+[[		for(int i = 1900; i < 2009; i++) { ]]
+
+              <option value="[[ i ]]"[[ event.query().medium("year", 1990) == i ? " selected" : "" ]]>[[ i ]]</option>
+
+[[		} ]]
+
+            </select>
+            <select name="month" class="month" tabindex="3">
+            
+[[		for(int i = 1; i < 13; i++) { ]]
+
+              <option value="[[ i ]]"[[ event.medium("month") == i ? " selected" : "" ]]>[[ i18n(User.month[i - 1]) ]]</option>
+
+[[		} ]]
+
+            </select>
+            <select name="day" class="day" tabindex="4">
+            
+[[		for(int i = 1; i < 32; i++) { ]]
+
+              <option value="[[ i ]]"[[ event.medium("day") == i ? " selected" : "" ]]>[[ i ]]</option>
+
+[[		} ]]
+
+            </select>
           </td>
         </tr>
-        
-[[		if(article != null) {
-			Iterator it = article.child(FILE).iterator();
+        <tr>
+          <td colspan="3">
+            <textarea class="large" name="body" rows="5" tabindex="6">[[ event.string("body") ]]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ i18n("Label") ]]</font>&nbsp;&nbsp;</td>
+          <td align="right">
+            <select name="label" class="label" tabindex="6">
+              <option value="--">None</option>
+            </select>
+          </td>
+          <td align="right">
+            <a href="" class="button" onclick="addLabel(); return false;">
+              <span>[[ i18n("Add") ]]</span>
+            </a>
+          </td>
+        </tr>
+
+[[		if(article != null) { ]]
+
+        <tr>
+          <td colspan="3">
+          
+[[			Iterator it = article.child(FILE).iterator();
 			while(it.hasNext()) {
 				Node file = (Node) it.next();
 				Data name = file.meta(FILE_NAME);
@@ -77,49 +127,65 @@ public class publish extends Sprout {
 				if(type != null) {
 					if(type.getValue().equals("IMAGE")) { ]]
 
-        <tr>
-          <td colspan="2"><img src="[[ file.path() + "TINY_" + name.getValue() ]]" alt="[[ file.path() + name.getValue() ]]"/></td>
-        </tr>
+            <a href="[[ File.path(file, name, "-200.jpeg") ]]">
+              <img src="res/file/image.gif" alt="[[ File.path(file, name, "-200.jpeg") ]]"/>
+            </a>
 
 [[ 					}
-					else if(type.getValue().equals("VIDEO") || type.getValue().equals("AUDIO")) { ]]
+					else if(type.getValue().equals("VIDEO")) { ]]
 
-        <tr>
-          <td colspan="2"><img src="res/flash.gif" alt="[[ file.path() + name.getValue() ]]"/></td>
-        </tr>
+            <a href="[[ File.path(file, name, ".flv") ]]">
+              <img src="res/file/video.gif" alt="[[ File.path(file, name, ".flv") ]]"/>
+            </a>
+
+[[ 					}
+					else if(type.getValue().equals("AUDIO")) { ]]
+
+            <a href="[[ File.path(file, name, ".mp3") ]]">
+              <img src="res/file/audio.gif" alt="[[ File.path(file, name, ".mp3") ]]"/>
+            </a>
 
 [[					}
 				}
 				else { ]]
 
-        <tr>
-          <td colspan="2">[[ file.path() + name.getValue() ]]</td>
-        </tr>
+            <a href="[[ File.path(file, name, "") ]]">
+              <img src="res/file/binary.gif" alt="[[ File.path(file, name, "") ]]"/>
+            </a>
 
 [[				}
- 			}
-		} ]]
+ 			} ]]
+
+          </td>
+        </tr>
+
+[[		} ]]
         
         <tr>
-          <td colspan="2">
+          <td colspan="3">
             <a href="" class="arrow" onclick="document.article.submit(); return false;">
               <span>[[ i18n("Publish") ]]</span>
             </a>
           </td>
         </tr>
       </form>
-      <form enctype="multipart/form-data" name="upload" action="upload" method="POST">
+      
+[[		if(article != null) { ]]
+      
+      <form enctype="multipart/form-data" name="upload" action="upload" method="post">
         <tr>
-          <td colspan="2">
+          <td colspan="3">
             <a class="button overflow">
-              <input name="file" type="file" class="file" onchange="document.upload.submit()"/>
+              <input name="file" type="file" class="file" style="right: 25px;" onchange="document.upload.submit()"/>
               <span>[[ i18n("Upload") ]]</span>
             </a>
           </td>
         </tr>
       </form>
+      
+[[		} ]]
+      
     </table>
 
 [[ } 
 } ]]
-
