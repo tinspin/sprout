@@ -5,14 +5,16 @@ select, input, textarea { font-size: 1.0em; }
 table { border: 0px; }
 input.tiny { width: 45px; }
 input.small { width: 100px; }
-input.large { width: 160px; }
+input.large { width: 140px; }
 select.small { width: 65px; }
 select.medium { width: 106px; }
-select.large { width: 171px; }
+select.large { width: 140px; }
 input.mail { width: 140px; }
 select.day { width: 40px; }
 select.month { width: 49px; }
 select.year { width: 51px; }
+select.country { width: 84px; }
+select.label { width: 100px; }
 textarea.large { width: 195px; }
 td { font-size: 0.6em; cursor: default; }
 
@@ -159,7 +161,6 @@ input.file {
 
 .button .file {
 	position: absolute;
-	right: 0;
 	height: 25px;
 	cursor: pointer !important;
 }

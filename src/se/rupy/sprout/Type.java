@@ -5,13 +5,13 @@ public interface Type {
 	 * Node
 	 */
 	public final static int ALL			= 0;
-	public final static int USER		= 1 << 0;
-	public final static int ARTICLE		= 1 << 1;
-	public final static int COMMENT		= 1 << 2;
-	public final static int CATEGORY	= 1 << 3;
-	public final static int GROUP		= 1 << 4;
-	public final static int FILE		= 1 << 5;
-	public final static int PING		= 1 << 6;
+	public final static int USER		= 1 << 0; // 1
+	public final static int ARTICLE		= 1 << 1; // 2
+	public final static int COMMENT		= 1 << 2; // 4
+	public final static int CATEGORY	= 1 << 3; // 8
+	public final static int GROUP		= 1 << 4; // 16
+	public final static int FILE		= 1 << 5; // 32
+	public final static int PING		= 1 << 6; // 64
 	
 	/*
 	 * Data

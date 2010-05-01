@@ -4,12 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
 import se.rupy.http.Event;
 import se.rupy.http.Input;
+import se.rupy.http.Output;
 import se.rupy.http.Query;
 import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
@@ -24,78 +29,144 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  */
 public class Upload extends Sprout {
 	private static int SIZE = 1024;
-	
+
 	public int index() { return 2; }
-	public String path() { return "/upload"; }
+	public String path() { return "/upload:/picture"; }
 	public void filter(Event event) throws Event, Exception {
 		if(event.query().method() == Query.POST) {
-			Node file = new File();
-			Item item = new Item();
-			item.path = java.io.File.separator + "upload" + java.io.File.separator + file.date();
-			item = save(event, item);
-
-			Object key = event.session().get("key");
-			Article article = Article.get(key);
-			Node old = article.child(FILE, FILE_NAME, item.name);
-			
-			if(old != null) {
-				file = old;
-				file.setDate(System.currentTimeMillis());
-				Article.invalidate(article);
-			}
-			
-			if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg") || item.name.endsWith(".bmp")) {
-				resize(item, 50);
-				file.add(File.type("IMAGE"));
-			}
-
-			if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
-				video(item);
-				file.add(File.type("VIDEO"));
-			}
-
-			if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
-				if(item.name.endsWith(".wav")) {
-					audio(item);
+			if(event.query().path().equals("/picture")) {
+				// Because this is called from hidden iframe, we won't see the error stacktrace!
+				try {
+					Item item = new Item();
+					item.path = "file";
+					item = save(event, item);
+					
+					String path = frame(item);
+					Output out = event.output();
+					
+					out.println("<script>");
+					out.println("  var doc = window.top.document;");
+					out.println("  doc.user.picture.value = '" + path + "';");
+					out.println("  doc.picture.src = '" + path + "';");
+					out.println("</script>");
 				}
-				
-				file.add(File.type("AUDIO"));
-			}
-
-			file.add(FILE_NAME, item.name);
-
-			if(article.meta(ARTICLE_TITLE) == null) {
-				article.add(ARTICLE_TITLE, i18n("Title"));
-			}
-
-			if(article.meta(ARTICLE_BODY) == null) {
-				article.add(ARTICLE_BODY, i18n("Body"));
-			}
-
-			if(old == null) {
-				article.add(file);
-			}
-			else {
-				file.update();
+				catch(Exception e) {
+					e.printStackTrace();
+					throw e;
+				}
 			}
 			
-			Sprout.redirect(event, "/edit?id=" + article.getId());
+			if(event.query().path().equals("/upload")) {
+				File file = new File();
+				file.update();
+				
+				Item item = new Item();
+				item.path = "file" + file.path();
+				item = save(event, item);
+				
+				Node article = article(event, file, item);
+				Sprout.redirect(event, "/edit?id=" + article.getId());
+			}
 		}
 
-		Sprout.redirect(event, "/");
+		//Sprout.redirect(event, "/");
 	}
 
+	static String frame(Item item) throws IOException {
+		BufferedImage image = ImageIO.read(item.file);
+		
+		int width = image.getWidth();
+		int height = image.getHeight();
+		
+		if(width > height) {
+			image = image.getSubimage((width - height) / 2, 0, height, height);
+		}
+		
+		if(width < height) {
+			image = image.getSubimage(0, (height - width) / 2, width, width);
+		}
+		
+		String name = item.name.substring(0, item.name.indexOf('.'));
+		String path = item.path + "/" + name + ".jpeg";
+		
+		Image tiny = image.getScaledInstance(50, 50, Image.SCALE_AREA_AVERAGING);
+		save(tiny, new java.io.File(Sprout.ROOT + "/" + path));
+		item.file.delete();
+		
+		return path;
+	}
+	
+	static Node article(Event event, Node file, Item item) throws Exception {
+		Object key = event.session().get("key");
+		Article article = Article.get(key);
+		
+		Node old = article.child(FILE, FILE_NAME, item.name);
+
+		if(old != null) {
+			file = old;
+			file.setDate(System.currentTimeMillis());
+			Article.invalidate(article);
+		}
+
+		boolean delete = false;
+		
+		if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg") || item.name.endsWith(".bmp")) {
+			resize(item, 200);
+			file.add(File.type("IMAGE"));
+			item.name = item.name.substring(0, item.name.indexOf('.'));
+			delete = true;
+		}
+
+		if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
+			video(item);
+			file.add(File.type("VIDEO"));
+			item.name = item.name.substring(0, item.name.indexOf('.'));
+			delete = true;
+		}
+
+		if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
+			if(item.name.endsWith(".wav")) {
+				audio(item);
+			}
+			file.add(File.type("AUDIO"));
+			item.name = item.name.substring(0, item.name.indexOf('.'));
+			delete = true;
+		}
+		
+		
+		file.add(FILE_NAME, item.name);
+
+		if(article.meta(ARTICLE_TITLE) == null) {
+			article.add(ARTICLE_TITLE, i18n("Title"));
+		}
+
+		if(article.meta(ARTICLE_BODY) == null) {
+			article.add(ARTICLE_BODY, i18n("Body"));
+		}
+
+		if(old == null) {
+			article.add(file);
+		}
+		else {
+			file.update();
+		}
+		
+		if(delete) {
+			item.file.delete();
+		}
+		
+		return article;
+	}
+	
 	static void resize(Item item, int width) throws IOException {
 		BufferedImage image = ImageIO.read(item.file);
+		String name = item.name.substring(0, item.name.indexOf('.'));
 
-		Image tiny = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
-		save(tiny, new java.io.File(Sprout.root + item.path + java.io.File.separator + "TINY_" + item.name));
+		Image small = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
+		save(small, new java.io.File(Sprout.ROOT + "/" + item.path + "/" + name + "-" + width + ".jpeg"));
 
-		Image small = image.getScaledInstance(width * 4, -1, Image.SCALE_AREA_AVERAGING);
-		save(small, new java.io.File(Sprout.root + item.path + java.io.File.separator + "SMALL_" + item.name));
-
-		Image big = image.getScaledInstance(width * 8, -1, Image.SCALE_AREA_AVERAGING);
-		save(big, new java.io.File(Sprout.root + item.path + java.io.File.separator + "BIG_" + item.name));
+		Image big = image.getScaledInstance(width * 2, -1, Image.SCALE_AREA_AVERAGING);
+		save(big, new java.io.File(Sprout.ROOT + "/" + item.path + "/" + name + "-" + width * 2 + ".jpeg"));
 	}
 
 	static void save(Image small, java.io.File file) throws IOException {
@@ -121,8 +192,7 @@ public class Upload extends Sprout {
 	static void video(Item item) {
 		try {
 			String line;
-			String path = "app" + java.io.File.separator + "content" + item.path + java.io.File.separator;
-			System.out.println(path + item.name);
+			String path = Sprout.ROOT + "/" + item.path + "/";
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + path + item.name.substring(0, item.name.indexOf('.')) + ".flv");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
@@ -134,12 +204,11 @@ public class Upload extends Sprout {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static void audio(Item item) {
 		try {
 			String line;
-			String path = "app" + java.io.File.separator + "content" + item.path + java.io.File.separator;
-			System.out.println(path + item.name);
+			String path = Sprout.ROOT + "/" + item.path + "/";
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " " + path + item.name.substring(0, item.name.indexOf('.')) + ".mp3");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
@@ -203,13 +272,13 @@ public class Upload extends Sprout {
 				 * create path and file
 				 */
 
-				java.io.File path = new java.io.File(Sprout.root + item.path);
+				java.io.File path = new java.io.File(Sprout.ROOT + "/" + item.path);
 
 				if(!path.exists()) {
 					path.mkdirs();
 				}
 
-				item.file = new java.io.File(Sprout.root + item.path + java.io.File.separator + item.name);
+				item.file = new java.io.File(Sprout.ROOT + "/" + item.path + "/" + item.name);
 				FileOutputStream out = new FileOutputStream(item.file);
 
 				/*
@@ -274,6 +343,10 @@ public class Upload extends Sprout {
 		String path;
 		String type;
 		java.io.File file;
+
+		public String toString() {
+			return name + " " + path + " " + type;
+		}
 	}
 
 	/*
@@ -318,22 +391,6 @@ public class Upload extends Sprout {
 			public EOB(int index) {
 				this.index = index;
 			}
-		}
-	}
-	
-	public static class File extends Node {
-		static {
-			Data.cache(FILE, new Data(FILE_TYPE, "IMAGE"));
-			Data.cache(FILE, new Data(FILE_TYPE, "VIDEO"));
-			Data.cache(FILE, new Data(FILE_TYPE, "AUDIO"));
-		}
-		
-		public File() {
-			super(FILE);
-		}
-		
-		static Data type(String value) {
-			return Data.cache(FILE, value);
 		}
 	}
 }

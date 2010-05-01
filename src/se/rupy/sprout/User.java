@@ -1,10 +1,12 @@
 package se.rupy.sprout;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,7 +17,7 @@ import org.json.JSONObject;
 
 import com.maxmind.geoip.LookupService;
 
-import se.rupy.content.Article;
+import se.rupy.content.*;
 import se.rupy.http.*;
 import se.rupy.mail.*;
 
@@ -129,8 +131,8 @@ public class User extends Node {
 		host = System.getProperty("host", "localhost:9000");
 		mail = System.getProperty("mail", "mail1.comhem.se");
 
-		content = read(Sprout.root + File.separator + "mail.txt");
-		remind = read(Sprout.root + File.separator + "remind.txt");
+		content = read(Sprout.ROOT + java.io.File.separator + "mail.txt");
+		remind = read(Sprout.ROOT + java.io.File.separator + "remind.txt");
 	}
 
 	static String read(String file) {
@@ -138,7 +140,7 @@ public class User extends Node {
 		String content = null;
 
 		try {
-			InputStream in = new FileInputStream(new File(file));
+			InputStream in = new FileInputStream(new java.io.File(file));
 			Deploy.pipe(in, out);
 			content = new String(out.toByteArray());
 			out.close();
@@ -306,7 +308,7 @@ public class User extends Node {
 			event.query().parse();
 
 			String mail = event.string("mail").toLowerCase();
-			
+
 			if(event.query().method() == Query.POST) {
 				String name = event.string("name").toLowerCase();
 				String pass = event.string("pass");
@@ -320,7 +322,7 @@ public class User extends Node {
 				if(name.length() > 0 && mail.length() > 0 && pass.length() > 0 && day > 0 && month > 0 && year > 0) {
 					String old_mail = "";
 					String old_key = "";
-					
+
 					if(!pass.equals(word)) {
 						event.query().put("error", Sprout.i18n("Passwords don't match!"));
 						Sprout.redirect(event);
@@ -420,19 +422,56 @@ public class User extends Node {
 						if(send(event, mail, Sprout.i18n("Welcome!"), copy)) {
 							user.add(Data.cache(USER, "UNVERIFIED"));
 							user.update();
-							
+
 							Sprout.redirect(event, "/verify");
 						}
 						else {
 							event.query().put("mail", old_mail);
 							user.add(USER_MAIL, old_mail);
 							user.add(USER_KEY, old_key);
-							
+
 							Sprout.redirect(event);
 						}
 					}
 					else {
 						user.update();
+					}
+
+					if(event.string("picture").length() > 0) {
+						java.io.File path = new java.io.File(Sprout.ROOT + "/file" + user.path());
+
+						if(!path.exists()) {
+							path.mkdirs();
+						}
+
+						java.io.File from = new java.io.File(Sprout.ROOT + "/" + event.string("picture"));
+						java.io.File to = new java.io.File(Sprout.ROOT + "/file" + user.path() + "/p.jpeg");
+
+						InputStream in = new FileInputStream(from);
+						OutputStream out = new FileOutputStream(to);
+
+						Deploy.pipe(in, out);
+						
+						in.close();
+						out.close();
+						from.delete();
+
+						Node file = new File();
+						Node old = user.child(FILE, FILE_TYPE, "IMAGE");
+
+						if(old != null) {
+							file = old;
+							file.setDate(System.currentTimeMillis());
+						}
+
+						file.add(File.type("IMAGE"));
+
+						if(old == null) {
+							user.add(file);
+						}
+						else {
+							file.update();
+						}
 					}
 
 					if(event.query().path().equals("/user")) {
@@ -473,6 +512,12 @@ public class User extends Node {
 							event.query().put(User.show[i], "on");
 						}
 					}
+				}
+
+				Node picture = (Node) user.child(FILE, FILE_TYPE, "IMAGE");
+
+				if(picture != null) {
+					event.query().put("picture", "file" + user.path() + "/p.jpeg?time=" + System.currentTimeMillis());
 				}
 			}
 		}
@@ -542,7 +587,7 @@ public class User extends Node {
 	}
 
 	public static class Timeout extends Service {
-		public String path() { return "/:/login:/user:/register:/publish:/upload:/edit:/admin:/search"; }
+		public String path() { return "/:/login:/user:/register:/publish:/upload:/picture:/edit:/label"; }
 		public void session(Session session, int type) throws Exception {
 			String key = (String) session.get("key");
 
@@ -600,8 +645,12 @@ public class User extends Node {
 
 	public static class Identify extends Service {
 		public int index() { return 1; }
-		public String path() { return "/publish:/upload:/edit:/admin:/search"; }
+		public String path() { return "/publish:/upload:/picture:/edit:/label"; }
 		public void filter(Event event) throws Event, Exception {
+			if(event.query().path().equals("/picture")) {
+				return;
+			}
+
 			String key = (String) event.session().get("key");
 
 			if(key == null) {

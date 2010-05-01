@@ -36,7 +36,7 @@ public class Article extends Node {
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
-	public final static byte ALL = PARENT | CHILD | META;
+	public final static byte ALL = PARENT | CHILD | META | POLL;
 	public final static int MAX_POST_SIZE = 1024 * 1024; // 1MB
 
 	public static long MAX = 0;
@@ -522,14 +522,14 @@ public class Article extends Node {
 			}
 		}
 	}
-// TODO: remove meta for json loading and aggregate by date...
+
 	protected void print(StringBuffer buffer, int level) {
 		padding(buffer, level);
 		buffer.append("<item>\n");
 		padding(buffer, level + 1);
 		buffer.append("<id>" + getId() + "</id>\n");
 		padding(buffer, level + 1);
-		buffer.append("<head>" + Sprout.clean(meta(ARTICLE_TITLE).getValue()) + "</head>\n");
+		buffer.append("<head>" + Sprout.clean(safe(ARTICLE_TITLE)) + "</head>\n");
 		padding(buffer, level + 1);
 		buffer.append("<link>\n");
 		padding(buffer, level + 2);
@@ -539,7 +539,7 @@ public class Article extends Node {
 		padding(buffer, level + 1);
 		buffer.append("</link>\n");
 		padding(buffer, level + 1);
-		buffer.append("<body>" + Sprout.clean(meta(ARTICLE_BODY).getValue()) + "</body>\n");
+		buffer.append("<body>" + Sprout.clean(safe(ARTICLE_BODY)) + "</body>\n");
 		padding(buffer, level + 1);
 		buffer.append("<date>" + getDate() + "</date>\n");
 

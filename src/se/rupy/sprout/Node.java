@@ -19,6 +19,7 @@ public class Node extends NodeBean implements Type {
 	public final static byte PARENT = 1 << 0;
 	public final static byte CHILD = 1 << 1;
 	public final static byte META = 1 << 2;
+	public final static byte POLL = 1 << 3;
 	
 	static Format time = new SimpleDateFormat("d'&nbsp;'MMM'&nbsp;'H:mm");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
@@ -185,9 +186,14 @@ public class Node extends NodeBean implements Type {
 				Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
 			}
 			
+			if((what & POLL) == POLL) {
+				Sprout.find("DELETE FROM poll WHERE node = " + id, connection);
+			}
+			
 			if((what & PARENT) == PARENT || 
 			   (what & CHILD) == CHILD || 
-			   (what & META) == META) {
+			   (what & META) == META || 
+			   (what & POLL) == POLL) {
 				System.out.println("DELETE");
 				Sprout.update(Base.DELETE, this, connection);
 				connection.commit();
@@ -650,11 +656,23 @@ public class Node extends NodeBean implements Type {
 
 		return null;
 	}
-
+/*
 	public String path() {
 		return "/upload/" + date() + "/";
 	}
+*/
+	public String path() {
+		String token = String.valueOf(id);
+		StringBuffer path = new StringBuffer();
 
+		for(int i = 0; i < token.length(); i++) {
+			path.append("/");
+			path.append(token.charAt(i));
+		}
+		
+		return path.toString();
+	}
+	
 	public String encoded() throws UnsupportedEncodingException {
 		return URLEncoder.encode(path(), "UTF-8");
 	}
