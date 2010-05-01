@@ -1,0 +1,49 @@
+[[ package gen;
+
+import se.rupy.http.*;
+import se.rupy.sprout.*;
+
+public class label extends Sprout {
+	public int index() { return 4; }
+	public String path() { return "/label"; }
+	public void filter(Event event) throws Event, Exception {
+		Output out = event.output();
+
+		event.daemon().chain("/header").filter(event); ]]
+
+  <table border="0">
+    <form name="label" action="[[ event.query().path() ]]" method="post">
+
+[[		if(event.string("error").length() > 0) { ]]
+
+      <tr>
+        <td colspan="2">
+          <font color="red"><i>[[ event.string("error") ]]</i></font>
+        </td>
+      </tr>
+
+[[		} ]]
+
+      <tr>
+        <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Label") ]]</font>&nbsp;&nbsp;</td>
+        <td>
+          <input type="text" class="label" name="label" value="[[ event.string("label") ]]" style="text-transform: lowercase;" tabindex="1"/>
+        </td>
+      </tr>
+    </form>
+    <tr>
+      <td colspan="2">
+        <a href="" class="arrow" onclick="document.label.submit(); return false;">
+          <span>[[ i18n("Create") ]]</span>
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>
+
+[[ } 
+} ]]
+

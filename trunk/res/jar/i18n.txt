@@ -3,6 +3,11 @@
 // Uncomment to enable translation!!!
 translate = true
 
+// Mandatory color
+#F88017 = #F88017
+// Optional color
+#3B9C9C = #3B9C9C
+
 language = swedish // mysql collation: general, czech, danish, estonian, hungarian, icelandic, latvian, lithuanian, persian, polish, roman, romanian, slovak, slovenian, spanish, swedish, turkish
 Welcome! = Välkommen! // welcome mail subject, see mail.txt
 Reminder! = Påminnelse! // remind mail subject, see remind.txt
@@ -28,6 +33,10 @@ Most&nbsp;Read = Mest&nbsp;Lästa
 All = Alla
 Save = Spara
 Profile = Profil
+Profile&nbsp;Picture = Profil&nbsp;Bild
+Date = Datum
+Labels = Etiketter
+Label = Etikett
 
 // Fields
 Comments = Kommentarer

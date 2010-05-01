@@ -137,20 +137,35 @@ Happy Hacking!
       - Comet Chat. Download dependency from rupy project and deploy on server!
       - Edit profile.
       
+      java.util.NoSuchElementException
+	at java.util.LinkedList.getFirst(LinkedList.java:126)
+	at gen.content.filter(content.java:30)
+	at se.rupy.http.Chain.filter(Chain.java:38)
+	at gen.index.filter(index.java:83)
+	at se.rupy.http.Chain.filter(Chain.java:38)
+	at se.rupy.http.Event.service(Event.java:259)
+	at se.rupy.http.Event.read(Event.java:203)
+	at se.rupy.http.Worker.run(Worker.java:117)
+	at java.lang.Thread.run(Thread.java:717)
+      
+      
+      - Verify only characters on nickname.
+      - Remove cache on remove article.
+      - Delete files.
+      - Cache timeout.
+      - Profile image.
+      - Labels, test with swedish/english.
+      - Hide/show articles with date.
+      - Username path listing.
+      
 ----------------------------------------------
 
 5. Todo:
 
-  - Username path listing.
   - Vote!
   - Captcha?
-  - Profile image.
   - Session lock on ARTICLE_READ.
-  - Delete files.
   - Make a new video player to match the audio player (that does not autostart).
-  - Hide comment for session.
-  - Cache timeout.
   - Add editor privilege, enable by default.
-  - Categories, test with swedish/english.
+  - Hide comment alternative for session.
   - Localized dates.
-  - Hide/show articles, with selective select, apply to comments.

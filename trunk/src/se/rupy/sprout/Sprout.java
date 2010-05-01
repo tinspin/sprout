@@ -23,26 +23,26 @@ import se.rupy.pool.Settings;
 import se.rupy.util.Log;
 
 public abstract class Sprout extends Service implements Type {
-	public static String root = "app" + java.io.File.separator + "content";
-	private static Properties i18n;
-	private static boolean translate;
-	private static Base db;
+	public static String ROOT = "app/content";
+	private static Base DB;
+	private static Properties I18N;
+	private static boolean TRANSLATE;
 
 	static {
-		db = new Base();
+		DB = new Base();
 
 		try {
 			MySQL mysql = new MySQL();
-			db.init(new Pool(mysql, mysql));
+			DB.init(new Pool(mysql, mysql));
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
 
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(Sprout.root + File.separator + "i18n.txt"), "UTF-8"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(ROOT + File.separator + "i18n.txt"), "UTF-8"));
 			String line = in.readLine();
-			i18n = new Properties();
+			I18N = new Properties();
 
 			while(line != null) {
 				int equals = line.indexOf("=");
@@ -57,7 +57,7 @@ public abstract class Sprout extends Service implements Type {
 						value = value.substring(0, comment).trim();
 					}
 
-					i18n.put(name, value);
+					I18N.put(name, value);
 				}
 
 				line = in.readLine();
@@ -69,22 +69,22 @@ public abstract class Sprout extends Service implements Type {
 			e.printStackTrace();
 		}
 		
-		translate = i18n.getProperty("translate", null) != null;
+		TRANSLATE = I18N.getProperty("translate", null) != null;
 	}
 
 	public static String i18n(String text) {
 		if(translate()) {
-			return i18n.getProperty(text, text);
+			return I18N.getProperty(text, text);
 		}
 		return text;
 	}
 
 	public static boolean translate() {
-		return translate;
+		return TRANSLATE;
 	}
 	
 	public static String language() {
-		return i18n.getProperty("language", "general");
+		return I18N.getProperty("language", "general");
 	}
 
 	public static String clean(String line) {
@@ -114,35 +114,35 @@ public abstract class Sprout extends Service implements Type {
 
 	public static boolean update(byte type, Object o, Connection connection) throws SQLException {
 		if(connection == null) {
-			return db.update(type, o);
+			return DB.update(type, o);
 		}
 		else {
-			return db.update(type, o, connection);
+			return DB.update(type, o, connection);
 		}
 	}
 
 	public static LinkedList from(String name, String sql) throws SQLException {
-		return db.query(Base.FROM, name, sql);
+		return DB.query(Base.FROM, name, sql);
 	}
 
 	public static LinkedList where(String name, String sql) throws SQLException {
-		return db.query(Base.WHERE, name, sql);
+		return DB.query(Base.WHERE, name, sql);
 	}
 
 	public static long value(String sql) throws SQLException {
-		return db.value(sql);
+		return DB.value(sql);
 	}
 
 	public static void find(String sql) throws SQLException {
-		db.find(sql, connection(false), true);
+		DB.find(sql, connection(false), true);
 	}
 
 	public static void find(String sql, Connection connection) throws SQLException {
-		db.find(sql, connection, true);
+		DB.find(sql, connection, true);
 	}
 
 	public static Connection connection(boolean transaction) throws SQLException {
-		return db.connection(transaction);
+		return DB.connection(transaction);
 	}
 
 	public static void redirect(Event event) throws IOException, Event {
