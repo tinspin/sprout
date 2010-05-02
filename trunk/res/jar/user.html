@@ -120,7 +120,7 @@ public class user extends Sprout {
       <tr>
         <td colspan="2" align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ i18n("Country") ]]</font>&nbsp;&nbsp;</td>
         <td>
-          <img id="flag" src="res/flag/[[ country.toLowerCase() ]].png" align="right" style="vertical-align: middle;[[ out.print(country.length() == 0 ? " display: none;" : ""); ]]"/>
+          <img id="flag" src="res/[[ out.print(country.length() > 0 ? "flag/" + country.toLowerCase() + ".png" : "pixel.gif"); ]]" align="right" style="vertical-align: middle;[[ out.print(country.length() == 0 ? " display: none;" : ""); ]]"/>
         </td>
         <td align="right">
           <select name="country" class="country" onChange="changeFlag(this);" tabindex="8">
