@@ -22,7 +22,7 @@ public class publish extends Sprout {
 			article = null;
 		} ]]
 
-    <table border="1" width="100">
+    <table border="0">
       <form name="article" action="publish" method="post">
         <tr>
           <td colspan="3">
@@ -56,14 +56,14 @@ public class publish extends Sprout {
 [[		} ]]
 
         <tr>
-          <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Title") ]]</font>&nbsp;&nbsp;</td>
-          <td colspan="2" align="right">
+          <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Title") ]]</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td colspan="2">
             <input type="text" class="large" name="title" value="[[ event.string("title") ]]" tabindex="1"/>
           </td>
         </tr>
         <tr>
-          <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Date") ]]</font>&nbsp;&nbsp;</td>
-          <td colspan="2" align="right">
+          <td align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Date") ]]</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td colspan="2">
             <!-- // ISO 8601 -->
             <select name="year" class="year" tabindex="2">
             
@@ -95,18 +95,18 @@ public class publish extends Sprout {
           </td>
         </tr>
         <tr>
-          <td colspan="3">
+          <td colspan="3" align="right">
             <textarea class="large" name="body" rows="5" tabindex="6">[[ event.string("body") ]]</textarea>
           </td>
         </tr>
         <tr>
-          <td align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ i18n("Label") ]]</font>&nbsp;&nbsp;</td>
-          <td align="right">
+          <td align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ i18n("Label") ]]</font>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td>
             <select name="label" class="label" tabindex="6">
               <option value="--">None</option>
             </select>
           </td>
-          <td align="right">
+          <td>
             <a href="" class="button" onclick="addLabel(); return false;">
               <span>[[ i18n("Add") ]]</span>
             </a>
