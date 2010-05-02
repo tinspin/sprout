@@ -20,12 +20,14 @@ public class Node extends NodeBean implements Type {
 	public final static byte CHILD = 1 << 1;
 	public final static byte META = 1 << 2;
 	public final static byte POLL = 1 << 3;
-	
+
 	static Format time = new SimpleDateFormat("d'&nbsp;'MMM'&nbsp;'H:mm");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
 
 	private LinkBean link;
 	private MetaBean meta;
+
+	private boolean done;
 
 	/**
 	 * The node type should be a bit identifiable integer
@@ -37,14 +39,22 @@ public class Node extends NodeBean implements Type {
 		setType(type);
 	}
 
-	Node(int type, long id) {
+	protected Node(int type, long id) {
 		this(type);
 		setId(id);
 	}
-	
-	Node() {
+
+	protected Node() {
 		link = new LinkBean();
 		meta = new MetaBean();
+	}
+
+	protected boolean done() {
+		return done;
+	}
+
+	protected void done(boolean done) {
+		this.done = done;
 	}
 
 	/**
@@ -56,11 +66,11 @@ public class Node extends NodeBean implements Type {
 		if(node == null) {
 			throw new NullPointerException("Can't add node.");
 		}
-		
+
 		if(id > 0 && (node.getId() == 0 || child(node.getId()) == null)) {
 			update(node);
 		}
-		
+
 		link.add(0, node);
 	}
 
@@ -73,7 +83,7 @@ public class Node extends NodeBean implements Type {
 		link.setParent(this);
 		link.setChild(node);
 		link.setType(getType() | node.getType());
-		
+
 		Sprout.update(Base.DELETE, link);
 	}
 
@@ -104,22 +114,28 @@ public class Node extends NodeBean implements Type {
 
 		Data old = meta(data.getType());
 		Data cache = Data.cache(type, data.getValue());
-		
+
 		if(old != null) {
-			meta.remove(old);
-			
-			if(cache != null && data.getId() == cache.getId()) {
-				remove(old);
-				meta(Base.INSERT, data, Sprout.connection(false));
+			if(old.getValue().equals(data.getValue())) {
+				data.setId(old.getId());
+				data.done(true);
 			}
 			else {
-				data.setId(old.getId()); // TODO: Should this delete and insert? Nope, update() should be called?
+				meta.remove(old);
+
+				if(cache != null && data.getId() == cache.getId()) {
+					remove(old);
+					meta(Base.INSERT, data, Sprout.connection(false));
+				}
+				else {
+					data.setId(old.getId()); // TODO: Should this delete and insert? Nope, update() should be called?
+				}
 			}
 		}
 		else if(id > 0 && cache != null && data.getId() == cache.getId()) {
 			meta(Base.INSERT, data, Sprout.connection(false));
 		}
-		
+
 		if(id > 0 && data.getId() == 0) {
 			meta(Base.INSERT, data, Sprout.connection(false));
 		}
@@ -133,13 +149,15 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public void remove(Data data) throws SQLException {
+		// TODO: remove data itself?
+
 		meta.setNode(this);
 		meta.setData(data);
 		meta.setType(data.getType());
-		
+
 		Sprout.update(Base.DELETE, meta);
 	}
-	
+
 	/**
 	 * Deletes the node, it's meta-data, parent and/or child relations.
 	 * Make sure all cached data is in the cache before you execute 
@@ -153,7 +171,7 @@ public class Node extends NodeBean implements Type {
 		if(id == 0) {
 			throw new NullPointerException("Can't delete node.");
 		}
-		
+
 		boolean success = false;
 		Connection connection = Sprout.connection(true);
 
@@ -161,11 +179,11 @@ public class Node extends NodeBean implements Type {
 			if((what & PARENT) == PARENT) {
 				Sprout.find("DELETE FROM link WHERE parent = " + id, connection);
 			}
-			
+
 			if((what & CHILD) == CHILD) {
 				Sprout.find("DELETE FROM link WHERE child = " + id, connection);
 			}
-			
+
 			if((what & META) == META) {
 				meta();
 
@@ -182,19 +200,18 @@ public class Node extends NodeBean implements Type {
 						Sprout.update(Base.DELETE, data, connection);
 					}
 				}
-				
+
 				Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
 			}
-			
+
 			if((what & POLL) == POLL) {
 				Sprout.find("DELETE FROM poll WHERE node = " + id, connection);
 			}
-			
+
 			if((what & PARENT) == PARENT || 
-			   (what & CHILD) == CHILD || 
-			   (what & META) == META || 
-			   (what & POLL) == POLL) {
-				System.out.println("DELETE");
+					(what & CHILD) == CHILD || 
+					(what & META) == META || 
+					(what & POLL) == POLL) {
 				Sprout.update(Base.DELETE, this, connection);
 				connection.commit();
 				success = true;
@@ -207,10 +224,10 @@ public class Node extends NodeBean implements Type {
 		finally {
 			connection.close();
 		}
-		
+
 		return success;
 	}
-	
+
 	/**
 	 * Inserts or updates the node, it's meta-data and children nodes recursively.
 	 * @throws SQLException
@@ -254,14 +271,18 @@ public class Node extends NodeBean implements Type {
 			action = Base.INSERT;
 		}
 
-		Sprout.update(action, this, connection);
+		if(action == Base.INSERT) {
+			Sprout.update(action, this, connection);
+		}
+
 		Iterator it = meta.iterator();
 
 		while(it.hasNext()) {
 			Data data = (Data) it.next();
 
-			if(data.getId() == 0 || action == Base.UPDATE) {
+			if(data.getId() == 0 || (action == Base.UPDATE && !data.done())) {
 				Sprout.update(action, data, connection);
+				data.done(true);
 			}
 
 			if(action == Base.INSERT) {
@@ -273,12 +294,15 @@ public class Node extends NodeBean implements Type {
 
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
-			link(action, node, connection);
+
+			if(action == Base.INSERT) {
+				link(action, node, connection);
+			}
 		}
 	}
 
 	void meta(byte action, Data data, Connection connection) throws SQLException {
-		if(data.getId() == 0) {
+		if(data.getId() == 0 && !data.done()) {
 			Sprout.update(action, data, connection);
 		}
 
@@ -287,6 +311,8 @@ public class Node extends NodeBean implements Type {
 		meta.setType(data.getType());
 
 		Sprout.update(action, meta, connection);
+
+		data.done(true);
 	}
 
 	void link(byte action, Node node, Connection connection) throws SQLException {
@@ -310,12 +336,12 @@ public class Node extends NodeBean implements Type {
 	public boolean query(long id) throws SQLException {
 		NodeBean node = new NodeBean();
 		node.setId(id);
-		
+
 		if(Sprout.update(Base.SELECT, node)) {
 			copy(node);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -327,14 +353,14 @@ public class Node extends NodeBean implements Type {
 	 */
 	public boolean parent(Node child) throws SQLException {
 		LinkBean link = query(this, child);
-		
+
 		if(link.size() == 1) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Is the node child of parent.
 	 * @param parent
@@ -343,14 +369,14 @@ public class Node extends NodeBean implements Type {
 	 */
 	public boolean child(Node parent) throws SQLException {
 		LinkBean link = query(parent, this);
-		
+
 		if(link.size() == 1) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Find data/node meta relation where type = value.
 	 * You can only query for unique results.
@@ -380,7 +406,7 @@ public class Node extends NodeBean implements Type {
 			meta.setData(data);
 			meta.setType(data.getType());
 			meta.setLimit(1);
-			
+
 			Sprout.update(Base.SELECT, meta);
 
 			if(meta.size() == 1) {
@@ -392,22 +418,22 @@ public class Node extends NodeBean implements Type {
 		return false;
 	}
 
-	LinkBean query(Node parent, Node child) throws SQLException {
+	protected LinkBean query(Node parent, Node child) throws SQLException {
 		return query(parent, child, 1);
 	}
-	
-	LinkBean query(Node parent, Node child, int limit) throws SQLException {
+
+	protected LinkBean query(Node parent, Node child, int limit) throws SQLException {
 		LinkBean link = new LinkBean();
 		link.setType(parent.getType() | child.getType());
 		link.setParent(parent);
 		link.setChild(child);
 		link.setLimit(limit);
-		
+
 		Sprout.update(Base.SELECT, link);
-		
+
 		return link;
 	}
-	
+
 	/**
 	 * Fills the node with meta-data and children nodes.
 	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
@@ -421,7 +447,7 @@ public class Node extends NodeBean implements Type {
 	public boolean fill(int depth, int start, int limit) throws SQLException {
 		boolean link = link(start, limit);
 		boolean meta = meta();
-		
+
 		if(depth > 0) {
 			Iterator it = this.link.iterator();
 
@@ -450,7 +476,7 @@ public class Node extends NodeBean implements Type {
 		return link(ALL, start, limit);
 	}
 
-	boolean link(int type, int start, int limit) throws SQLException {
+	protected boolean link(int type, int start, int limit) throws SQLException {
 		if(id > 0 && link.size() == 0) {
 			link.setParent(this);
 			link.setType(type);
@@ -463,6 +489,7 @@ public class Node extends NodeBean implements Type {
 					NodeBean bean = (NodeBean) link.get(i);
 					Node node = new Node();
 					node.copy(bean);
+					node.done(true);
 					link.set(i, node);
 				}
 
@@ -490,6 +517,7 @@ public class Node extends NodeBean implements Type {
 					DataBean bean = (DataBean) meta.get(i);
 					Data data = new Data();
 					data.copy(bean);
+					data.done(true);
 					meta.set(i, data);
 				}
 
@@ -499,7 +527,7 @@ public class Node extends NodeBean implements Type {
 
 		return false;
 	}
-	
+
 	/**
 	 * Get meta-data safely.
 	 * Call {@link #fill(int, int, int)} or {@link #meta()} first.
@@ -508,14 +536,14 @@ public class Node extends NodeBean implements Type {
 	 */
 	public String safe(short type) {
 		Data safe = meta(type);
-		
+
 		if(safe != null) {
 			return safe.getValue();
 		}
-		
+
 		return "";
 	}
-	
+
 	/**
 	 * Get meta-data.
 	 * Call {@link #fill(int, int, int)} or {@link #meta()} first.
@@ -614,10 +642,10 @@ public class Node extends NodeBean implements Type {
 				return node;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Return the first parent of a type.
 	 * @param type
@@ -633,10 +661,10 @@ public class Node extends NodeBean implements Type {
 			node.copy((NodeBean) it.next());
 			return node;
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Get child node.
 	 * Call {@link #fill(int, int, int)} or {@link #link(int, int)} first.
@@ -656,11 +684,11 @@ public class Node extends NodeBean implements Type {
 
 		return null;
 	}
-/*
+	/*
 	public String path() {
 		return "/upload/" + date() + "/";
 	}
-*/
+	 */
 	public String path() {
 		String token = String.valueOf(id);
 		StringBuffer path = new StringBuffer();
@@ -669,10 +697,10 @@ public class Node extends NodeBean implements Type {
 			path.append("/");
 			path.append(token.charAt(i));
 		}
-		
+
 		return path.toString();
 	}
-	
+
 	public String encoded() throws UnsupportedEncodingException {
 		return URLEncoder.encode(path(), "UTF-8");
 	}
@@ -701,7 +729,7 @@ public class Node extends NodeBean implements Type {
 				node.add(name);
 				node.update();
 			}
-			
+
 			hash.put(name.getValue(), node);
 			return true;
 		}
@@ -710,7 +738,7 @@ public class Node extends NodeBean implements Type {
 			return false;
 		}
 	}
-	
+
 	protected static Node cache(int link, String name) {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
 
@@ -720,7 +748,7 @@ public class Node extends NodeBean implements Type {
 		else {
 			return (Node) hash.get(name);
 		}
-		
+
 		return null;
 	}
 
@@ -729,7 +757,7 @@ public class Node extends NodeBean implements Type {
 		print(buffer, 0);
 		return buffer.toString();
 	}
-	
+
 	public String toXML(int padding) {
 		StringBuffer buffer = new StringBuffer();
 		print(buffer, padding);
@@ -774,7 +802,7 @@ public class Node extends NodeBean implements Type {
 		padding(buffer, level);
 		buffer.append("</node>\n");
 	}
-	
+
 	/*
 	 * Remove count from poll
 	 */
@@ -800,7 +828,7 @@ public class Node extends NodeBean implements Type {
 	public boolean poll(short type) throws Exception {
 		return poll(type, 1);
 	}
-	
+
 	/*
 	 * Add count to poll
 	 */
@@ -827,12 +855,12 @@ public class Node extends NodeBean implements Type {
 			return true;
 		}
 	}
-	
+
 	public double count(short type) throws Exception {
 		PollBean poll = new PollBean();
 		poll.setNode(this);
 		poll.setType(type);
-		
+
 		if(Sprout.update(Base.SELECT, poll)) {
 			if(poll.size() == 1) {
 				poll = (PollBean) poll.getFirst();
@@ -843,7 +871,7 @@ public class Node extends NodeBean implements Type {
 
 			return poll.getValue();
 		}
-		
+
 		return -1;
 	}
 }

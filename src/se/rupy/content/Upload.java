@@ -186,6 +186,7 @@ public class Upload extends Sprout {
 		param.setQuality(1, true);
 		encoder.setJPEGEncodeParam(param);
 		encoder.encode(image);
+		out.flush();
 		out.close();
 	}
 
