@@ -10,7 +10,24 @@ import se.rupy.memory.DataBean;
 
 public class Data extends DataBean implements Type {
 	public static HashMap cache = new HashMap();
+	
+	private boolean done;
+	
+	public Data() {}
 
+	public Data(short type, String value) {
+		setType(type);
+		setValue(value);
+	}
+
+	protected boolean done() {
+		return done;
+	}
+	
+	protected void done(boolean done) {
+		this.done = done;
+	}
+	
 	public static void cache(int link, Data data) {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
 
@@ -51,13 +68,10 @@ public class Data extends DataBean implements Type {
 		return null;
 	}
 
-	public Data() {}
-
-	public Data(short type, String value) {
-		setType(type);
-		setValue(value);
+	public String toString() {
+		return super.toString() + " " + done;
 	}
-
+	
 	/*
 	public static class Test extends Service {
 		public String path() { return "/test"; }

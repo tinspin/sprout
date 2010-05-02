@@ -212,6 +212,17 @@ public abstract class Sprout extends Service implements Type {
 			} else {
 				if(o instanceof Throwable) {
 					((Throwable) o).printStackTrace(out);
+				} else if(o instanceof java.sql.Statement) {
+					String s = o.toString();
+					int index = s.indexOf(':');
+					
+					if(index > 0) {
+						s = s.substring(index + 1, s.length()).trim();
+					}
+					
+					out.println(new SimpleDateFormat("yy/MM/dd HH:mm:ss")
+					.format(Calendar.getInstance().getTime())
+					+ " " + s);
 				} else {
 					out.println(new SimpleDateFormat("yy/MM/dd HH:mm:ss")
 					.format(Calendar.getInstance().getTime())

@@ -437,15 +437,18 @@ public class User extends Node {
 						user.update();
 					}
 
-					if(event.string("picture").length() > 0) {
+					String picture = event.string("picture");
+					String profile = "file" + user.path() + "/p.jpeg";
+					
+					if(picture.length() > 0 && !picture.startsWith(profile)) {
 						java.io.File path = new java.io.File(Sprout.ROOT + "/file" + user.path());
 
 						if(!path.exists()) {
 							path.mkdirs();
 						}
-
-						java.io.File from = new java.io.File(Sprout.ROOT + "/" + event.string("picture"));
-						java.io.File to = new java.io.File(Sprout.ROOT + "/file" + user.path() + "/p.jpeg");
+						
+						java.io.File from = new java.io.File(Sprout.ROOT + "/" + picture);
+						java.io.File to = new java.io.File(Sprout.ROOT + "/" + profile);
 
 						InputStream in = new FileInputStream(from);
 						OutputStream out = new FileOutputStream(to);
@@ -454,6 +457,9 @@ public class User extends Node {
 						
 						in.close();
 						out.close();
+						
+						System.gc(); // OK!
+						
 						from.delete();
 
 						Node file = new File();
