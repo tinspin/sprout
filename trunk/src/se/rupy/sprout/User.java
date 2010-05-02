@@ -440,6 +440,8 @@ public class User extends Node {
 					String picture = event.string("picture");
 					String profile = "file" + user.path() + "/p.jpeg";
 					
+					System.out.println(picture + " " + profile);
+					
 					if(picture.length() > 0 && !picture.startsWith(profile)) {
 						java.io.File path = new java.io.File(Sprout.ROOT + "/file" + user.path());
 
@@ -478,6 +480,8 @@ public class User extends Node {
 						else {
 							file.update();
 						}
+						
+						event.query().put("picture", "file" + user.path() + "/p.jpeg?time=" + System.currentTimeMillis());
 					}
 
 					if(event.query().path().equals("/user")) {
