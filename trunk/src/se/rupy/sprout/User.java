@@ -492,6 +492,9 @@ public class User extends Node {
 						Sprout.redirect(event, "/");
 					}
 				}
+				else {
+					event.query().put("error", Sprout.i18n("Fill in the mandatory fields!"));
+				}
 
 				Sprout.redirect(event);
 			}

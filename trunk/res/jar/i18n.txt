@@ -73,6 +73,7 @@ Reminder sent! = Påminnelse skickad!
 
 // Warnings
 Are you sure you want to delete the article? = Är du säker på att du vill ta bort artikeln?
+Fill in the mandatory fields! = Fyll i de obligatoriska fälten!
 
 // Benine errors
 Check your inbox! = Kolla din inbox!
