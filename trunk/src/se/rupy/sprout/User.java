@@ -20,6 +20,7 @@ import com.maxmind.geoip.LookupService;
 import se.rupy.content.*;
 import se.rupy.http.*;
 import se.rupy.mail.*;
+import se.rupy.memory.Base;
 
 public class User extends Node {
 	public static String host;
@@ -308,7 +309,7 @@ public class User extends Node {
 			event.query().parse();
 
 			String mail = event.string("mail").toLowerCase();
-
+			
 			if(event.query().method() == Query.POST) {
 				String name = event.string("name").toLowerCase();
 				String pass = event.string("pass");
@@ -438,7 +439,7 @@ public class User extends Node {
 					}
 
 					String picture = event.string("picture");
-					String profile = "file" + user.path() + "/p.jpeg";
+					String profile = "file" + user.path() + "/picture.jpeg";
 					
 					System.out.println(picture + " " + profile);
 					
@@ -481,7 +482,7 @@ public class User extends Node {
 							file.update();
 						}
 						
-						event.query().put("picture", "file" + user.path() + "/p.jpeg?time=" + System.currentTimeMillis());
+						event.query().put("picture", profile + "?time=" + System.currentTimeMillis());
 					}
 
 					if(event.query().path().equals("/user")) {
@@ -527,7 +528,8 @@ public class User extends Node {
 				Node picture = (Node) user.child(FILE, FILE_TYPE, "IMAGE");
 
 				if(picture != null) {
-					event.query().put("picture", "file" + user.path() + "/p.jpeg?time=" + System.currentTimeMillis());
+					String profile = "file" + user.path() + "/picture.jpeg";
+					event.query().put("picture", profile + "?time=" + System.currentTimeMillis());
 				}
 			}
 		}
@@ -633,6 +635,24 @@ public class User extends Node {
 		}
 	}
 
+	public static class Nickname extends Service {
+		public String path() { return "/nick"; }
+		public void filter(Event event) throws Event, Exception {
+			event.query().parse();
+			JSONObject ajax = new JSONObject();
+			Data name = new Data(Type.USER_NAME, event.string("name"));
+
+			if(Sprout.update(Base.SELECT, name)) {
+				ajax.put("name", "found");
+			}
+			else {
+				ajax.put("name", "available");
+			}
+			
+			event.output().print(ajax.toString());
+		}
+	}
+	
 	public static class Folder extends Service {
 		public String path() { return null; }
 		public void filter(Event event) throws Event, Exception {
