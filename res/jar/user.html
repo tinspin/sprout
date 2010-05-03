@@ -79,7 +79,7 @@ public class user extends Sprout {
       <tr>
         <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Nickname") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
-          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" tabindex="5"/>
+          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" onblur="ajaxNick(); return false;" tabindex="5"/>
         </td>
         <td rowspan="3" width="100">
           <table>
@@ -96,10 +96,10 @@ public class user extends Sprout {
             </tr>
             <tr>
               <td align="center">
-                <input type="radio" title="[[ i18n("Female") ]]" name="gender" value="female" tabindex="11"[[ event.string("gender").equals("female") ? " checked" : "" ]]/>
+                <input type="radio" title="[[ i18n("Female") ]]" name="gender" value="female" [[ event.string("gender").equals("female") ? " checked" : "" ]]/>
               </td>
               <td align="center">
-                <input type="radio" title="[[ i18n("Male") ]]" name="gender" value="male" tabindex="12"[[ event.string("gender").equals("male") ? " checked" : "" ]]/>
+                <input type="radio" title="[[ i18n("Male") ]]" name="gender" value="male" [[ event.string("gender").equals("male") ? " checked" : "" ]]/>
               </td>
             </tr>
           </table>

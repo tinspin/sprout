@@ -31,6 +31,9 @@ function ajaxLogin() {
 function ajaxPost(id) {
 	_query('post', '/comment', 'ajax=true&body=' + document.getElementById('body').value + '&id=' + id);
 }
+function ajaxNick() {
+	_query('post', '/nick', 'ajax=true&name=' + document.getElementById('name').value);
+}
 function remind() {
   if(document.getElementById('mail').value != '') {
     document.getElementById('login').action = 'remind';
@@ -160,6 +163,16 @@ function _reply(data) {
   }
   if(data.remind) {
     document.getElementById('remind').style.display = 'block';
+  }
+  if(data.name == 'found') {
+    var name = document.getElementById('name');
+    name.style.borderColor = '#f60';
+    name.style.borderStyle = 'solid';
+  }
+  if(data.name == 'available') {
+    var name = document.getElementById('name');
+    name.style.borderColor = '#6c3';
+    name.style.borderStyle = 'solid';
   }
 }
 function sproutCallback() {
