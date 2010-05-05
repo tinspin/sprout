@@ -66,7 +66,8 @@ public class Upload extends Sprout {
 				item = save(event, item);
 
 				Node article = article(event, file, item);
-				Sprout.redirect(event, "/edit?id=" + article.getId());
+				Sprout.redirect(event, "/");
+				//Sprout.redirect(event, "/edit?id=" + article.getId());
 			}
 		}
 
@@ -147,6 +148,8 @@ public class Upload extends Sprout {
 		else {
 			File.copy(Sprout.ROOT + "/file/" + item.name, Sprout.ROOT + "/file" + file.path(), name);
 		}
+
+		Article.cache3.remove(key);
 
 		return article;
 	}

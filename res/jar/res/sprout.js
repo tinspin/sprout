@@ -29,7 +29,7 @@ function ajaxLogin() {
 	_query('post', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value);
 }
 function ajaxPost(id) {
-	_query('post', '/comment', 'ajax=true&body=' + document.getElementById('body').value + '&id=' + id);
+	_query('post', '/comment', 'ajax=true&body=' + encodeURIComponent(document.getElementById('body').value) + '&id=' + id);
 }
 function ajaxNick() {
 	_query('post', '/nick', 'ajax=true&name=' + document.getElementById('name').value);
