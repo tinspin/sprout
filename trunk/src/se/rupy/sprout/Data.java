@@ -130,7 +130,9 @@ public class Data extends DataBean implements Type {
 	public String toString() {
 		return getString();
 	}
-
+	/*
+	 * Use this to test MySQL index performance.
+	 * 
 	public static class Test extends Service {
 		// select * from data where value = 'YC32WW2B7KFK4DYDBD8FFFTG3VXKGFBH3R7VX79DQ6C3X2V3CKJBG4398R9J4P8W' and type = 100;
 		public String path() { return "/test"; }
@@ -163,4 +165,5 @@ public class Data extends DataBean implements Type {
 			event.output().print("</pre>");
 		}
 	}
+	*/
 }

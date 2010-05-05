@@ -126,44 +126,26 @@ public class Upload extends Sprout {
 			delete = true;
 		}
 		else if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
-			video(item);
+			video(item, file);
 			file.add(File.type("VIDEO"));
 			delete = true;
 		}
 		else if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
 			if(item.name.endsWith(".wav")) {
-				audio(item);
+				audio(item, file);
+			}
+			else {
+				File.copy(Sprout.ROOT + "/file/" + item.name, Sprout.ROOT + "/file" + file.path(), name + ".mp3");
 			}
 			file.add(File.type("AUDIO"));
 			delete = true;
 		}
 
 		if(delete) {
-			item.file.delete();
+			File.delete(item.file);
 		}
 		else {
-			String profile = "file" + file.path() + "/" + name;
-
-			java.io.File path = new java.io.File(Sprout.ROOT + "/file" + file.path());
-
-			if(!path.exists()) {
-				path.mkdirs();
-			}
-
-			java.io.File from = new java.io.File(Sprout.ROOT + "/file/" + item.name);
-			java.io.File to = new java.io.File(Sprout.ROOT + "/" + profile);
-
-			InputStream in = new FileInputStream(from);
-			OutputStream out = new FileOutputStream(to);
-
-			Deploy.pipe(in, out);
-
-			in.close();
-			out.close();
-
-			System.gc(); // OK!
-
-			from.delete();
+			File.copy(Sprout.ROOT + "/file/" + item.name, Sprout.ROOT + "/file" + file.path(), name);
 		}
 
 		return article;
@@ -173,11 +155,7 @@ public class Upload extends Sprout {
 		BufferedImage image = ImageIO.read(item.file);
 		String name = item.name.substring(0, item.name.indexOf('.'));
 
-		java.io.File path = new java.io.File(Sprout.ROOT + "/file" + file.path());
-
-		if(!path.exists()) {
-			path.mkdirs();
-		}
+		File.path(Sprout.ROOT + "/file" + file.path());
 		
 		Image small = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
 		save(small, new java.io.File(Sprout.ROOT + "/file" + file.path() + "/" + name + "-" + width + ".jpeg"));
@@ -207,11 +185,15 @@ public class Upload extends Sprout {
 		out.close();
 	}
 
-	static void video(Item item) {
+	static void video(Item item, Node file) {
+		String name = item.name.substring(0, item.name.indexOf('.'));
 		try {
 			String line;
+			File.path(Sprout.ROOT + "/file" + file.path());
 			String path = Sprout.ROOT + "/" + item.path + "/";
-			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + path + item.name.substring(0, item.name.indexOf('.')) + ".flv");
+			String to = Sprout.ROOT + "/file" + file.path() + "/" + name + ".flv";
+			File.delete(to);
+			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + to);
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
 				System.out.println(line);
@@ -223,11 +205,15 @@ public class Upload extends Sprout {
 		}
 	}
 
-	static void audio(Item item) {
+	static void audio(Item item, Node file) {
+		String name = item.name.substring(0, item.name.indexOf('.'));
 		try {
 			String line;
+			File.path(Sprout.ROOT + "/file" + file.path());
 			String path = Sprout.ROOT + "/" + item.path + "/";
-			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " " + path + item.name.substring(0, item.name.indexOf('.')) + ".mp3");
+			String to = Sprout.ROOT + "/file" + file.path() + "/" + name + ".mp3";
+			File.delete(to);
+			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " " + to);
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
 				System.out.println(line);
