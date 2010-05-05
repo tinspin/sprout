@@ -335,10 +335,6 @@ public class Article extends Node {
 		return old;
 	}
 
-	public static Object remove(Object key) {
-		return cache3.remove(key);
-	}
-
 	public static Article get(Object key) throws SQLException {
 		Article article = (Article) cache3.get(key);
 		User user = (User) User.get(key);
@@ -469,7 +465,7 @@ public class Article extends Node {
 					article.update();
 
 					Article.invalidate(article);
-					cache3.put(key, new Article());
+					cache3.remove(key);
 					Ping.call(article);
 
 					Sprout.redirect(event, "/");
@@ -512,7 +508,6 @@ public class Article extends Node {
 				}
 
 				cache3.put(key, article);
-
 				Sprout.redirect(event);
 			}
 
@@ -582,7 +577,7 @@ public class Article extends Node {
 			switch(child.getType()) {
 			case USER: {
 				padding(buffer, level + 1);
-				buffer.append("<user>" + child.meta(USER_NAME).getString() + "</user>\n");
+				buffer.append("<user>" + child.safe(USER_NAME) + "</user>\n");
 			} break;
 			case COMMENT: {
 				Data state = child.meta(COMMENT_STATE);
@@ -602,7 +597,7 @@ public class Article extends Node {
 					padding(buffer, level + 1);
 					buffer.append("<post>\n");
 					padding(buffer, level + 2);
-					buffer.append("<body>" + child.meta(COMMENT_BODY).getString() + "</body>\n");
+					buffer.append("<body>" + child.safe(COMMENT_BODY) + "</body>\n");
 					padding(buffer, level + 2);
 					buffer.append("<from>" + from.getString() + "</from>\n");
 					padding(buffer, level + 2);
@@ -615,9 +610,9 @@ public class Article extends Node {
 				padding(buffer, level + 1);
 				buffer.append("<file>\n");
 				padding(buffer, level + 2);
-				buffer.append("<type>" + child.meta(FILE_TYPE).getString() + "</type>\n");
+				buffer.append("<type>" + child.safe(FILE_TYPE) + "</type>\n");
 				padding(buffer, level + 2);
-				buffer.append("<path>" + child.path() + Sprout.clean(child.meta(FILE_NAME).getString()) + "</path>\n");
+				buffer.append("<path>file" + child.path() + "/" + Sprout.clean(child.safe(FILE_NAME)) + "</path>\n");
 				padding(buffer, level + 1);
 				buffer.append("</file>\n");
 			} break;
@@ -626,7 +621,7 @@ public class Article extends Node {
 				boolean show = (state == null ? false : state.getString().equals("SHOW"));
 				if(show) {
 					padding(buffer, level + 1);
-					buffer.append("<ping>" + Sprout.clean(child.meta(PING_URL).getString()) + "</ping>\n");
+					buffer.append("<ping>" + Sprout.clean(child.safe(PING_URL)) + "</ping>\n");
 				}
 			} break;
 			}

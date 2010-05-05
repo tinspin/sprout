@@ -415,6 +415,8 @@ public class User extends Node {
 						send = false;
 					}
 
+					boolean verify = false;
+					
 					if(send) {
 						String url = "http://" + host + "/login?key=" + user.safe(USER_KEY);
 						String copy = content.replaceAll("@@url@@", url);
@@ -424,13 +426,13 @@ public class User extends Node {
 							user.add(Data.cache(USER, "UNVERIFIED"));
 							user.update();
 
-							Sprout.redirect(event, "/verify");
+							verify = true;
 						}
 						else {
 							event.query().put("mail", old_mail);
 							user.add(USER_MAIL, old_mail);
 							user.add(USER_KEY, old_key);
-
+							
 							Sprout.redirect(event);
 						}
 					}
@@ -464,6 +466,10 @@ public class User extends Node {
 						event.query().put("picture", profile + "?time=" + System.currentTimeMillis());
 					}
 
+					if(send && verify) {
+						Sprout.redirect(event, "/verify");
+					}
+					
 					if(event.query().path().equals("/user")) {
 						event.query().put("error", Sprout.i18n("Profile saved!"));
 					}
