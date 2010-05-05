@@ -18,14 +18,14 @@ public class article extends Sprout {
 		Object key = event.session().get("key");
 		Article article = Article.find(event.big("id"));
 		Node user = (Node) article.child(USER).getFirst();
-		boolean edit = user.meta(USER_KEY).getValue().equals(key);
+		boolean edit = user.meta(USER_KEY).equals(key);
 		int permit = article.permit(key);
 		article.poll(ARTICLE_READ); ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>[[ article.meta(ARTICLE_TITLE).getValue() ]]</title>
+  <title>[[ article.meta(ARTICLE_TITLE) ]]</title>
   <link rel="stylesheet" type="text/css" href="res/sprout.css">
   
 [[ String analytics = System.getProperty("analytics");
@@ -57,7 +57,7 @@ public class article extends Sprout {
   <div class="single">
     <table>
       <tr>
-        <td colspan="2"><h2>[[ article.meta(ARTICLE_TITLE).getValue() ]]</h2></td>
+        <td colspan="2"><h2>[[ article.meta(ARTICLE_TITLE) ]]</h2></td>
       </tr>
       <tr>
         <td colspan="2"><i>[[ article.time() ]]</i></td>
@@ -72,15 +72,15 @@ public class article extends Sprout {
 				Data type = file.meta(FILE_TYPE);
 				
 				if(type != null) {
-					if(type.getValue().equals("IMAGE")) { ]]
+					if(type.equals("IMAGE")) { ]]
 
           <div class="big">
             <img src="[[ File.path(file, name, "-400.jpeg") ]]" />
           </div>
 
 [[ 					}
-					else if(type.getValue().equals("VIDEO")) {
-						String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getValue(), "UTF-8") + ".flv"; ]]
+					else if(type.equals("VIDEO")) {
+						String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getString(), "UTF-8") + ".flv"; ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
             <param name="allowScriptAccess" value="sameDomain"/>
@@ -92,8 +92,8 @@ public class article extends Sprout {
           </object>
 
 [[					}
-					else if(type.getValue().equals("AUDIO")) {
-						String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getValue(), "UTF-8") + ".mp3"; ]]
+					else if(type.equals("AUDIO")) {
+						String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getString(), "UTF-8") + ".mp3"; ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ path ]]&color=E4E4E4"/>
@@ -118,7 +118,7 @@ public class article extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2">/[[ user.meta(USER_NAME).getValue() ]]</td>
+        <td colspan="2">/[[ user.meta(USER_NAME) ]]</td>
       </tr>
       
 [[		LinkedList pings = article.child(PING); ]]
@@ -138,12 +138,12 @@ public class article extends Sprout {
 			Data url = ping.meta(PING_URL);
 			Data state = ping.meta(PING_STATE);
 			
-			boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+			boolean show = (state == null ? false : state.equals("SHOW"));
       
 [[			if(permit > 0) { ]]
 
       <tr>      
-        <td><a href="[[ url.getValue() ]]">[[ title.getValue() ]]</a></td>
+        <td><a href="[[ url ]]">[[ title ]]</a></td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&ping=[[ ping.getId() ]]" class="button">
             <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
@@ -154,7 +154,7 @@ public class article extends Sprout {
 [[			} else if(show) { ]]
 
       <tr>
-        <td colspan="2"><a href="[[ url.getValue() ]]">[[ title.getValue() ]]</a></td>
+        <td colspan="2"><a href="[[ url ]]">[[ title ]]</a></td>
       </tr>
       
 [[			}
@@ -173,7 +173,7 @@ public class article extends Sprout {
 			Data body = comment.meta(COMMENT_BODY);
 			Data state = comment.meta(COMMENT_STATE);
 			
-            boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+            boolean show = (state == null ? false : state.equals("SHOW"));
             
             if(ip == null) {
             	ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
@@ -182,7 +182,7 @@ public class article extends Sprout {
 [[			if(permit > 0) { ]]
 
       <tr>
-        <td><img src="res/quote.gif">&nbsp;[[ body.getValue() ]]</td>
+        <td><img src="res/quote.gif">&nbsp;[[ body ]]</td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
             <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
@@ -191,8 +191,8 @@ public class article extends Sprout {
         <td>
 
 [[				try {
-					String address = ip.getValue();
-					int index = ip.getValue().indexOf(",");
+					String address = ip.getString();
+					int index = address.indexOf(",");
 					
 					if(index > 0) {
 						address = address.substring(index + 1).trim();
@@ -208,7 +208,7 @@ public class article extends Sprout {
 [[			} else if(show) { ]]
 
       <tr>
-        <td colspan="2"><img src="res/quote.gif">&nbsp;[[ body.getValue() ]]</td>
+        <td colspan="2"><img src="res/quote.gif">&nbsp;[[ body ]]</td>
       </tr>
       
 [[			}

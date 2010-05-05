@@ -5,13 +5,16 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import se.rupy.http.Deploy;
 import se.rupy.http.Event;
 import se.rupy.http.Input;
 import se.rupy.http.Output;
@@ -40,10 +43,10 @@ public class Upload extends Sprout {
 					Item item = new Item();
 					item.path = "file";
 					item = save(event, item);
-					
+
 					String path = frame(item);
 					Output out = event.output();
-					
+
 					out.println("<script>");
 					out.println("  var doc = window.top.document;");
 					out.println("  doc.user.picture.value = '" + path + "';");
@@ -55,15 +58,13 @@ public class Upload extends Sprout {
 					throw e;
 				}
 			}
-			
+
 			if(event.query().path().equals("/upload")) {
 				File file = new File();
-				file.update();
-				
 				Item item = new Item();
-				item.path = "file" + file.path();
+				item.path = "file";
 				item = save(event, item);
-				
+
 				Node article = article(event, file, item);
 				Sprout.redirect(event, "/edit?id=" + article.getId());
 			}
@@ -74,33 +75,33 @@ public class Upload extends Sprout {
 
 	static String frame(Item item) throws IOException {
 		BufferedImage image = ImageIO.read(item.file);
-		
+
 		int width = image.getWidth();
 		int height = image.getHeight();
-		
+
 		if(width > height) {
 			image = image.getSubimage((width - height) / 2, 0, height, height);
 		}
-		
+
 		if(width < height) {
 			image = image.getSubimage(0, (height - width) / 2, width, width);
 		}
-		
+
 		String name = item.name.substring(0, item.name.indexOf('.'));
 		String path = item.path + "/" + name + ".jpeg";
-		
+
 		Image tiny = image.getScaledInstance(50, 50, Image.SCALE_AREA_AVERAGING);
 		save(tiny, new java.io.File(Sprout.ROOT + "/" + path));
 		item.file.delete();
-		
+
 		return path;
 	}
-	
+
 	static Node article(Event event, Node file, Item item) throws Exception {
 		Object key = event.session().get("key");
 		Article article = Article.get(key);
-		
-		Node old = article.child(FILE, FILE_NAME, item.name);
+		String name = File.name(item.name);
+		Node old = article.child(FILE, FILE_NAME, name);
 
 		if(old != null) {
 			file = old;
@@ -108,41 +109,7 @@ public class Upload extends Sprout {
 			Article.invalidate(article);
 		}
 
-		boolean delete = false;
-		
-		if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg") || item.name.endsWith(".bmp")) {
-			resize(item, 200);
-			file.add(File.type("IMAGE"));
-			item.name = item.name.substring(0, item.name.indexOf('.'));
-			delete = true;
-		}
-
-		if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
-			video(item);
-			file.add(File.type("VIDEO"));
-			item.name = item.name.substring(0, item.name.indexOf('.'));
-			delete = true;
-		}
-
-		if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
-			if(item.name.endsWith(".wav")) {
-				audio(item);
-			}
-			file.add(File.type("AUDIO"));
-			item.name = item.name.substring(0, item.name.indexOf('.'));
-			delete = true;
-		}
-		
-		
-		file.add(FILE_NAME, item.name);
-
-		if(article.meta(ARTICLE_TITLE) == null) {
-			article.add(ARTICLE_TITLE, i18n("Title"));
-		}
-
-		if(article.meta(ARTICLE_BODY) == null) {
-			article.add(ARTICLE_BODY, i18n("Body"));
-		}
+		file.add(FILE_NAME, name);
 
 		if(old == null) {
 			article.add(file);
@@ -151,28 +118,78 @@ public class Upload extends Sprout {
 			file.update();
 		}
 		
+		boolean delete = false;
+		
+		if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg") || item.name.endsWith(".bmp")) {
+			resize(item, file, 200);
+			file.add(File.type("IMAGE"));
+			delete = true;
+		}
+		else if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
+			video(item);
+			file.add(File.type("VIDEO"));
+			delete = true;
+		}
+		else if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
+			if(item.name.endsWith(".wav")) {
+				audio(item);
+			}
+			file.add(File.type("AUDIO"));
+			delete = true;
+		}
+
 		if(delete) {
 			item.file.delete();
 		}
-		
+		else {
+			String profile = "file" + file.path() + "/" + name;
+
+			java.io.File path = new java.io.File(Sprout.ROOT + "/file" + file.path());
+
+			if(!path.exists()) {
+				path.mkdirs();
+			}
+
+			java.io.File from = new java.io.File(Sprout.ROOT + "/file/" + item.name);
+			java.io.File to = new java.io.File(Sprout.ROOT + "/" + profile);
+
+			InputStream in = new FileInputStream(from);
+			OutputStream out = new FileOutputStream(to);
+
+			Deploy.pipe(in, out);
+
+			in.close();
+			out.close();
+
+			System.gc(); // OK!
+
+			from.delete();
+		}
+
 		return article;
 	}
-	
-	static void resize(Item item, int width) throws IOException {
+
+	static void resize(Item item, Node file, int width) throws IOException {
 		BufferedImage image = ImageIO.read(item.file);
 		String name = item.name.substring(0, item.name.indexOf('.'));
 
-		Image small = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
-		save(small, new java.io.File(Sprout.ROOT + "/" + item.path + "/" + name + "-" + width + ".jpeg"));
+		java.io.File path = new java.io.File(Sprout.ROOT + "/file" + file.path());
 
+		if(!path.exists()) {
+			path.mkdirs();
+		}
+		
+		Image small = image.getScaledInstance(width, -1, Image.SCALE_AREA_AVERAGING);
+		save(small, new java.io.File(Sprout.ROOT + "/file" + file.path() + "/" + name + "-" + width + ".jpeg"));
+		
 		Image big = image.getScaledInstance(width * 2, -1, Image.SCALE_AREA_AVERAGING);
-		save(big, new java.io.File(Sprout.ROOT + "/" + item.path + "/" + name + "-" + width * 2 + ".jpeg"));
+		save(big, new java.io.File(Sprout.ROOT + "/file" + file.path() + "/" + name + "-" + width * 2 + ".jpeg"));
 	}
 
 	static void save(Image small, java.io.File file) throws IOException {
 		int width = small.getWidth(null);
 		int height = small.getHeight(null);
-
+		
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.createGraphics();
 		g.setColor(Color.WHITE);
@@ -216,7 +233,6 @@ public class Upload extends Sprout {
 				System.out.println(line);
 			}
 			input.close();
-			System.out.println(path + item.name);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

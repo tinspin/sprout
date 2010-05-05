@@ -79,7 +79,7 @@ public class user extends Sprout {
       <tr>
         <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Nickname") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
-          <input type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" onblur="ajaxNick(); return false;" tabindex="5"/>
+          <input id="name" type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" onblur="ajaxNick(); return false;" tabindex="5"/>
         </td>
         <td rowspan="3" width="100">
           <table>
@@ -162,7 +162,7 @@ public class user extends Sprout {
       <tr>
         <td colspan="4">
           <a class="button overflow">
-            <input name="file" type="file" class="file" style="left: 20px;" onchange="document.upload.submit()"/>
+            <input name="file" type="file" class="file" style="left: 5px;" tabindex="-1" onchange="document.upload.submit()"/>
             <span>[[ out.println(i18n("Profile&nbsp;Picture")); ]]</span>
           </a>
         </td>
@@ -181,7 +181,7 @@ public class user extends Sprout {
   </table>
 </div>
 
-<iframe name="frame" style="width: 0; height: 0;"></iframe>
+<iframe name="frame" style="width: 0; height: 0; border: 0px;"></iframe>
 
 </body>
 </html>

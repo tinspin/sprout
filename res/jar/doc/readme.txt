@@ -45,11 +45,14 @@ Finally browse to: http://localhost:9000
 
 2. Setting up a live sprout instance:
 
+IMPORTANT: Make sure you have MySQL running with innodb_file_per_table.
+
 a. Hot-deployment password
 
    Now that you got sprout up and running, change the 
    pass from 'secret' to something secure in the run.bat, 
-   run.sh and build.xml files.
+   run.sh and build.xml files if you want to be able to 
+   hotdeploy from a remote host.
 
 b. Change project name from sprout
 
@@ -61,8 +64,8 @@ b. Change project name from sprout
    Don't forget to add -Ddburl=jdbc:mysql://localhost/ZZZ 
    to the run.bat and run.sh and change the name of the 
    res/sprout.xml file to res/ZZZ.xml if you choose another 
-   database name, where ZZZ should be replaced with your 
-   database name.
+   database name, where ZZZ should be replaced with your new 
+   name.
 
 c. Host multiple sprout on different ports
 
@@ -113,6 +116,7 @@ Happy Hacking!
 4. Version:
 
   0.1 Alpha
+  
       - Users
       - Articles
       - Comments
@@ -123,11 +127,13 @@ Happy Hacking!
       - Search
 
   0.2 Beta
+  
       - Columization
       - Node poll
       - Pingback
       
-  0.2.1
+  0.2.1 IMPORTANT: NOT backwards compatible!
+  
       - Password Reminder
       - User Profile (Birthday, Country, First Name, Last Name and 
         Gender with public options)
@@ -135,21 +141,23 @@ Happy Hacking!
       - AJAX Login and Post. (just for fun)
       - GeoIP and country flags.
       - Comet Chat. Download dependency from rupy project and deploy on server!
-      - Optimised node UPDATE to only update updated meta-data fields.
       - Edit profile.
       - Profile image.
       
-      - Hide/show articles with date.
-      - Labels, test with swedish/english.
-      - Verify only characters on nickname.
-      - Remove cache on remove article.
-      - Username path listing.
-      - Cache timeout.
-      - Delete files.
+      - Revised how uploaded files are stored. Now it makes sense and is scalable!
+      - Changed data value from TEXT to BLOB in the database, so we can store binaries.
+      - Optimised node UPDATE to only update updated meta-data fields.
       
 ----------------------------------------------
 
 5. Todo:
+
+  - Hide/show articles with date.
+  - Labels, test with swedish/english.
+  - Verify only characters on nickname.
+
+  - Cache timeout.
+  - Delete files.
 
   - Vote!
   - Captcha?
