@@ -442,26 +442,7 @@ public class User extends Node {
 					String profile = "file" + user.path() + "/picture.jpeg";
 
 					if(picture.length() > 0 && !picture.startsWith(profile)) {
-						java.io.File path = new java.io.File(Sprout.ROOT + "/file" + user.path());
-
-						if(!path.exists()) {
-							path.mkdirs();
-						}
-
-						java.io.File from = new java.io.File(Sprout.ROOT + "/" + picture);
-						java.io.File to = new java.io.File(Sprout.ROOT + "/" + profile);
-
-						InputStream in = new FileInputStream(from);
-						OutputStream out = new FileOutputStream(to);
-
-						Deploy.pipe(in, out);
-
-						in.close();
-						out.close();
-
-						System.gc(); // OK!
-
-						from.delete();
+						File.copy(Sprout.ROOT + "/" + picture, Sprout.ROOT + "/file" + user.path(), "picture.jpeg");
 
 						Node file = new File();
 						Node old = user.child(FILE, FILE_TYPE, "IMAGE");
