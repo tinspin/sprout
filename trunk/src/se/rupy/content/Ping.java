@@ -91,9 +91,9 @@ public class Ping extends Node {
 					while(it.hasNext()) {
 						Node ping = (Node) it.next();
 
-						if(ping.meta(PING_URL).getValue().equals(from)) {
+						if(ping.meta(PING_URL).getString().equals(from)) {
 							found = true;
-							System.out.println("Pingback '" + ping.meta(PING_TITLE).getValue() + "' allready added!");
+							System.out.println("Pingback '" + ping.meta(PING_TITLE).getString() + "' allready added!");
 							break;
 						}
 					}
@@ -133,7 +133,7 @@ public class Ping extends Node {
 	public static class Out extends Search {
 		HttpURLConnection conn;
 		public Out(Article article) throws Exception {
-			String body = article.meta(ARTICLE_BODY).getValue();
+			String body = article.meta(ARTICLE_BODY).getString();
 			String url = find("a", "href", body);
 
 			while(url.length() > 0 && url.startsWith("http://")) {

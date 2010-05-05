@@ -45,7 +45,6 @@ eMail = ePost
 Nickname = Smeknamn
 Password = Lösenord
 Confirm = Upprepa
-Body = Brödtext
 Public = Publikt
 Country = Land
 Earth = Jorden

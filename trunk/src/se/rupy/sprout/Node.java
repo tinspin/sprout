@@ -11,6 +11,12 @@ import se.rupy.pool.*;
 
 /**
  * The node is the atomic persistence object.
+ * 
+ * The graph will be inserted upon {@link #update()} or in real-time 
+ * upon {@link #add(Node)} and {@link #add(Data)} if the parent node 
+ * is already inserted, so that the state doesen't have to be selected 
+ * from the database when the node is updated.
+ * 
  * @author Marc
  */
 public class Node extends NodeBean implements Type {
@@ -64,7 +70,7 @@ public class Node extends NodeBean implements Type {
 	 */
 	public void add(Node node) throws SQLException {
 		if(node == null) {
-			throw new NullPointerException("Can't add node.");
+			throw new NullPointerException("Can't add 'null' node.");
 		}
 
 		if(id > 0 && (node.getId() == 0 || child(node.getId()) == null)) {
@@ -94,9 +100,7 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public void add(short type, String value) throws SQLException {
-		Data data = new Data();
-		data.setType(type);
-		data.setValue(value);
+		Data data = new Data(type, value);
 		add(data);
 	}
 
@@ -107,28 +111,28 @@ public class Node extends NodeBean implements Type {
 	 */
 	public void add(Data data) throws SQLException {
 		if(data == null) {
-			throw new NullPointerException("Can't add data.");
+			throw new NullPointerException("Can't add 'null' data.");
 		}
 
 		meta();
 
 		Data old = meta(data.getType());
-		Data cache = Data.cache(type, data.getValue());
+		Data cache = Data.cache(type, data.getString());
 
 		if(old != null) {
-			if(old.getValue().equals(data.getValue())) {
+			meta.remove(old);
+
+			if(old.getString().equals(data.getString())) {
 				data.setId(old.getId());
 				data.done(true);
 			}
 			else {
-				meta.remove(old);
-
 				if(cache != null && data.getId() == cache.getId()) {
 					remove(old);
 					meta(Base.INSERT, data, Sprout.connection(false));
 				}
 				else {
-					data.setId(old.getId()); // TODO: Should this delete and insert? Nope, update() should be called?
+					data.setId(old.getId());
 				}
 			}
 		}
@@ -149,13 +153,33 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public void remove(Data data) throws SQLException {
-		// TODO: remove data itself?
+		Connection connection = Sprout.connection(true);
 
-		meta.setNode(this);
-		meta.setData(data);
-		meta.setType(data.getType());
+		try {
+			Data cache = Data.cache(type, data.getString());
 
-		Sprout.update(Base.DELETE, meta);
+			if(cache != null && data.getId() == cache.getId()) {
+				System.out.println("Data cache for '" + cache.getString() + "' found. (" + type + ")");
+			}
+			else {
+				Sprout.update(Base.DELETE, data, connection);
+			}
+
+			meta.setNode(this);
+			meta.setData(data);
+			meta.setType(data.getType());
+
+			Sprout.update(Base.DELETE, meta, connection);
+
+			connection.commit();
+		}
+		catch(SQLException e) {
+			connection.rollback();
+			throw e;
+		}
+		finally {
+			connection.close();
+		}
 	}
 
 	/**
@@ -191,10 +215,10 @@ public class Node extends NodeBean implements Type {
 
 				while(it.hasNext()) {
 					Data data = (Data) it.next();
-					Data cache = Data.cache(type, data.getValue());
+					Data cache = Data.cache(type, data.getString());
 
 					if(cache != null && data.getId() == cache.getId()) {
-						System.out.println("Data cache for '" + cache.getValue() + "' found. (" + type + ")");
+						System.out.println("Data cache for '" + cache.getString() + "' found. (" + type + ")");
 					}
 					else {
 						Sprout.update(Base.DELETE, data, connection);
@@ -271,9 +295,8 @@ public class Node extends NodeBean implements Type {
 			action = Base.INSERT;
 		}
 
-		if(action == Base.INSERT) {
-			Sprout.update(action, this, connection);
-		}
+		// TODO: Update flag on node?
+		Sprout.update(action, this, connection);
 
 		Iterator it = meta.iterator();
 
@@ -386,9 +409,7 @@ public class Node extends NodeBean implements Type {
 	 * @throws SQLException
 	 */
 	public boolean query(short type, Object value) throws SQLException {
-		Data data = new Data();
-		data.setType(type);
-		data.setValue(value.toString()); // TODO: TEXT or BLOB
+		Data data = new Data(type, value.toString());
 		return query(data);
 	}
 
@@ -538,7 +559,7 @@ public class Node extends NodeBean implements Type {
 		Data safe = meta(type);
 
 		if(safe != null) {
-			return safe.getValue();
+			return safe.getString();
 		}
 
 		return "";
@@ -612,7 +633,7 @@ public class Node extends NodeBean implements Type {
 			if(node.getType() == link) {
 				node.meta();
 
-				if(node.meta(meta).getValue().equals(value)) {
+				if(node.meta(meta).getString().equals(value)) {
 					return node;
 				}
 			}
@@ -638,7 +659,7 @@ public class Node extends NodeBean implements Type {
 			node.copy((NodeBean) it.next());
 			node.meta();
 
-			if(node.meta(data.getType()).getValue().equals(data.getValue())) {
+			if(node.meta(data.getType()).getString().equals(data.getString())) {
 				return node;
 			}
 		}
@@ -730,7 +751,7 @@ public class Node extends NodeBean implements Type {
 				node.update();
 			}
 
-			hash.put(name.getValue(), node);
+			hash.put(name.getString(), node);
 			return true;
 		}
 		catch(Exception e) {
@@ -780,15 +801,15 @@ public class Node extends NodeBean implements Type {
 			Data data = (Data) it.next();
 
 			padding(buffer, level + 1);
-			if(data.getValue().length() > 100) {
+			if(data.getString().length() > 100) {
 				buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\">\n");
 				padding(buffer, level + 1);
-				buffer.append(data.getValue() + "\n");
+				buffer.append(data.getString() + "\n");
 				padding(buffer, level + 1);
 				buffer.append("</meta>\n");
 			}
 			else {
-				buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\" value=\"" + data.getValue() + "\"/>\n");
+				buffer.append("<meta id=\"" + data.getId() + "\" type=\"" + data.getType() + "\" value=\"" + data.getString() + "\"/>\n");
 			}
 		}
 

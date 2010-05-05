@@ -41,7 +41,7 @@ public class content extends Sprout {
     <div class="article">
       <table width="100">
         <tr>
-          <td colspan="2"><a href="article?id=[[ article.getId() ]]"><h2>[[ article.meta(ARTICLE_TITLE).getValue() ]]</h2></a></td>
+          <td colspan="2"><a href="article?id=[[ article.getId() ]]"><h2>[[ article.meta(ARTICLE_TITLE) ]]</h2></a></td>
         </tr>
         <tr>
           <td><i>[[ article.time() ]]</i></td>
@@ -55,7 +55,7 @@ public class content extends Sprout {
           </td>
         </tr>
         <tr>
-          <td colspan="2">/[[ node.meta(USER_NAME).getValue() ]]</td>
+          <td colspan="2">/[[ node.meta(USER_NAME) ]]</td>
         </tr>
         
 [[			if(permit > 0) { ]]
@@ -93,13 +93,13 @@ public class content extends Sprout {
 			Data type = file.meta(FILE_TYPE);
 			
 			if(type != null) {
-				if(type.getValue().equals("IMAGE") && !image) { ]]
+				if(type.equals("IMAGE") && !image) { ]]
 
           <div><a class="title" href="article?id=[[ article.getId() ]]"><img class="rounded" src="[[ File.path(file, name, "-200.jpeg") ]]" /></a></div>
 
 [[					image = true;
-				} else if(type.getValue().equals("AUDIO") && !audio) {
-					String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getValue(), "UTF-8") + ".mp3"; ]]
+				} else if(type.equals("AUDIO") && !audio) {
+					String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getString(), "UTF-8") + ".mp3"; ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ path ]]&color=E4E4E4"/>

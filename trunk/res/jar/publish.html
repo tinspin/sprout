@@ -16,6 +16,18 @@ public class publish extends Sprout {
 		Article article = Article.get(key);
 		User user = User.get(key);
 		
+		Calendar date = Calendar.getInstance();
+		
+		int day = event.medium("day");
+		int month = event.medium("month");
+		int year = event.medium("year");
+
+		if(!(day > 0 && month > 0 && year > 0)) {
+			event.query().put("day", date.get(Calendar.DAY_OF_MONTH));
+			event.query().put("month", date.get(Calendar.MONTH) + 1);
+			event.query().put("year", date.get(Calendar.YEAR));
+		}
+		
 		if(event.string("title").length() == 0 && 
 		   event.string("body").length() == 0) {
 			Article.remove(key);
@@ -67,7 +79,7 @@ public class publish extends Sprout {
             <!-- // ISO 8601 -->
             <select name="year" class="year" tabindex="2">
             
-[[		for(int i = 1900; i < 2009; i++) { ]]
+[[		for(int i = 1900; i < 2011; i++) { ]]
 
               <option value="[[ i ]]"[[ event.query().medium("year", 1990) == i ? " selected" : "" ]]>[[ i ]]</option>
 
@@ -125,21 +137,21 @@ public class publish extends Sprout {
 				Data type = file.meta(FILE_TYPE);
 				
 				if(type != null) {
-					if(type.getValue().equals("IMAGE")) { ]]
+					if(type.equals("IMAGE")) { ]]
 
             <a href="[[ File.path(file, name, "-200.jpeg") ]]">
               <img src="res/file/image.gif" alt="[[ File.path(file, name, "-200.jpeg") ]]"/>
             </a>
 
 [[ 					}
-					else if(type.getValue().equals("VIDEO")) { ]]
+					else if(type.equals("VIDEO")) { ]]
 
             <a href="[[ File.path(file, name, ".flv") ]]">
               <img src="res/file/video.gif" alt="[[ File.path(file, name, ".flv") ]]"/>
             </a>
 
 [[ 					}
-					else if(type.getValue().equals("AUDIO")) { ]]
+					else if(type.equals("AUDIO")) { ]]
 
             <a href="[[ File.path(file, name, ".mp3") ]]">
               <img src="res/file/audio.gif" alt="[[ File.path(file, name, ".mp3") ]]"/>

@@ -164,7 +164,7 @@ public class User extends Node {
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
 
-			if(node.meta(GROUP_NAME).getValue().equals(group)) {
+			if(node.meta(GROUP_NAME).getString().equals(group)) {
 				return true;
 			}
 		}
@@ -221,8 +221,8 @@ public class User extends Node {
 					if(user.query(USER_MAIL, mail) || user.query(USER_NAME, mail)) {
 						user.fill(10, 0, 10);
 
-						if(user.meta(USER_PASS).getValue().equals(pass)) {
-							if(user.meta(USER_STATE).getValue().equals("VERIFIED")) {
+						if(user.meta(USER_PASS).getString().equals(pass)) {
+							if(user.meta(USER_STATE).getString().equals("VERIFIED")) {
 								save(event.session(), user, event.bit("remember"));
 
 								if(ajax != null) {
@@ -309,7 +309,7 @@ public class User extends Node {
 			event.query().parse();
 
 			String mail = event.string("mail").toLowerCase();
-			
+
 			if(event.query().method() == Query.POST) {
 				String name = event.string("name").toLowerCase();
 				String pass = event.string("pass");
@@ -440,16 +440,14 @@ public class User extends Node {
 
 					String picture = event.string("picture");
 					String profile = "file" + user.path() + "/picture.jpeg";
-					
-					System.out.println(picture + " " + profile);
-					
+
 					if(picture.length() > 0 && !picture.startsWith(profile)) {
 						java.io.File path = new java.io.File(Sprout.ROOT + "/file" + user.path());
 
 						if(!path.exists()) {
 							path.mkdirs();
 						}
-						
+
 						java.io.File from = new java.io.File(Sprout.ROOT + "/" + picture);
 						java.io.File to = new java.io.File(Sprout.ROOT + "/" + profile);
 
@@ -457,12 +455,12 @@ public class User extends Node {
 						OutputStream out = new FileOutputStream(to);
 
 						Deploy.pipe(in, out);
-						
+
 						in.close();
 						out.close();
-						
+
 						System.gc(); // OK!
-						
+
 						from.delete();
 
 						Node file = new File();
@@ -481,7 +479,7 @@ public class User extends Node {
 						else {
 							file.update();
 						}
-						
+
 						event.query().put("picture", profile + "?time=" + System.currentTimeMillis());
 					}
 
@@ -566,8 +564,8 @@ public class User extends Node {
 					if(user.query(USER_MAIL, mail)) {
 						user.meta();
 
-						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getValue());
-						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getValue());
+						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getString());
+						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getString());
 
 						if(send(event, mail, Sprout.i18n("Reminder!"), copy)) {
 							event.query().put("error", Sprout.i18n("Reminder sent!"));
@@ -587,7 +585,7 @@ public class User extends Node {
 	}
 
 	static void save(Session session, User user, boolean remember) {
-		String key = user.meta(USER_KEY).getValue();
+		String key = user.meta(USER_KEY).getString();
 		session.put("key", key);
 		cache.put(key, user);
 
@@ -638,24 +636,30 @@ public class User extends Node {
 		}
 	}
 
-	public static class Nickname extends Service {
+	public static class Nick extends Service {
 		public String path() { return "/nick"; }
 		public void filter(Event event) throws Event, Exception {
 			event.query().parse();
 			JSONObject ajax = new JSONObject();
-			Data name = new Data(Type.USER_NAME, event.string("name"));
 
-			if(Sprout.update(Base.SELECT, name)) {
+			if(event.string("name").length() == 0) {
 				ajax.put("name", "found");
 			}
 			else {
-				ajax.put("name", "available");
+				Data name = new Data(Type.USER_NAME, event.string("name"));
+
+				if(Sprout.update(Base.SELECT, name)) {
+					ajax.put("name", "found");
+				}
+				else {
+					ajax.put("name", "available");
+				}
 			}
-			
+
 			event.output().print(ajax.toString());
 		}
 	}
-	
+
 	public static class Folder extends Service {
 		public String path() { return null; }
 		public void filter(Event event) throws Event, Exception {
@@ -666,7 +670,7 @@ public class User extends Node {
 			if(user.query(USER_NAME, event.query().path().substring(1))) {
 				user.fill(10, 0, 10);
 				// TODO: Really show articles...
-				event.output().print("<pre>Show " + user.meta(USER_NAME).getValue() + "s articles!</pre>");
+				event.output().print("<pre>Show " + user.meta(USER_NAME).getString() + "s articles!</pre>");
 			}
 			else {
 				event.reply().code("404 Not Found");

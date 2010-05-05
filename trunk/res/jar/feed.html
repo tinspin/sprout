@@ -37,7 +37,7 @@ public class feed extends Sprout {
 				Article article = (Article) it.next(); ]]
 
 	<entry>
-		<title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
+		<title>[[ clean(article.meta(ARTICLE_TITLE).getString()) ]]</title>
 		<link href="http://[[ User.host ]]/article?id=[[ article.getId() ]]" />
 		<id>urn:uuid:[[ article.getId() ]]</id>
 		<updated>[[ clean(article.time()) ]]</updated>
@@ -60,7 +60,7 @@ public class feed extends Sprout {
 				Article article = (Article) it.next(); ]]
 		
     <item>
-      <title>[[ clean(article.meta(ARTICLE_TITLE).getValue()) ]]</title>
+      <title>[[ clean(article.meta(ARTICLE_TITLE).getString()) ]]</title>
       <link>http://[[ User.host ]]/article?id=[[ article.getId() ]]</link>
       <description>[[ print(User.host, article, out); ]]</description>
       <pubDate>[[ clean(article.time()) ]]</pubDate>
@@ -92,8 +92,8 @@ public class feed extends Sprout {
 			Node file = (Node) it.next();
 			Data type = file.meta(FILE_TYPE);
             
-            if(type != null && type.getValue().equals("IMAGE")) {
-				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.meta(FILE_NAME).getValue() + "\" align=\"right\"/>"));
+            if(type != null && type.equals("IMAGE")) {
+				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.meta(FILE_NAME) + "\" align=\"right\"/>"));
 				break;
 			}
 		}

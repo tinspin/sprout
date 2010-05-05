@@ -97,12 +97,10 @@ public abstract class Sprout extends Service implements Type {
 	}
 
 	public static Data generate(short type, int length) throws Exception {
-		Data data = new Data();
-		data.setType(type);
-		data.setValue(Event.random(length));
+		Data data = new Data(type, Event.random(length));
 
 		while(update(Base.SELECT, data)) {
-			data.setValue(Event.random(length));
+			data.setString(Event.random(length));
 		}
 
 		return data;

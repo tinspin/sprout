@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -260,7 +262,7 @@ public class Article extends Node {
 			Node node = (Node) it.next();
 			Data data = node.meta(state);
 
-			if(data != null && data.getValue().equals("SHOW")) {
+			if(data != null && data.getString().equals("SHOW")) {
 				count++;
 			}
 		}
@@ -364,7 +366,7 @@ public class Article extends Node {
 	public LinkedList columnize() {
 		if(columns == null) {
 			columns = new LinkedList();
-			String column = "", text = meta(ARTICLE_BODY).getValue();
+			String column = "", text = meta(ARTICLE_BODY).getString();
 			int length = 0, begin = 0, end = COLUMN_WIDTH / CHARACTER_WIDTH;
 
 			// loop until all overflowing data has been columnized
@@ -449,6 +451,19 @@ public class Article extends Node {
 						MAX++;
 					}
 
+					Calendar date = Calendar.getInstance();
+					
+					int day = event.medium("day");
+					int month = event.medium("month");
+					int year = event.medium("year");
+
+					if(day > 0 && month > 0 && year > 0) {
+						date.set(Calendar.DAY_OF_MONTH, day);
+						date.set(Calendar.MONTH, month - 1);
+						date.set(Calendar.YEAR, year);
+					}
+					
+					article.setDate(date.getTimeInMillis());
 					article.add(ARTICLE_TITLE, title);
 					article.add(ARTICLE_BODY, body);
 					article.update();
@@ -480,13 +495,20 @@ public class Article extends Node {
 				if(id > 0 && article.getId() != id) {
 					article = find(id);
 				}
-
+				
+				Calendar date = Calendar.getInstance();
+				date.setTimeInMillis(article.getDate());
+				
+				event.query().put("day", date.get(Calendar.DAY_OF_MONTH));
+				event.query().put("month", date.get(Calendar.MONTH) + 1);
+				event.query().put("year", date.get(Calendar.YEAR));
+				
 				if(article.meta(ARTICLE_TITLE) != null) {
-					event.query().put("title", article.meta(ARTICLE_TITLE).getValue());
+					event.query().put("title", article.meta(ARTICLE_TITLE).getString());
 				}
 
 				if(article.meta(ARTICLE_BODY) != null) {
-					event.query().put("body", article.meta(ARTICLE_BODY).getValue());
+					event.query().put("body", article.meta(ARTICLE_BODY).getString());
 				}
 
 				cache3.put(key, article);
@@ -499,7 +521,7 @@ public class Article extends Node {
 	}
 
 	public static class Widget extends Service {
-		public String path() { return "/article.js"; }
+		public String path() { return "/widget"; }
 		public void filter(Event event) throws Event, Exception {
 			event.query().parse();
 
@@ -560,11 +582,11 @@ public class Article extends Node {
 			switch(child.getType()) {
 			case USER: {
 				padding(buffer, level + 1);
-				buffer.append("<user>" + child.meta(USER_NAME).getValue() + "</user>\n");
+				buffer.append("<user>" + child.meta(USER_NAME).getString() + "</user>\n");
 			} break;
 			case COMMENT: {
 				Data state = child.meta(COMMENT_STATE);
-				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+				boolean show = (state == null ? false : state.getString().equals("SHOW"));
 				if(show) {
 					Data from = child.meta(COMMENT_IP);
 
@@ -580,9 +602,9 @@ public class Article extends Node {
 					padding(buffer, level + 1);
 					buffer.append("<post>\n");
 					padding(buffer, level + 2);
-					buffer.append("<body>" + child.meta(COMMENT_BODY).getValue() + "</body>\n");
+					buffer.append("<body>" + child.meta(COMMENT_BODY).getString() + "</body>\n");
 					padding(buffer, level + 2);
-					buffer.append("<from>" + from.getValue() + "</from>\n");
+					buffer.append("<from>" + from.getString() + "</from>\n");
 					padding(buffer, level + 2);
 					buffer.append("<date>" + child.getDate() + "</date>\n");
 					padding(buffer, level + 1);
@@ -593,18 +615,18 @@ public class Article extends Node {
 				padding(buffer, level + 1);
 				buffer.append("<file>\n");
 				padding(buffer, level + 2);
-				buffer.append("<type>" + child.meta(FILE_TYPE).getValue() + "</type>\n");
+				buffer.append("<type>" + child.meta(FILE_TYPE).getString() + "</type>\n");
 				padding(buffer, level + 2);
-				buffer.append("<path>" + child.path() + Sprout.clean(child.meta(FILE_NAME).getValue()) + "</path>\n");
+				buffer.append("<path>" + child.path() + Sprout.clean(child.meta(FILE_NAME).getString()) + "</path>\n");
 				padding(buffer, level + 1);
 				buffer.append("</file>\n");
 			} break;
 			case PING: {
 				Data state = child.meta(PING_STATE);
-				boolean show = (state == null ? false : state.getValue().equals("SHOW"));
+				boolean show = (state == null ? false : state.getString().equals("SHOW"));
 				if(show) {
 					padding(buffer, level + 1);
-					buffer.append("<ping>" + Sprout.clean(child.meta(PING_URL).getValue()) + "</ping>\n");
+					buffer.append("<ping>" + Sprout.clean(child.meta(PING_URL).getString()) + "</ping>\n");
 				}
 			} break;
 			}
@@ -614,9 +636,9 @@ public class Article extends Node {
 		buffer.append("</item>\n");
 	}
 
-	public class Category extends Node {
-		public Category() {
-			super(CATEGORY);
+	public class Label extends Node {
+		public Label() {
+			super(LABEL);
 		}
 	}
 }
