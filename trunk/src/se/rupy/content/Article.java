@@ -171,9 +171,9 @@ public class Article extends Node {
 		 */
 
 		return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
-		"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
-		"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
-		"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%')) AND " + 
+		"WHERE ((d1.type = 200 AND d1.value LIKE '%" + query + "%') OR " + 
+		"(d2.type = 201 AND d2.value LIKE '%" + query + "%') OR " + 
+		"(d3.type = 100 AND d3.value LIKE '%" + query + "%')) AND " + 
 		"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
 		(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id)";
 	}
