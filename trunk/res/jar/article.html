@@ -80,7 +80,7 @@ public class article extends Sprout {
 
 [[ 					}
 					else if(type.equals("VIDEO")) {
-						String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getString(), "UTF-8") + ".flv"; ]]
+						String path = "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + ".flv"; ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
             <param name="allowScriptAccess" value="sameDomain"/>
@@ -93,7 +93,7 @@ public class article extends Sprout {
 
 [[					}
 					else if(type.equals("AUDIO")) {
-						String path = "file" + file.encoded() + "/" + URLEncoder.encode(name.getString(), "UTF-8") + ".mp3"; ]]
+						String path = "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + ".mp3"; ]]
 
           <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ path ]]&color=E4E4E4"/>
