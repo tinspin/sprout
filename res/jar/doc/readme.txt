@@ -46,6 +46,8 @@ Finally browse to: http://localhost:9000
 2. Setting up a live sprout instance:
 
 IMPORTANT: Make sure you have MySQL running with innodb_file_per_table.
+           And pipe the alter.sql to it.
+           > mysql -uXXX -p sprout < alter.sql
 
 a. Hot-deployment password
 
