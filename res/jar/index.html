@@ -65,6 +65,9 @@ public class index extends Sprout {
       //setTimeout("start('res/', 'localhost:8000', 'talk')", 100); // XSS
       init();
     }
+    function filter(message) {
+      return false;
+    }
   </script>
   
   <!-- stop --><!-- copy this -->
