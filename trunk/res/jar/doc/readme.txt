@@ -150,6 +150,10 @@ Happy Hacking!
       - Changed data value from TEXT to BLOB in the database, so we can store binaries.
       - Optimised node UPDATE to only update updated meta-data fields.
       
+  0.2.2
+
+      - AJAX Login removed since AJAX can't set cookies. whups!
+      
 ----------------------------------------------
 
 5. Todo:
