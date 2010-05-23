@@ -26,8 +26,8 @@ public class login extends Sprout {
         </tr>
         <tr>
           <td colspan="2">
-            <input id="mail" type="text" class="small" name="mail" tabindex="1" style="text-transform: lowercase;"/>
-            <!--input id="mail" type="text" class="small" name="mail" title="[[ Sprout.i18n("eMail") ]]" value="[[ event.string("mail").length() > 0 ? event.string("mail") : Sprout.i18n("eMail") ]]" onfocus="if(this.value == this.title) this.value = ''" onblur="if(this.value == '') this.value = this.title;" tabindex="1"/-->
+            <!--input id="mail" type="text" class="small" name="mail" tabindex="1" style="text-transform: lowercase;"/-->
+            <input id="mail" type="text" class="small" name="mail" value="[[ event.string("mail") ]]" tabindex="1"/>
           </td>
         </tr>
         <tr>
@@ -49,9 +49,12 @@ public class login extends Sprout {
             <input type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
           </td>
           <td>
-            <a href="" class="arrow" onclick="ajaxLogin(); return false;">
+            <a href="" class="arrow" onclick="document.login.submit(); return false;">
               <span>[[ i18n("Login") ]]</span>
             </a>
+            <!--a href="" class="arrow" onclick="ajaxLogin(); return false;">
+              <span>[[ i18n("Login") ]]</span>
+            </a-->
           </td>
         </tr>
         <tr>
