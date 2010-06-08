@@ -294,14 +294,18 @@ public class User extends Node {
 		public String path() { return "/user:/register"; }
 		public void create() throws Exception {
 			try {
-				lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);
+				if(lookup == null) {
+					lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);
+				}
 			}
 			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		public void destroy() throws Exception {
-			lookup.close();
+			if(lookup != null) {
+				lookup.close();
+			}
 		}
 		public void filter(Event event) throws Event, Exception {
 			Object key = event.session().get("key");
@@ -430,8 +434,11 @@ public class User extends Node {
 						}
 						else {
 							event.query().put("mail", old_mail);
-							user.add(USER_MAIL, old_mail);
-							user.add(USER_KEY, old_key);
+							
+							if(old_mail.length() > 0) {
+								user.add(USER_MAIL, old_mail);
+								user.add(USER_KEY, old_key);
+							}
 							
 							Sprout.redirect(event);
 						}

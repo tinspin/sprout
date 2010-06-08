@@ -68,6 +68,12 @@ public class index extends Sprout {
     function filter(message) {
       return false;
     }
+    function filter(message) {
+      if(message.text.indexOf('#code') == 0) {
+        return true;
+      }
+      return false;
+    }
   </script>
   
   <!-- stop --><!-- copy this -->
