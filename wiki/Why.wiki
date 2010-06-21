@@ -4,19 +4,23 @@ Because a big part of what programmers do is to imagine typed data hierarchies t
 
 With a node-graph data model you only store, send and present nodes.
 
-How does the old model scale?
+(Dis)Advantages:
 
-  # You can add more developers to the project with linearly increased productivity.`*`
+Typed Data:
 
-How does the new model scale?
++ You can add more developers to the project with linearly increased productivity.`*`
+- You write alot of typed code.
 
-  # Code API does not grow as number of objects grows.
+Node Data:
 
-Other advantages:
-
-  # Lots of methods become generic.
-  # You can alter/hotdeploy the storage/transport system in realtime.
++ Code API does not grow as number of objects grows.
++ Lots of methods become generic.
++ You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
+- Your hierarchy is not protected.
+- Your data can be corrupted.
 
 So we need a way to document/describe and control the hierarchy. A DTD for the hierarchy of sorts.
+
+Imagine JSON where the values are always binary and the order of arrays makes sense, and then we add a way to describe the node and data meta types.
 
 To be continued...
