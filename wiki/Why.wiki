@@ -6,7 +6,7 @@ With a node-graph data model you only store, send and present nodes.
 
 How does the old model scale?
 
-  # You can add more developers to the project with linearly increased productivity.'*'
+  # You can add more developers to the project with linearly increased productivity.`*`
 
 How does the new model scale?
 
