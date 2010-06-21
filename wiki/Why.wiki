@@ -10,7 +10,7 @@ Typed Data:
 
   + You can add more developers to the project with linearly increased productivity.`*`
 
-  - You write alot of typed code that can't be reused by any other language.
+  - You write alot of typed code that can't be reused.
 
   - API grows linearly with number of objects.
 
