@@ -1,0 +1,12 @@
+body         { font-family: Trebuchet MS, sans-serif; color: #333; font-size: 80%; background-color: #FFF; }
+h1           { font-size: 145% }
+a            { font-family: Trebuchet MS, sans-serif; color: #666; text-decoration:none; }
+a:visited    { font-family: Trebuchet MS, sans-serif; color: #666; text-decoration:none; }
+a:hover      { font-family: Trebuchet MS, sans-serif; color: #F90; text-decoration:none; }
+pre, code    { font-family: Trebuchet MS, sans-serif; }
+
+.TableHeadingColor, .TableSubHeadingColor, .TableRowColor { background: #EEE; }
+.FrameTitleFont, .FrameHeadingFont, .FrameItemFont { font-family: Trebuchet MS, sans-serif }
+.NavBarCell1, .NavBarCell1Rev { background-color: #EEE;}
+.NavBarFont1, .NavBarFont1Rev { font-family: Trebuchet MS, sans-serif; color: #666; }
+.NavBarCell2, .NavBarCell3 { font-family: Trebuchet MS, sans-serif; background-color: #FFF; }
