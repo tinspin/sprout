@@ -11,6 +11,9 @@ How does the old model scale?
 How does the new model scale?
 
   # Code API does not grow as number of objects grows.
+
+Other advantages:
+
   # Lots of methods become generic.
   # You can alter/hotdeploy the storage/transport system in realtime.
 
