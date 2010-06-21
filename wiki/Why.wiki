@@ -6,13 +6,14 @@ With a node-graph data model you only store, send and present nodes.
 
 How does the old model scale?
 
-  # You can add more developers to the project with linearly increased productivity.
+  # You can add more developers to the project with linearly increased productivity.*
 
 How does the new model scale?
 
   # Code API does not grow as number of objects grows.
   # Lots of methods become generic.
+  # You can alter/hotdeploy the storage/transport system in realtime.
 
-So we need a way to document and describe the hierarchy and I'm working on that. 
+So we need a way to document and describe the hierarchy. A DTD for the hierarchy of sorts.
 
 To be continued...
