@@ -24,7 +24,7 @@ Node Data:
 
   - Your data can be corrupted.
 
-So we need a way to document/describe and control the hierarchy. A DTD for the hierarchy of sorts.
+So we need a way to document/describe and control the hierarchy.
 
 Imagine JSON where the values are always binary and the order of arrays makes sense, and then we add a way to describe the node and data meta types.
 
