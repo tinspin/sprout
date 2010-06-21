@@ -16,7 +16,7 @@ Typed Data:
 
 Node Data:
 
-  + API does not grow as number of objects grows.
+  + API stays the same (insert, update, delete and select node).
 
   + Lots of methods become generic and reuse is inherently encouraged.
 
