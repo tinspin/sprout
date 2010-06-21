@@ -26,4 +26,6 @@ Node Data:
 
   - Demands alot from the programmer. (the hierarchy is not protected / the data can be corrupted)
 
-We need a way to describe and control the hierarchy if we are to use large teams on the same graph. This requirement will evolve new kinds of tools over the years to come, a control scheme that decribes and controls the heirarchy at the same time. Probably written in XML.
+Describe and Control
+
+We need a way to D&S the hierarchy if we are to use large teams on the same graph. This requirement will evolve new kinds of tools over the years to come, a control scheme that D&S the heirarchy at the same time. Probably written in XML.
