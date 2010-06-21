@@ -10,9 +10,9 @@ Typed Data:
 
   + You can add more developers to the project with linearly increased productivity.`*`
 
-  - API grows linearly with number of objects.
-
   - You write alot of typed code that can't be reused by any other language.
+
+  - API grows linearly with number of objects.
 
 Node Data:
 
