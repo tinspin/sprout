@@ -14,6 +14,6 @@ How does the new model scale?
   # Lots of methods become generic.
   # You can alter/hotdeploy the storage/transport system in realtime.
 
-So we need a way to document and describe the hierarchy. A DTD for the hierarchy of sorts.
+So we need a way to document/describe and control the hierarchy. A DTD for the hierarchy of sorts.
 
 To be continued...
