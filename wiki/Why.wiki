@@ -16,7 +16,7 @@ Typed Data:
 
 Node Data:
 
-  + API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/ javadoc] for more info).
+  + API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info).
 
   + Lots of methods become generic and reuse is inherently encouraged.
 
