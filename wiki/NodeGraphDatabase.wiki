@@ -12,6 +12,10 @@ And there is no way someone can figure it out without having to go through the c
 
 ----
 
+  [http://sprout.googlecode.com/files/poll.gif]
+
+----
+
 The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code when every table is a node becomes huge as the project progresses.
 
 And the fact that you can hot-deploy any changes directly to the live environment, without having to alter tables, is not to underestimate. Not from a "it's so hard to alter tables" point of view, but from a human error point of view.
@@ -61,5 +65,3 @@ My tests shows that the LIKE statement is going to cause alot more problems than
 Added a poll table, so that you can sort nodes by any number. This is good for; well polls, among other things.
 
 Changed the data.value type to blob, this allows us to store text as before without collation issues AND now we can store data without Base64 encoding it first.
-
-  [http://sprout.googlecode.com/files/poll.gif]
