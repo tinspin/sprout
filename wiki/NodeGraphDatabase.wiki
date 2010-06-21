@@ -12,7 +12,7 @@ And there is no way someone can figure it out without having to go through the c
 
 ----
 
-  [http://sprout.googlecode.com/files/poll.gif]
+<p align="center">[http://sprout.googlecode.com/files/poll.gif]</p>
 
 ----
 
