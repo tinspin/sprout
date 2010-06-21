@@ -1,6 +1,6 @@
 #summary Why the Node-Graph data model is good.
 
-Because a big part of what programmers do is to create typed data hierarchies that they then wrap in SQL, XML or JSON and send around; which in it's turn gets unwrapped and presented in a similar but often separate implementation on the other end.
+Because a big part of what programmers do is to imagine typed data hierarchies that they then wrap in SQL, XML or JSON and send around; which in it's turn gets unwrapped and presented in a similar but often separate implementation on the other end.
 
 With a node-graph data model you only store, send and present nodes.
 
