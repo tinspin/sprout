@@ -30,4 +30,4 @@ Describe and Control the Tree
 
   We need a way to DCT if we are to use large teams on the same graph.
 
-`*` If you are lucky/have a great leader.
+`*` If you are lucky to have symbiotic developers and strong leadership.
