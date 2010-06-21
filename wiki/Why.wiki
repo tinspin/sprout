@@ -8,21 +8,21 @@ With a node-graph data model you only store, send and present nodes.
 
 Typed Data:
 
-+ You can add more developers to the project with linearly increased productivity.`*`
+  + You can add more developers to the project with linearly increased productivity.`*`
 
-- You write alot of typed code.
+  - You write alot of typed code.
 
 Node Data:
 
-+ Code API does not grow as number of objects grows.
+  + Code API does not grow as number of objects grows.
 
-+ Lots of methods become generic.
+  + Lots of methods become generic.
 
-+ You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
+  + You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
 
-- Your hierarchy is not protected.
+  - Your hierarchy is not protected.
 
-- Your data can be corrupted.
+  - Your data can be corrupted.
 
 So we need a way to document/describe and control the hierarchy. A DTD for the hierarchy of sorts.
 
