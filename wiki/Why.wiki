@@ -10,9 +10,9 @@ How does the old model scale?
 
 How does the new model scale?
 
-  # API does not grow as number of objects grows.
-  # All methods are generic.
+  # Code API does not grow as number of objects grows.
+  # Lots of methods become generic.
 
-So we need a way to describe the hierarchy and I'm working on that. 
+So we need a way to document and describe the hierarchy and I'm working on that. 
 
 To be continued...
