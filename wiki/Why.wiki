@@ -22,8 +22,8 @@ Node Data:
 
   + You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
 
-  - Demands alot from the programmer. (the hierarchy is not protected / the data can be corrupted)
-
   +- You need to use a strict SOA architecture with few, preferrably one, developer(s) per service.
+
+  - Demands alot from the programmer. (the hierarchy is not protected / the data can be corrupted)
 
 We need a way to describe and control the hierarchy if we are to use large teams on the same graph. This requirement will evolve new kinds of tools over the years to come, a control scheme that decribes and controls the heirarchy at the same time. Probably written in XML.
