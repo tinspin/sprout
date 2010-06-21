@@ -14,9 +14,9 @@ Typed Data:
 
 Node Data:
 
-  + Code API does not grow as number of objects grows.
+  + API does not grow as number of objects grows.
 
-  + Lots of methods become generic.
+  + Lots of methods become generic and reuse is inherently encouraged.
 
   + You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
 
