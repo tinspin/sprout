@@ -1,0 +1,18 @@
+#summary Why did I build this.
+
+Because a big part of what programmers do is to create typed data hierarchies that they then wrap in SQL, XML or JSON and send around; which in it's turn gets unwrapped and presented in a similar but often separate hierarchy model on the other end.
+
+With a node-graph data model you only store, send and present nodes. Which makes the storing, wrapping, transport and unwrapping much easier.
+
+How does the old model scale?
+
+- You can add more developers to the project with linearly increased productivity.
+
+How does the new model scale?
+
+- API does not grow as number of objects grows.
+- All methods are generic.
+
+So we need a way to describe the hierarchy and I'm working on that. 
+
+To be continued...
