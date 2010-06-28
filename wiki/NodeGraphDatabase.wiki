@@ -41,9 +41,9 @@ return "FROM node n " + // node
 "LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
 "LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
 "WHERE " + 
-"(d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
-"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
-"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\")" + // name
+"(d1.type = 200 AND d1.value LIKE \"%" + query + "%\") OR " + // title
+"(d2.type = 201 AND d2.value LIKE \"%" + query + "%\") OR " + // body
+"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
 }}}
 
 The same query but transformed to JOIN after the LIKE in the WHERE statement performs much better.
@@ -51,9 +51,9 @@ The same query but transformed to JOIN after the LIKE in the WHERE statement per
 _1 second with 10000 rows_
 {{{
 return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
-"WHERE ((d1.type = 200 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
-"(d2.type = 201 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%') OR " + 
-"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE '%" + query + "%')) AND " + 
+"WHERE ((d1.type = 200 AND d1.value LIKE '%" + query + "%') OR " + 
+"(d2.type = 201 AND d2.value LIKE '%" + query + "%') OR " + 
+"(d3.type = 100 AND d3.value LIKE '%" + query + "%')) AND " + 
 "(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
 (ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id)";
 }}}
