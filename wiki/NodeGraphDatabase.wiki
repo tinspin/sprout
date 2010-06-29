@@ -64,4 +64,4 @@ My tests shows that the LIKE statement is going to cause alot more problems than
 
 *Update*: Added a poll table, so that you can sort nodes by any number. This is good for; well polls, among other things.
 
-*Update*: Changed the data.value type to blob, this allows us to store text as before without collation issues AND now we can store data without Base64 encoding it first.
+*Update*: Changed the data.value type to blob, this allows us to store text as before without collation issues AND now we can store binary data without Base64 encoding it first.
