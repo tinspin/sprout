@@ -46,15 +46,15 @@ public class login extends Sprout {
         </tr>
         <tr>
           <td valign="top">
-            <input type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
+            <input id="remember" type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
           </td>
           <td>
-            <a href="" class="arrow" onclick="document.login.submit(); return false;">
-              <span>[[ i18n("Login") ]]</span>
-            </a>
-            <!--a href="" class="arrow" onclick="ajaxLogin(); return false;">
+            <!--a href="" class="arrow" onclick="document.login.submit(); return false;">
               <span>[[ i18n("Login") ]]</span>
             </a-->
+            <a href="" class="arrow" onclick="ajaxLogin(); return false;">
+              <span>[[ i18n("Login") ]]</span>
+            </a>
           </td>
         </tr>
         <tr>

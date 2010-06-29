@@ -205,7 +205,7 @@ public class User extends Node {
 		public String path() { return "/login"; }
 		public void filter(Event event) throws Event, Exception {
 			event.query().parse();
-
+			
 			if(event.query().method() == Query.POST) {
 				JSONObject ajax = null;
 
