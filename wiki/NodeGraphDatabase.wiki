@@ -18,7 +18,7 @@ And there is no way someone can figure it out without having to go through the c
 
 The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code when every table is a node becomes huge as the project progresses.
 
-And the fact that you can hot-deploy any changes directly to the live environment, without having to alter tables, is not to underestimate. Not from a "it's so hard to alter tables" point of view, but from a human error point of view also the fact that you now can remote hotdeploy (since the database never changes from this [layout http://code.google.com/p/sprout/source/browse/trunk/create.sql] is a big timesaver.
+And the fact that you can hot-deploy any changes directly to the live environment, without having to alter tables, is not to underestimate. Not from a "it's so hard to alter tables" point of view, but from a human error point of view also the fact that you now can remote hotdeploy (since the database never changes from this [http://code.google.com/p/sprout/source/browse/trunk/create.sql layout] is a big timesaver.
 
 And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb.
 
