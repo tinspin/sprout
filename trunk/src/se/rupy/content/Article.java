@@ -165,9 +165,9 @@ public class Article extends Node {
 		"LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
 		"LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
 		"WHERE " + 
-		"(d1.type = 400 AND d1.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // title
-		"(d2.type = 401 AND d2.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\") OR " + // body
-		"(d3.type = 100 AND d3.value COLLATE utf8_" + Sprout.language() + "_ci LIKE \"%" + query + "%\")" + // name
+		"(d1.type = 400 AND d1.value LIKE \"%" + query + "%\") OR " + // title
+		"(d2.type = 401 AND d2.value LIKE \"%" + query + "%\") OR " + // body
+		"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
 		 */
 
 		return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
