@@ -31,3 +31,71 @@ Describe and Control the Tree
   We need a way to DCT if we are to use large teams on the same graph.
 
 `*` If you are lucky to have symbiotic developers and strong leadership.
+
+*The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
+
+For example for the search below the structure looks like this:
+
+{{{
+article -+- user
+}}}
+
+And there is no way someone can figure it out without having to go through the code that creates this structure.
+
+----
+
+<p align="center">[http://sprout.googlecode.com/files/poll.gif]</p>
+
+----
+
+The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code when every table is a node becomes huge as the project progresses.
+
+And the fact that you can hot-deploy any changes directly to the live environment, without having to alter tables, is not to underestimate. Not from a "it's so hard to alter tables" point of view, but from a human error point of view.
+
+This is possible since the database never changes from this [http://code.google.com/p/sprout/source/browse/trunk/create.sql layout].
+
+And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb.
+
+_The query is a search on article -body (201), -title (200) and username (100), that returns a list of articles ordered by date. The tricky part is the JOIN hierarchy_
+
+_2 minutes with 10000 rows_
+{{{
+/*
+ * poor performing but easier to understand query
+ */
+return "FROM node n " + // node
+// title and body joins
+"LEFT JOIN meta m1 ON (n.id = m1.node) " + // entry - data (body and title)
+"LEFT JOIN data d1 ON (m1.data = d1.id) " + // body
+"LEFT JOIN data d2 ON (m1.data = d2.id) " + // title
+// name joins
+"LEFT JOIN link l1 ON (n.id = l1.parent " + // article - user
+"AND l1.type = " + (ARTICLE | USER) + ") " + // ignore COMMENT | USER
+"LEFT JOIN node n2 ON (l1.child = n2.id) " + // user
+"LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
+"LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
+"WHERE " + 
+"(d1.type = 200 AND d1.value LIKE \"%" + query + "%\") OR " + // title
+"(d2.type = 201 AND d2.value LIKE \"%" + query + "%\") OR " + // body
+"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
+}}}
+
+The same query but transformed to JOIN after the LIKE in the WHERE statement performs much better.
+
+_1 second with 10000 rows_
+{{{
+return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
+"WHERE ((d1.type = 200 AND d1.value LIKE '%" + query + "%') OR " + 
+"(d2.type = 201 AND d2.value LIKE '%" + query + "%') OR " + 
+"(d3.type = 100 AND d3.value LIKE '%" + query + "%')) AND " + 
+"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
+(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id)";
+}}}
+
+We decided to build our node graph on top of a traditional RDBMS and ORM which has its pro's and con's: The advantage is that you can extract data in a straight forward way with SQL and that you get simple indexing for free, the drawback is that depth iteration can be costly, but not that costly as we saw in the example above.
+
+My tests shows that the LIKE statement is going to cause alot more problems than the JOIN hierarchy because of full text search still not being implemented in innodb, so for larger projects you will need to either mirror the data table with a myisam table to search on or implement an external indexing engine like lucene.
+
+*Update*: Added a poll table, so that you can sort nodes by any number. This is good for; well polls, among other things.
+
+*Update*: Changed the data.value type to blob, this allows us to store text as before without collation issues AND now we can store binary data without Base64 encoding it first.
