@@ -24,10 +24,6 @@ Hierarchical Node Data:
 
   - Demands alot from the programmer.
 
-Describe and Control the Tree
-
-  We need a way to DCT if we are to use large teams on the same graph.
-
 `*` If you are lucky to have symbiotic developers and strong leadership.
 
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
