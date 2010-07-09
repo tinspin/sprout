@@ -44,7 +44,7 @@ And there is no way someone can figure it out without having to go through the c
 
 ----
 
-This is what the database layout looks like. You can see the create database script [http://code.google.com/p/sprout/source/browse/trunk/create.sql here]. A Node-Graph system is basically a filesystem; in all filesystems the file types are subordinate to the file hierarchy; A folder contains files that contain data. The filesystem doesen't need to know or understand the contents of it's folders and files to traverse them.
+This is what the database layout looks like. You can see the create database script [http://code.google.com/p/sprout/source/browse/trunk/create.sql here]. A Node-Graph system is basically a filesystem; in all filesystems the file types are subordinate to the file hierarchy; A folder contains files that contain data. The filesystem doesen't need to know or understand the content type of it's files to traverse them.
 
 _Imagine a file system where you didn't have files but word, excel, etc. documents; you would then need different programs to transfer each file type over the network (wordftp, excelftp, etc.), that's how wrong regular typed data programming is!_
 
