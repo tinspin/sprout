@@ -40,7 +40,7 @@ For example for the search below the structure looks like this:
 article -+- user
 }}}
 
-And there is no way someone can figure it out without having to go through the code that creates this structure.
+And there is no way someone can figure it out without having to go through the code that creates this structure or select a user that has written articles and look at the nodetree.
 
 ----
 
