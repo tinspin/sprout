@@ -22,9 +22,9 @@ Node Data:
 
   + You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
 
-  +- You need to use a strict SOA architecture with few, preferrably one, developer(s) per service.
+  +- You should use a SOA architecture with few, preferrably one, developer(s) per service.
 
-  - Demands alot from the programmer. (the hierarchy is not protected / the data can be corrupted)
+  - Demands alot from the programmer.
 
 Describe and Control the Tree
 
