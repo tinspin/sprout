@@ -4,17 +4,13 @@ Because a big part of what programmers do is to imagine typed data hierarchies t
 
 With a node-graph data model you only store, send and present nodes.
 
-(Dis)Advantages:
-
-Typed Data:
+Strongly Typed Data:
 
   + You can add more developers to the project with linearly increased productivity.`*`
-
   - You write alot of typed code that can't be reused.
-
   - API grows linearly with number of objects.
 
-Node Data:
+Hierarchical Data:
 
   + API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info).
 
