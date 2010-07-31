@@ -24,9 +24,9 @@ Hierarchical Node Data:
 
   - Demands alot from the programmer.`*``*`
 
-`*` If you are lucky to have symbiotic developers and strong leadership.
+`*` If you have symbiotic developers and strong leadership.
 
-`*``*` If you are unlucky enough to have uninterested developers.
+`*``*` If you have uninterested developers.
 
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
