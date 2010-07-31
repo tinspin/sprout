@@ -6,7 +6,7 @@ With a node-graph data model you only store, send and present nodes. The hierarc
 
 Strongly Typed Data (Type -> Hierarchy):
 
-  * You can add more developers to the project with linearly increased productivity.`*`
+  * You can add more developers to the project with linearly increased productivity. `*`
   * You write alot of typed code that can't be reused.
   * API grows linearly with number of objects.
 
@@ -18,7 +18,7 @@ Hierarchical Node Data (Hierarchy -> Type):
   * Lots of methods become generic and reuse is inherently encouraged.
   * You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
   * You should use a SOA architecture with few, preferrably one, developer(s) per service.
-  * Demands alot from the programmer.`*``*`
+  * Demands alot from the programmer. `*``*`
 
 `*``*` If you have uninterested developers.
 
