@@ -10,6 +10,8 @@ Strongly Typed Data (TYPE -> HIERARCHY):
   * You write alot of typed code that can't be reused.
   * API grows linearly with number of objects.
 
+`*` If you have symbiotic developers and strong leadership.
+
 Hierarchical Node Data (HIERARCHY -> TYPE):
 
   * API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info).
@@ -17,8 +19,6 @@ Hierarchical Node Data (HIERARCHY -> TYPE):
   * You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
   * You should use a SOA architecture with few, preferrably one, developer(s) per service.
   * Demands alot from the programmer.`*``*`
-
-`*` If you have symbiotic developers and strong leadership.
 
 `*``*` If you have uninterested developers.
 
