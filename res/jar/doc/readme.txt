@@ -33,7 +33,8 @@ on your OS and build sprout with ant:
 
 Then simply create a database like this:
 
-  > CREATE DATABASE sprout DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+  > mysql -uXXX -p
+  > CREATE DATABASE sprout;
 
 And pipe the create.sql to it like this:
 
