@@ -17,7 +17,16 @@ public class article extends Sprout {
 		Output out = event.output();
 		Object key = event.session().get("key");
 		Article article = Article.find(event.big("id"));
-		Node user = (Node) article.child(USER).getFirst();
+		
+		LinkedList users = article.child(USER);
+		
+		if(users.size() == 0) {
+			event.reply().code("404 Not Found");
+			event.reply().output().print("<pre>'" + event.query().path() + "' was not found.</pre>");
+			throw event;
+		}
+		
+		Node user = (Node) users.getFirst();
 		boolean edit = user.meta(USER_KEY).equals(key);
 		int permit = article.permit(key);
 		article.poll(ARTICLE_READ); ]]
