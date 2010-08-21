@@ -28,6 +28,8 @@ It's recommended that you use linux and front the sprout/rupy server with an Apa
   # SSH
   # Apache (with mod_proxy)
 
+Observe that OpenVZ does have it's fair share of issues with virtual memory and therefore you will not be able to compile on the host machine; so it's great that rupy can hot deploy directly to the host from the development machine remotely via HTTP.
+
 If you whant to host multiple sites on one machine you will want to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain with Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
 {{{
 NameVirtualHost *:80
