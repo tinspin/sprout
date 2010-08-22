@@ -22,6 +22,7 @@ td { font-size: 0.6em; cursor: default; }
 
 img {
 	border: none;
+	vertical-align: bottom;
 }
 
 .rounded {
