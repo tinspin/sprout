@@ -14,7 +14,6 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.json.JSONObject;
-
 import com.maxmind.geoip.LookupService;
 
 import se.rupy.content.*;
@@ -223,7 +222,7 @@ public class User extends Node {
 
 						if(user.meta(USER_PASS).getString().equals(pass)) {
 							if(user.meta(USER_STATE).getString().equals("VERIFIED")) {
-								save(event.session(), user, event.bit("remember"));
+								save(event.session(), user, event.query().bit("remember", false));
 
 								if(ajax != null) {
 									ajax.put("url", "/");
@@ -401,7 +400,13 @@ public class User extends Node {
 					user.add(data);
 					user.add(USER_IP, event.remote());
 
-					if(Sprout.value("SELECT count(*) FROM node WHERE type = " + Type.USER) == 0) {
+					String select = "SELECT count(*) FROM node WHERE type = " + Type.USER;
+					
+					if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+						select = "SELECT count(*) FROM node_table WHERE node_type = " + Type.USER;
+					}
+					
+					if(Sprout.value(select) == 0) {
 						user.add(Group.name("ADMIN"));
 					}
 

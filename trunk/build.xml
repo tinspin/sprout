@@ -71,7 +71,7 @@
 			<arg line="."/>
 			<arg line="se.rupy.memory"/>
 		</java>
-		<ant target="flush"/>
+		<!--ant target="flush"/-->
 	</target>
 	
 	<target name="check">
@@ -124,10 +124,10 @@
 	
 	<!-- requires manual flush on unix -->
 	<target name="flush" unless="unix">
-		<exec executable="mysql">
+		<exec executable="${db}">
 			<arg line='-u root -D ${name} -e "source create.sql"'/>
 		</exec>
-		<exec executable="mysql">
+		<exec executable="${db}">
 			<arg line='-u root -D ${name} -e "source alter.sql"'/>
 		</exec>
 	</target>

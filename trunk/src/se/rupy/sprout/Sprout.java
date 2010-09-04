@@ -24,19 +24,21 @@ import se.rupy.util.Log;
 
 public abstract class Sprout extends Service implements Type {
 	public static String ROOT = "app/content";
-	private static Base DB;
+	private static Base BASE;
 	private static Properties I18N;
 	private static boolean TRANSLATE;
+	public static SQL SQL;
 
 	static {
-		DB = new Base();
-
+		BASE = new Base();
+		SQL = new SQL();
+		
 		try {
-			MySQL mysql = new MySQL();
-			DB.init(new Pool(mysql, mysql));
+			BASE.init(new Pool(SQL, SQL));
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+			SQL.message(e);
 		}
 
 		try {
@@ -112,35 +114,35 @@ public abstract class Sprout extends Service implements Type {
 
 	public static boolean update(byte type, Object o, Connection connection) throws SQLException {
 		if(connection == null) {
-			return DB.update(type, o);
+			return BASE.update(type, o);
 		}
 		else {
-			return DB.update(type, o, connection);
+			return BASE.update(type, o, connection);
 		}
 	}
 
 	public static LinkedList from(String name, String sql) throws SQLException {
-		return DB.query(Base.FROM, name, sql);
+		return BASE.query(Base.FROM, name, sql);
 	}
 
 	public static LinkedList where(String name, String sql) throws SQLException {
-		return DB.query(Base.WHERE, name, sql);
+		return BASE.query(Base.WHERE, name, sql);
 	}
 
 	public static long value(String sql) throws SQLException {
-		return DB.value(sql);
+		return BASE.value(sql);
 	}
 
 	public static void find(String sql) throws SQLException {
-		DB.find(sql, connection(false), true);
+		BASE.find(sql, connection(false), true);
 	}
 
 	public static void find(String sql, Connection connection) throws SQLException {
-		DB.find(sql, connection, true);
+		BASE.find(sql, connection, true);
 	}
 
 	public static Connection connection(boolean transaction) throws SQLException {
-		return DB.connection(transaction);
+		return BASE.connection(transaction);
 	}
 
 	public static void redirect(Event event) throws IOException, Event {
@@ -170,13 +172,11 @@ public abstract class Sprout extends Service implements Type {
 			this.invalid = invalid;
 		}
 	}
-
-	// postgres 5432
 	
-	public static class MySQL implements Log, Settings {
+	public static class SQL implements Log, Settings {
 		private PrintStream out;
 
-		public MySQL() {
+		public SQL() {
 			try {
 				out = new PrintStream(new FileOutputStream("log.txt", true));
 			} catch (IOException e) {
@@ -186,18 +186,22 @@ public abstract class Sprout extends Service implements Type {
 
 		public String driver() {
 			return System.getProperty("dbdriver", "com.mysql.jdbc.Driver");
+			//return System.getProperty("dbdriver", "org.postgresql.Driver");
 		}
 
 		public String url() {
 			return System.getProperty("dburl", "jdbc:mysql://localhost/sprout");
+			//return System.getProperty("dburl", "jdbc:postgresql:sprout");
 		}
 
 		public String user() {
 			return System.getProperty("dbuser", "root");
+			//return System.getProperty("dbuser", "postgres");
 		}
 
 		public String pass() {
 			return System.getProperty("dbpass", "");
+			//return System.getProperty("dbpass", "postgres");
 		}
 
 		public void message(Object o) {
