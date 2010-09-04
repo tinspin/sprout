@@ -96,7 +96,7 @@ d. Postgres
    - Switch database: # \c ZZZ
    - Pipe create script: # \i 'PATH/create.sql' where you 
      replace PATH with where you extracted this test. On 
-     windows you need to replcate all '\' in the path with '/'
+     windows you need to replace all '\' in the path with '/'
    - Pipe alter script (alter.sql).
 
 e. Host multiple sprout on different ports
