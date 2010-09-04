@@ -182,7 +182,7 @@ public class publish extends Sprout {
         </tr>
       </form>
       
-[[		if(article.getId() > 0) { ]]
+[[		if(article != null && article.getId() > 0) { ]]
       
       <form enctype="multipart/form-data" name="upload" action="upload" method="post">
         <tr>

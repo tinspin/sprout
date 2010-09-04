@@ -4,7 +4,7 @@
               ------o------
 
 Sprout is a simple blogger from which you can 
-build any site.
+build any site. Now works with Postgres, see 2.d.!
 
 ----------------------------------------------
 
@@ -46,18 +46,21 @@ Finally browse to: http://localhost:9000
 
 2. Setting up a live sprout instance:
 
-IMPORTANT: Make sure you have MySQL running with innodb_file_per_table.
-           And pipe the alter.sql to it.
-           > mysql -uXXX -p sprout < alter.sql
+a. MySQL
 
-a. Hot-deployment password
+   Make sure you have MySQL running with innodb_file_per_table.
+   And pipe the alter.sql to it.
+   
+   > mysql -uXXX -p sprout < alter.sql
+
+b. Hot-deployment password
 
    Now that you got sprout up and running, change the 
    pass from 'secret' to something secure in the run.bat, 
    run.sh and build.xml files if you want to be able to 
    hotdeploy from a remote host.
 
-b. Change project name from sprout
+c. Change project name from sprout
 
    You can change the name of the whole project in the 
    build.xml file if you will run multiple sprout, the 
@@ -70,14 +73,40 @@ b. Change project name from sprout
    database name, where ZZZ should be replaced with your new 
    name.
 
-c. Host multiple sprout on different ports
+d. Postgres
+
+   To use Postgres instead of MySQL edit build.xml:
+   
+   <property name="db" value="postgres"/>
+   
+   Then add the following parameters to the run script after 
+   you edit them (XXX, YYY and ZZZ):
+
+   IMPORTANT: ZZZ should be sprout unless you choosed to do 2.c.
+
+   -Ddburl=jdbc:postgresql:ZZZ
+   -Ddbdriver=org.postgresql.Driver
+   -Ddbuser=XXX
+   -Ddbpass=YYY
+   
+   Finally create the database like this:
+
+   - Open SQL Shell (psql).
+   - Create the database: # create database ZZZ;
+   - Switch database: # \c ZZZ
+   - Pipe create script: # \i 'PATH/create.sql' where you 
+     replace PATH with where you extracted this test. On 
+     windows you need to replcate all '\' in the path with '/'
+   - Pipe alter script (alter.sql).
+
+e. Host multiple sprout on different ports
 
    You can change the port in the run.bat, run.sh and 
    build.xml files if you will run multiple instances 
    of sprout on the same machine. Then it's recommended 
    to virtual host proxy the sites with an apache up front.
 
-d. Server properties
+f. Server properties
 
    You also need to edit or add the -Dhost=sprout.rupy.se, 
    -Dmail=mail1.comhem.se and -Daddress=info@yourcompany.com 
@@ -116,7 +145,7 @@ Happy Hacking!
 
 ----------------------------------------------
 
-4. Version:
+5. Version:
 
   0.1 Alpha
   
@@ -150,6 +179,12 @@ Happy Hacking!
       - Revised how uploaded files are stored. Now it makes sense and is scalable!
       - Changed data value from TEXT to BLOB in the database, so we can store binaries.
       - Optimised node UPDATE to only update updated meta-data fields.
+      
+  0.2.2 Postgres Compatible!
+  
+      - Profile page
+      - Fixed resource upload order, first you insert an article then you can add 
+        resources to it!
       
 ----------------------------------------------
 
