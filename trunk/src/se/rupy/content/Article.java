@@ -3,6 +3,7 @@ package se.rupy.content;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
+import java.io.ByteArrayInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,7 +53,13 @@ public class Article extends Node {
 
 	static {
 		try {
-			MAX = Sprout.value("SELECT count(*) FROM link WHERE type = " + (ARTICLE | USER));
+			if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
+					Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+				MAX = Sprout.value("SELECT count(*) FROM link_table WHERE link_type = " + (ARTICLE | USER));
+			}
+			else {
+				MAX = Sprout.value("SELECT count(*) FROM link WHERE type = " + (ARTICLE | USER));
+			}
 		}
 		catch(SQLException s) {
 			s.printStackTrace();
@@ -93,6 +100,12 @@ public class Article extends Node {
 		String sql = null;
 		try {
 			sql = "SELECT count(*) AS count FROM poll WHERE type = " + type + ";";
+			
+			if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
+					Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+				sql = "SELECT count(*) AS count FROM poll_table WHERE poll_type = " + type + ";";
+			}
+			
 			stmt = conn.prepareStatement(sql);
 			result = stmt.executeQuery();
 			if(result.next()) {
@@ -132,10 +145,14 @@ public class Article extends Node {
 				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " " + order + " OFFSET " + start * limit + " LIMIT " + limit + ";";
 			}
 			
+			if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " " + order + " AND ROWNUM BETWEEN " + start * limit + " AND " + (start * limit + limit) + ";";
+			}
+			
 			stmt = conn.prepareStatement(sql);
 			result = stmt.executeQuery();
 			while(result.next()) {
-				list.add(find(result.getLong("node")));
+				list.add(find(result.getLong(Sprout.SQL.driver().equals("com.mysql.jdbc.Driver") ? "node" : "poll_node")));
 			}
 		} catch(SQLException e) {
 			throw e;
@@ -175,19 +192,20 @@ public class Article extends Node {
 		"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
 		 */
 		
-		if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
-		return "FROM node_table n, meta_table m1, data_table d1, data_table d2, link_table l1, node_table n2, meta_table m2, data_table d3 " + 
-		"WHERE ((d1.data_type = 200 AND d1.data_value LIKE '%" + query + "%') OR " + 
-		"(d2.data_type = 201 AND d2.data_value LIKE '%" + query + "%') OR " + 
-		"(d3.data_type = 100 AND d3.data_value LIKE '%" + query + "%')) AND " + 
-		"(n.node_id = m1.meta_node AND m1.meta_data = d1.data_id AND m1.meta_data = d2.data_id AND n.node_id = l1.link_parent AND l1.link_type = " + 
-		(ARTICLE | USER) + " AND l1.link_child = n2.node_id AND n2.node_id = m2.meta_node AND m2.meta_data = d3.data_id)";
+		if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
+				Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+			return "FROM node_table n, meta_table m1, data_table d1, data_table d2, link_table l1, node_table n2, meta_table m2, data_table d3 " + 
+			"WHERE ((d1.data_type = 200 AND d1.data_value LIKE ?) OR " + 
+			"(d2.data_type = 201 AND d2.data_value LIKE ?) OR " + 
+			"(d3.data_type = 100 AND d3.data_value LIKE ?)) AND " + 
+			"(n.node_id = m1.meta_node AND m1.meta_data = d1.data_id AND m1.meta_data = d2.data_id AND n.node_id = l1.link_parent AND l1.link_type = " + 
+			(ARTICLE | USER) + " AND l1.link_child = n2.node_id AND n2.node_id = m2.meta_node AND m2.meta_data = d3.data_id)";
 		}
-		
+
 		return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
-		"WHERE ((d1.type = 200 AND d1.value LIKE '%" + query + "%') OR " + 
-		"(d2.type = 201 AND d2.value LIKE '%" + query + "%') OR " + 
-		"(d3.type = 100 AND d3.value LIKE '%" + query + "%')) AND " + 
+		"WHERE ((d1.type = 200 AND d1.value LIKE ?) OR " + 
+		"(d2.type = 201 AND d2.value LIKE ?) OR " + 
+		"(d3.type = 100 AND d3.value LIKE ?)) AND " + 
 		"(n.id = m1.node AND m1.data = d1.id AND m1.data = d2.id AND n.id = l1.parent AND l1.type = " + 
 		(ARTICLE | USER) + " AND l1.child = n2.id AND n2.id = m2.node AND m2.data = d3.id)";
 	}
@@ -200,11 +218,22 @@ public class Article extends Node {
 		try {
 			sql = "SELECT count(DISTINCT n.id) AS count " + from(query) + ";";
 			
-			if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+			if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
+					Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
 				sql = "SELECT count(DISTINCT n.node_id) AS count " + from(query) + ";";
 			}
 			
 			stmt = conn.prepareStatement(sql);
+			
+			byte[] data = ("%" + query + "%").getBytes("UTF-8");
+			ByteArrayInputStream in = new ByteArrayInputStream(data);
+			
+			stmt.setBinaryStream(1, in, data.length);
+			in = new ByteArrayInputStream(data);
+			stmt.setBinaryStream(2, in, data.length);
+			in = new ByteArrayInputStream(data);
+			stmt.setBinaryStream(3, in, data.length);
+			
 			result = stmt.executeQuery();
 			if(result.next()) {
 				return result.getLong("count");
@@ -239,10 +268,26 @@ public class Article extends Node {
 				sql = "SELECT DISTINCT n.node_date, n.node_id " + from(query) + " ORDER BY n.node_date, n.node_id DESC OFFSET " + start * limit + " LIMIT " + limit + ";";
 			}
 			
+			if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+				sql = "SELECT DISTINCT n.node_id " + from(query) + " AND ROWNUM BETWEEN " + start * limit + " AND " + (start * limit + limit) + " ORDER BY n.node_date DESC;";
+			}
+			
+			System.out.println(sql);
+			
 			stmt = conn.prepareStatement(sql);
+			
+			byte[] data = ("%" + query + "%").getBytes("UTF-8");
+			ByteArrayInputStream in = new ByteArrayInputStream(data);
+			
+			stmt.setBinaryStream(1, in, data.length);
+			in = new ByteArrayInputStream(data);
+			stmt.setBinaryStream(2, in, data.length);
+			in = new ByteArrayInputStream(data);
+			stmt.setBinaryStream(3, in, data.length);
+			
 			result = stmt.executeQuery();
 			while(result.next()) {
-				list.add(find(result.getLong(Sprout.SQL.driver().equals("org.postgresql.Driver") ? "node_id" : "id")));
+				list.add(find(result.getLong(Sprout.SQL.driver().equals("com.mysql.jdbc.Driver") ? "id" : "node_id")));
 			}
 		} catch(SQLException e) {
 			throw e;
