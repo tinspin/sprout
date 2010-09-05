@@ -185,26 +185,26 @@ public abstract class Sprout extends Service implements Type {
 		}
 
 		public String driver() {
-			//return System.getProperty("dbdriver", "com.mysql.jdbc.Driver");
-			return System.getProperty("dbdriver", "org.postgresql.Driver");
+			return System.getProperty("dbdriver", "com.mysql.jdbc.Driver");
+			//return System.getProperty("dbdriver", "org.postgresql.Driver");
 			//return System.getProperty("dbdriver", "oracle.jdbc.OracleDriver");
 		}
 
 		public String url() {
-			//return System.getProperty("dburl", "jdbc:mysql://localhost/sprout");
-			return System.getProperty("dburl", "jdbc:postgresql:sprout");
+			return System.getProperty("dburl", "jdbc:mysql://localhost/sprout");
+			//return System.getProperty("dburl", "jdbc:postgresql:sprout");
 			//return System.getProperty("dburl", "jdbc:oracle:thin:@localhost:1521:xe");
 		}
 
 		public String user() {
-			//return System.getProperty("dbuser", "root");
-			return System.getProperty("dbuser", "postgres");
+			return System.getProperty("dbuser", "root");
+			//return System.getProperty("dbuser", "postgres");
 			//return System.getProperty("dbuser", "sprout");
 		}
 
 		public String pass() {
-			//return System.getProperty("dbpass", "");
-			return System.getProperty("dbpass", "postgres");
+			return System.getProperty("dbpass", "");
+			//return System.getProperty("dbpass", "postgres");
 			//return System.getProperty("dbpass", "sprout");
 		}
 
