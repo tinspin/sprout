@@ -1,1 +1,1 @@
-java -Dhost=sprout.rupy.se -Dmail=mail1.comhem.se -classpath lib/activation.jar:lib/http.jar:lib/json.jar:lib/mail.jar:lib/util.jar:lib/mysql.jar:lib/postgres.jar se.rupy.http.Daemon -port 9000 -timeout 3600 -threads 100 -live -pass secret
+java -Dhost=sprout.rupy.se -Dmail=mail1.comhem.se -classpath lib/activation.jar:lib/http.jar:lib/json.jar:lib/mail.jar:lib/util.jar:lib/mysql.jar:lib/postgres.jar:lib/oracle.jar se.rupy.http.Daemon -port 9000 -timeout 3600 -threads 100 -live -pass secret

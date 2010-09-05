@@ -402,7 +402,8 @@ public class User extends Node {
 
 					String select = "SELECT count(*) FROM node WHERE type = " + Type.USER;
 					
-					if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+					if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
+							Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
 						select = "SELECT count(*) FROM node_table WHERE node_type = " + Type.USER;
 					}
 					
@@ -587,8 +588,6 @@ public class User extends Node {
 		String key = user.meta(USER_KEY).getString();
 		session.put("key", key);
 		cache.put(key, user);
-
-		System.out.println(remember);
 		
 		if(remember) {
 			long time = (long) 1000 * 60 * 60 * 24 * 365;
