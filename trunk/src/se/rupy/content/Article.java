@@ -116,7 +116,7 @@ public class Article extends Node {
 	}
 
 	public static LinkedList most(short type, int start, int limit) throws SQLException {
-		return most(type, start, limit, "ORDER BY value DESC");
+		return most(type, start, limit, Sprout.SQL.driver().equals("org.postgresql.Driver") ? "ORDER BY poll_value DESC" : "ORDER BY value DESC");
 	}
 
 	public static LinkedList most(short type, int start, int limit, String order) throws SQLException {
@@ -127,6 +127,11 @@ public class Article extends Node {
 		String sql = null;
 		try {
 			sql = "SELECT node FROM poll WHERE type = " + type + " " + order + " LIMIT " + start * limit + ", " + limit + ";";
+			
+			if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " " + order + " OFFSET " + start * limit + " LIMIT " + limit + ";";
+			}
+			
 			stmt = conn.prepareStatement(sql);
 			result = stmt.executeQuery();
 			while(result.next()) {
@@ -169,7 +174,16 @@ public class Article extends Node {
 		"(d2.type = 401 AND d2.value LIKE \"%" + query + "%\") OR " + // body
 		"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
 		 */
-
+		
+		if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+		return "FROM node_table n, meta_table m1, data_table d1, data_table d2, link_table l1, node_table n2, meta_table m2, data_table d3 " + 
+		"WHERE ((d1.data_type = 200 AND d1.data_value LIKE '%" + query + "%') OR " + 
+		"(d2.data_type = 201 AND d2.data_value LIKE '%" + query + "%') OR " + 
+		"(d3.data_type = 100 AND d3.data_value LIKE '%" + query + "%')) AND " + 
+		"(n.node_id = m1.meta_node AND m1.meta_data = d1.data_id AND m1.meta_data = d2.data_id AND n.node_id = l1.link_parent AND l1.link_type = " + 
+		(ARTICLE | USER) + " AND l1.link_child = n2.node_id AND n2.node_id = m2.meta_node AND m2.meta_data = d3.data_id)";
+		}
+		
 		return "FROM node n, meta m1, data d1, data d2, link l1, node n2, meta m2, data d3 " + 
 		"WHERE ((d1.type = 200 AND d1.value LIKE '%" + query + "%') OR " + 
 		"(d2.type = 201 AND d2.value LIKE '%" + query + "%') OR " + 
@@ -185,6 +199,11 @@ public class Article extends Node {
 		String sql = null;
 		try {
 			sql = "SELECT count(DISTINCT n.id) AS count " + from(query) + ";";
+			
+			if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+				sql = "SELECT count(DISTINCT n.node_id) AS count " + from(query) + ";";
+			}
+			
 			stmt = conn.prepareStatement(sql);
 			result = stmt.executeQuery();
 			if(result.next()) {
@@ -215,10 +234,15 @@ public class Article extends Node {
 		String sql = null;
 		try {
 			sql = "SELECT DISTINCT n.id " + from(query) + " ORDER BY n.date DESC LIMIT " + start * limit + ", " + limit + ";";
+			
+			if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
+				sql = "SELECT DISTINCT n.node_date, n.node_id " + from(query) + " ORDER BY n.node_date, n.node_id DESC OFFSET " + start * limit + " LIMIT " + limit + ";";
+			}
+			
 			stmt = conn.prepareStatement(sql);
 			result = stmt.executeQuery();
 			while(result.next()) {
-				list.add(find(result.getLong("id")));
+				list.add(find(result.getLong(Sprout.SQL.driver().equals("org.postgresql.Driver") ? "node_id" : "id")));
 			}
 		} catch(SQLException e) {
 			throw e;
