@@ -3,7 +3,7 @@
 
 	<!-- you can change these to match your project -->
 	
-	<property name="db" value="postgresql"/>
+	<property name="db" value="mysql"/>
 	<property name="name" value="sprout"/>
 	<property name="port" value="9000"/>
 	<property name="pass" value="secret"/>
