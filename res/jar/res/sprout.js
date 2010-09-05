@@ -26,7 +26,7 @@ function changeFlag(country) {
   }
 }
 function ajaxLogin() {
-	_query('POST', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value + '&remember=' + document.getElementById('remember').value);
+	_query('POST', '/login', 'ajax=true&mail=' + document.getElementById('mail').value + '&pass=' + document.getElementById('pass').value + '&remember=' + document.getElementById('remember').checked);
 }
 function ajaxPost(id) {
 	_query('post', '/comment', 'ajax=true&body=' + encodeURIComponent(document.getElementById('body').value) + '&id=' + id);

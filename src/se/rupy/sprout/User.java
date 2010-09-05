@@ -588,6 +588,8 @@ public class User extends Node {
 		session.put("key", key);
 		cache.put(key, user);
 
+		System.out.println(remember);
+		
 		if(remember) {
 			long time = (long) 1000 * 60 * 60 * 24 * 365;
 			session.key(key, User.host, System.currentTimeMillis() + time);
