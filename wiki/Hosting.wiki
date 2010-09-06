@@ -4,7 +4,7 @@
 There are 2 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
 
   # Java (1.4 or later)
-  # MySQL or PostgreSQL (any versions)
+  # MySQL, PostgreSQL or Oracle (any versions)
 
 The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) solution:
 
