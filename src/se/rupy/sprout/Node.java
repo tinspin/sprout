@@ -201,11 +201,19 @@ public class Node extends NodeBean implements Type {
 
 		try {
 			if((what & PARENT) == PARENT) {
-				Sprout.find("DELETE FROM link WHERE parent = " + id, connection);
+				LinkBean link = new LinkBean();
+				link.setDate(0);
+				link.setParent(id);
+				Sprout.update(Base.DELETE, link, connection);
+				//Sprout.find("DELETE FROM link WHERE parent = " + id, connection);
 			}
 
 			if((what & CHILD) == CHILD) {
-				Sprout.find("DELETE FROM link WHERE child = " + id, connection);
+				LinkBean link = new LinkBean();
+				link.setDate(0);
+				link.setChild(id);
+				Sprout.update(Base.DELETE, link, connection);
+				//Sprout.find("DELETE FROM link WHERE child = " + id, connection);
 			}
 
 			if((what & META) == META) {
@@ -225,11 +233,19 @@ public class Node extends NodeBean implements Type {
 					}
 				}
 
-				Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
+				MetaBean meta = new MetaBean();
+				meta.setDate(0);
+				meta.setNode(id);
+				Sprout.update(Base.DELETE, meta, connection);
+				//Sprout.find("DELETE FROM meta WHERE node = " + getId(), connection);
 			}
 
 			if((what & POLL) == POLL) {
-				Sprout.find("DELETE FROM poll WHERE node = " + id, connection);
+				PollBean poll = new PollBean();
+				poll.setDate(0);
+				poll.setNode(id);
+				Sprout.update(Base.DELETE, poll, connection);
+				//Sprout.find("DELETE FROM poll WHERE node = " + id, connection);
 			}
 
 			if((what & PARENT) == PARENT || 

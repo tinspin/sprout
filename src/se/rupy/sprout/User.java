@@ -676,7 +676,11 @@ public class User extends Node {
 				
 				out.println("<table>");
 				
-				out.println("<tr><td colspan=\"2\"><img src=\"/file" + user.path() + "/picture.jpeg?time=" + System.currentTimeMillis() + "\">");
+				Node node = user.child(FILE, FILE_TYPE, "IMAGE");
+				
+				if(node != null) {
+					out.println("<tr><td colspan=\"2\"><img src=\"/file" + user.path() + "/picture.jpeg?time=" + System.currentTimeMillis() + "\">");
+				}
 				
 				out.println("<tr><td>" + Sprout.i18n("Nickname") + ":&nbsp;&nbsp;</td><td>" + user.safe(USER_NAME) + "</td></tr>");
 				

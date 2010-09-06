@@ -99,11 +99,11 @@ public class Article extends Node {
 		ResultSet result = null;
 		String sql = null;
 		try {
-			sql = "SELECT count(*) AS count FROM poll WHERE type = " + type + ";";
+			sql = "SELECT count(*) AS count FROM poll WHERE type = " + type;
 			
 			if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
 					Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
-				sql = "SELECT count(*) AS count FROM poll_table WHERE poll_type = " + type + ";";
+				sql = "SELECT count(*) AS count FROM poll_table WHERE poll_type = " + type;
 			}
 			
 			stmt = conn.prepareStatement(sql);
@@ -129,7 +129,7 @@ public class Article extends Node {
 	}
 
 	public static LinkedList most(short type, int start, int limit) throws SQLException {
-		return most(type, start, limit, Sprout.SQL.driver().equals("org.postgresql.Driver") ? "ORDER BY poll_value DESC" : "ORDER BY value DESC");
+		return most(type, start, limit, Sprout.SQL.driver().equals("com.mysql.jdbc.Driver") ? "ORDER BY value DESC" : "ORDER BY poll_value DESC");
 	}
 
 	public static LinkedList most(short type, int start, int limit, String order) throws SQLException {
@@ -139,14 +139,14 @@ public class Article extends Node {
 		ResultSet result = null;
 		String sql = null;
 		try {
-			sql = "SELECT node FROM poll WHERE type = " + type + " " + order + " LIMIT " + start * limit + ", " + limit + ";";
+			sql = "SELECT node FROM poll WHERE type = " + type + " " + order + " LIMIT " + start * limit + ", " + limit;
 			
 			if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
-				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " " + order + " OFFSET " + start * limit + " LIMIT " + limit + ";";
+				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " " + order + " OFFSET " + start * limit + " LIMIT " + limit;
 			}
 			
 			if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
-				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " " + order + " AND ROWNUM BETWEEN " + start * limit + " AND " + (start * limit + limit) + ";";
+				sql = "SELECT poll_node FROM poll_table WHERE poll_type = " + type + " AND ROWNUM BETWEEN " + start * limit + " AND " + (start * limit + limit) + " " + order;
 			}
 			
 			stmt = conn.prepareStatement(sql);
@@ -192,12 +192,20 @@ public class Article extends Node {
 		"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
 		 */
 		
-		if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
-				Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+		if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
 			return "FROM node_table n, meta_table m1, data_table d1, data_table d2, link_table l1, node_table n2, meta_table m2, data_table d3 " + 
 			"WHERE ((d1.data_type = 200 AND d1.data_value LIKE ?) OR " + 
 			"(d2.data_type = 201 AND d2.data_value LIKE ?) OR " + 
 			"(d3.data_type = 100 AND d3.data_value LIKE ?)) AND " + 
+			"(n.node_id = m1.meta_node AND m1.meta_data = d1.data_id AND m1.meta_data = d2.data_id AND n.node_id = l1.link_parent AND l1.link_type = " + 
+			(ARTICLE | USER) + " AND l1.link_child = n2.node_id AND n2.node_id = m2.meta_node AND m2.meta_data = d3.data_id)";
+		}
+
+		if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+			return "FROM node_table n, meta_table m1, data_table d1, data_table d2, link_table l1, node_table n2, meta_table m2, data_table d3 " + 
+			"WHERE ((d1.data_type = 200 AND dbms_lob.instr(d1.data_value, ?, 1, 1) > 0) OR " + 
+			"(d2.data_type = 201 AND dbms_lob.instr(d2.data_value, ?, 1, 1) > 0) OR " + 
+			"(d3.data_type = 100 AND dbms_lob.instr(d3.data_value, ?, 1, 1) > 0)) AND " + 
 			"(n.node_id = m1.meta_node AND m1.meta_data = d1.data_id AND m1.meta_data = d2.data_id AND n.node_id = l1.link_parent AND l1.link_type = " + 
 			(ARTICLE | USER) + " AND l1.link_child = n2.node_id AND n2.node_id = m2.meta_node AND m2.meta_data = d3.data_id)";
 		}
@@ -216,23 +224,24 @@ public class Article extends Node {
 		ResultSet result = null;
 		String sql = null;
 		try {
-			sql = "SELECT count(DISTINCT n.id) AS count " + from(query) + ";";
+			sql = "SELECT count(DISTINCT n.id) AS count " + from(query);
 			
 			if(Sprout.SQL.driver().equals("org.postgresql.Driver") || 
 					Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
-				sql = "SELECT count(DISTINCT n.node_id) AS count " + from(query) + ";";
+				sql = "SELECT count(DISTINCT n.node_id) AS count " + from(query);
 			}
 			
 			stmt = conn.prepareStatement(sql);
 			
 			byte[] data = ("%" + query + "%").getBytes("UTF-8");
-			ByteArrayInputStream in = new ByteArrayInputStream(data);
+
+			if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+				data = query.getBytes("UTF-8");
+			}
 			
-			stmt.setBinaryStream(1, in, data.length);
-			in = new ByteArrayInputStream(data);
-			stmt.setBinaryStream(2, in, data.length);
-			in = new ByteArrayInputStream(data);
-			stmt.setBinaryStream(3, in, data.length);
+			stmt.setBytes(1, data);
+			stmt.setBytes(2, data);
+			stmt.setBytes(3, data);
 			
 			result = stmt.executeQuery();
 			if(result.next()) {
@@ -262,28 +271,27 @@ public class Article extends Node {
 		ResultSet result = null;
 		String sql = null;
 		try {
-			sql = "SELECT DISTINCT n.id " + from(query) + " ORDER BY n.date DESC LIMIT " + start * limit + ", " + limit + ";";
+			sql = "SELECT DISTINCT n.id " + from(query) + " ORDER BY n.date DESC LIMIT " + start * limit + ", " + limit;
 			
 			if(Sprout.SQL.driver().equals("org.postgresql.Driver")) {
-				sql = "SELECT DISTINCT n.node_date, n.node_id " + from(query) + " ORDER BY n.node_date, n.node_id DESC OFFSET " + start * limit + " LIMIT " + limit + ";";
+				sql = "SELECT DISTINCT n.node_date, n.node_id " + from(query) + " ORDER BY n.node_date DESC OFFSET " + start * limit + " LIMIT " + limit;
 			}
 			
 			if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
-				sql = "SELECT DISTINCT n.node_id " + from(query) + " AND ROWNUM BETWEEN " + start * limit + " AND " + (start * limit + limit) + " ORDER BY n.node_date DESC;";
+				sql = "SELECT DISTINCT n.node_date, n.node_id " + from(query) + " AND ROWNUM BETWEEN " + start * limit + " AND " + (start * limit + limit) + " ORDER BY n.node_date DESC";
 			}
-			
-			System.out.println(sql);
 			
 			stmt = conn.prepareStatement(sql);
 			
 			byte[] data = ("%" + query + "%").getBytes("UTF-8");
-			ByteArrayInputStream in = new ByteArrayInputStream(data);
+
+			if(Sprout.SQL.driver().equals("oracle.jdbc.OracleDriver")) {
+				data = query.getBytes("UTF-8");
+			}
 			
-			stmt.setBinaryStream(1, in, data.length);
-			in = new ByteArrayInputStream(data);
-			stmt.setBinaryStream(2, in, data.length);
-			in = new ByteArrayInputStream(data);
-			stmt.setBinaryStream(3, in, data.length);
+			stmt.setBytes(1, data);
+			stmt.setBytes(2, data);
+			stmt.setBytes(3, data);
 			
 			result = stmt.executeQuery();
 			while(result.next()) {
@@ -431,7 +439,7 @@ public class Article extends Node {
 	public LinkedList columnize() {
 		if(columns == null) {
 			columns = new LinkedList();
-			String column = "", text = meta(ARTICLE_BODY).getString();
+			String column = "", text = safe(ARTICLE_BODY);
 			int length = 0, begin = 0, end = COLUMN_WIDTH / CHARACTER_WIDTH;
 
 			// loop until all overflowing data has been columnized
