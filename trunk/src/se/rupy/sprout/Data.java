@@ -100,7 +100,7 @@ public class Data extends DataBean implements Type {
 		HashMap hash = (HashMap) cache.get(new Integer(link));
 
 		if(hash == null) {
-			System.out.println("Data cache for '" + name + "' is empty. (" + link + ")");
+			//System.out.println("Data cache for '" + name + "' is empty. (" + link + ")");
 		}
 		else {
 			Data data = (Data) hash.get(name);
