@@ -80,7 +80,7 @@ build any site. Now works with PostgreSQL
          - Pipe create script: # \i 'PATH/create.sql' where you 
            replace PATH with where you extracted sprout. On 
            windows you need to replace all '\' in the path with '/'
-         - Pipe alter script after editing it (alter.sql).
+         - Pipe alter.sql script after editing it.
 
       c. Oracle
 
