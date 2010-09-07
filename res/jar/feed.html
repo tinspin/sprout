@@ -90,10 +90,11 @@ public class feed extends Sprout {
 		Iterator it = article.child(FILE).iterator();
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
+			Data name = file.meta(FILE_NAME);
 			Data type = file.meta(FILE_TYPE);
             
             if(type != null && type.equals("IMAGE")) {
-				out.println(clean("<img src=\"http://" + host + file.path() + "SMALL_" + file.meta(FILE_NAME) + "\" align=\"right\"/>"));
+				out.println(clean("<img src=\"http://" + host + "/" + File.path(file, name, "-200.jpeg") + "\" align=\"right\"/>"));
 				break;
 			}
 		}
