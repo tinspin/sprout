@@ -5,7 +5,7 @@
 
 Sprout is a simple blogger from which you can 
 build any site. Now works with PostgreSQL 
-(see 2.d.) and Oracle (see 2.e.)!
+(see 2.A.b) and Oracle (see 2.A.c.)!
 
 ----------------------------------------------
 
