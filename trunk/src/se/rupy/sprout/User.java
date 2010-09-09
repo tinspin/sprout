@@ -585,13 +585,15 @@ public class User extends Node {
 	}
 
 	static void save(Session session, User user, boolean remember) {
-		String key = user.meta(USER_KEY).getString();
-		session.put("key", key);
-		cache.put(key, user);
+		if(user != null) {
+			String key = user.safe(USER_KEY);
+			session.put("key", key);
+			cache.put(key, user);
 		
-		if(remember) {
-			long time = (long) 1000 * 60 * 60 * 24 * 365;
-			session.key(key, User.host, System.currentTimeMillis() + time);
+			if(remember) {
+				long time = (long) 1000 * 60 * 60 * 24 * 365;
+				session.key(key, User.host, System.currentTimeMillis() + time);
+			}
 		}
 	}
 
