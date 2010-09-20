@@ -4,7 +4,7 @@ Because a big part of what programmers do is to imagine typed data hierarchies t
 
 With a node-graph data model you only store, send and present nodes. The hierarchy is infront of the typing; just like in a file system. The only real difference between a file system and a node graph is that files and folders doesen't always have the possibility to have multiple parents.
 
-So all the code to store, present, modify, search, etc. the nodes is the same. And if you improve some part of the code, it can automatically be used on all other nodes immediately.
+So all the code to store, present, modify, search, etc. the nodes is the same. And if you improve some part of the code, it can more often than not, be used on other nodes with a few generalisations.
 
 Strongly Typed Data (Type -> Hierarchy):
 
