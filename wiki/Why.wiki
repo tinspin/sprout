@@ -18,7 +18,7 @@ Hierarchical Node Data (Hierarchy -> Type):
 
   * API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info).
   * Lots of methods become generic and reuse is inherently encouraged.
-  * You can easily alter/hotdeploy the storage/transport system in realtime without interruption.
+  * You can easily alter/hotdeploy the *_whole_* system in realtime without interruption.
   * You should use a SOA architecture with few, preferrably one, developer(s) per service.
   * Demands alot from the programmer. `*``*`
 
