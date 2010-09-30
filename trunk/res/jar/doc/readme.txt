@@ -67,8 +67,8 @@ build any site. Now works with PostgreSQL
 
          IMPORTANT: ZZZ should be sprout unless you choosed to do 2.B.b.
 
-         -Ddburl=jdbc:ql:ZZZ
-         -Ddbdriver=org.ql.Driver
+         -Ddburl=jdbc:postgresql:ZZZ
+         -Ddbdriver=org.postgresql.Driver
          -Ddbuser=XXX
          -Ddbpass=YYY
    
