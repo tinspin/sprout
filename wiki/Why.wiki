@@ -40,37 +40,9 @@ _Imagine a file system where you didn't have generic files but typed word, excel
 
 ----
 
-The node graph database structure is scary at first but after working with it in a real life project I can say that it is definetly a time saver. The reuse of generic code when every table is a node becomes huge as the project progresses.
-
-And the fact that you can hot-deploy any changes directly to the live environment, without having to alter tables, is not to underestimate. Not from a "it's so hard to alter tables" point of view, but from a human error and seamless uninterrupted user experience point of view.
-
 And performance is not a problem, take the example below where we wanted a complex search that we dreaded to implement in mysql with innodb.
 
 _The query is a search on article -body (201), -title (200) and username (100), that returns a list of articles ordered by date. The tricky part is the JOIN hierarchy_
-
-_2 minutes with 10000 rows_
-{{{
-/*
- * poor performing but easier to understand query
- */
-return "FROM node n " + // node
-// title and body joins
-"LEFT JOIN meta m1 ON (n.id = m1.node) " + // entry - data (body and title)
-"LEFT JOIN data d1 ON (m1.data = d1.id) " + // body
-"LEFT JOIN data d2 ON (m1.data = d2.id) " + // title
-// name joins
-"LEFT JOIN link l1 ON (n.id = l1.parent " + // article - user
-"AND l1.type = " + (ARTICLE | USER) + ") " + // ignore COMMENT | USER
-"LEFT JOIN node n2 ON (l1.child = n2.id) " + // user
-"LEFT JOIN meta m2 ON (n2.id = m2.node) " + // user - data (name)
-"LEFT JOIN data d3 ON (m2.data = d3.id) " + // name
-"WHERE " + 
-"(d1.type = 200 AND d1.value LIKE \"%" + query + "%\") OR " + // title
-"(d2.type = 201 AND d2.value LIKE \"%" + query + "%\") OR " + // body
-"(d3.type = 100 AND d3.value LIKE \"%" + query + "%\")" + // name
-}}}
-
-The same query but transformed to JOIN after the LIKE in the WHERE statement performs much better.
 
 _1 second with 10000 rows_
 {{{
