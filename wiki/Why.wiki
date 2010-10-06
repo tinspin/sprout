@@ -2,17 +2,15 @@
 
 Because a big part of what programmers do is to imagine typed data hierarchies that they then store with SQL, wrap in XML or JSON and send around; which in it's turn gets unwrapped and presented in a similar but often separate implementation on the other end. That data is then modified and sent all the way back to be stored again.
 
-With a node-graph data model you only store, send and present nodes. The hierarchy is infront of the typing; just like in a file system. The only real difference between a file system and a node graph is that files and folders doesen't always have the possibility to have multiple parents.
+With a node-graph data model you only store, send and present nodes. The hierarchy is infront of the typing; just like in a file system.
 
 So all the code to store, present, modify, search, etc. the nodes is the same. And if you improve some part of the code, it can more often than not, be reused on other nodes with a few generalisations.
 
 Strongly Typed Data (Type -> Hierarchy):
 
-  * You can add more developers to the project with linearly increased productivity. `*`
+  * You can add more developers to the project with linearly increased productivity.
   * You write alot of typed code that can't be reused.
   * API grows linearly with number of objects.
-
-`*` If you have symbiotic developers and strong leadership.
 
 Hierarchical Node Data (Hierarchy -> Type):
 
@@ -20,9 +18,7 @@ Hierarchical Node Data (Hierarchy -> Type):
   * Lots of methods become generic and reuse is inherently encouraged.
   * You can easily alter/hotdeploy the *_whole_* system in realtime without interruption.
   * You should use a SOA architecture with few, preferrably one, developer(s) per service.
-  * Demands alot from the programmer. `*``*`
-
-`*``*` If you have uninterested developers.
+  * Demands alot from the programmer.
 
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
