@@ -84,6 +84,7 @@ eMail already in use! = ePost används redan!
 Nickname already in use! = Smeknamn används redan!
 Passwords don't match! = Lösenorden stämmer inte överens!
 eMail not found! = ePost ej funnen!
+State not found! = Status ej funnen!
 
 // Malign errors
 You are not authorized! = Du saknar rättigheter!

@@ -220,16 +220,21 @@ public class User extends Node {
 					if(user.query(USER_MAIL, mail) || user.query(USER_NAME, mail)) {
 						user.fill(10, 0, 10);
 
-						if(user.meta(USER_PASS).getString().equals(pass)) {
-							if(user.meta(USER_STATE).getString().equals("VERIFIED")) {
+						if(user.safe(USER_PASS).equals(pass)) {
+							String state = user.safe(USER_STATE);
+							
+							if(state.equals("VERIFIED")) {
 								save(event.session(), user, event.query().bit("remember", false));
 
 								if(ajax != null) {
 									ajax.put("url", "/");
 								}
 							}
-							else {
+							else if(state.equals("UNVERIFIED")) {
 								event.query().put("error", Sprout.i18n("Check your inbox!"));
+							}
+							else {
+								event.query().put("error", Sprout.i18n("State not found!"));
 							}
 						}
 						else {
@@ -291,7 +296,7 @@ public class User extends Node {
 	public static class Update extends Service {
 		public int index() { return 1; }
 		public String path() { return "/user:/register"; }
-		public void create() throws Exception {
+		public void create(Daemon daemon) throws Exception {
 			try {
 				if(lookup == null) {
 					lookup = new LookupService(System.getProperty("user.dir") + "/res/GeoIP.dat", LookupService.GEOIP_MEMORY_CACHE);

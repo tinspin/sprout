@@ -53,7 +53,7 @@ public class index extends Sprout {
     }
   </script>
 
-[[ if(event.daemon().deployed("talk")) { ]]
+[[ if(event.daemon().archive("talk") != null) { ]]
 
   <!-- copy this --><!-- start -->
   
@@ -79,7 +79,7 @@ public class index extends Sprout {
   
 </head>
 
-[[ if(event.daemon().deployed("talk")) { ]]
+[[ if(event.daemon().archive("talk") != null) { ]]
 
 <!-- copy this --><!-- start -->
 
@@ -115,7 +115,7 @@ else {
 
 </div>
 
-[[ if(event.daemon().deployed("talk")) { ]]
+[[ if(event.daemon().archive("talk") != null) { ]]
 
 <!-- copy this --><!-- start -->
 
