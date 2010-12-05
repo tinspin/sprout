@@ -416,7 +416,7 @@ public class User extends Node {
 						user.add(Group.name("ADMIN"));
 					}
 
-					String live = event.daemon().properties.getProperty("live");
+					String live = event.daemon().properties().getProperty("live");
 
 					if(send) {
 						user.add(Sprout.generate(USER_KEY, 16));
