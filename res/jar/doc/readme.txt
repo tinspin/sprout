@@ -226,6 +226,10 @@ build any site. Now works with PostgreSQL
       - Profile page
       - Fixed resource upload order, first you insert an article then you can add 
         resources to it!
+        
+   0.2.3 Rupy Stable Release
+   
+      - Now Rupy is Industrial Strength.
       
 ----------------------------------------------
 
