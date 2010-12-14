@@ -7,9 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -541,6 +546,67 @@ public class User extends Node {
 		}
 	}
 
+	/*
+	 * RISK (Random Iterator Secret Key) Encryption
+	 * Custom encryption, you need to modify secret for any safety.
+	 * This is safer than MD or SHA since unknown, you should modify 
+	 * the code in the shift method to add your own protection.
+	 */
+	
+	/**
+	 * Only call after {@link meta()}.
+	 */
+	public byte[] bitwise(String s) throws Exception {
+		return shift(s.getBytes("UTF-8"));
+	}
+	
+	/**
+	 * Only call after {@link meta()}.
+	 */
+	public String bitwise(byte[] data) throws Exception {
+		return new String(shift(data), "UTF-8");
+	}
+
+	private static String SECRET = "MephutrEwEpRUd6U";
+	
+	private byte[] shift(byte[] data) throws Exception {
+		String key = meta(USER_KEY).getString();
+		
+		if(key.length() != 16) {
+			throw new Exception("KEY is not 16 digits.");
+		}
+		
+		int length = 16;
+		
+		Random random = new Random(getId());
+
+		for(int i = 0; i < data.length; i++) {
+			int r = random.nextInt(length);
+			int s = SECRET.charAt(r);
+			int k = key.charAt(s % length);
+			
+			data[i] ^= k;
+		}
+		
+		return data;
+	}
+
+	public boolean verify(String pass, byte[] data) throws Exception {
+		byte[] test = bitwise(pass);
+		
+		if(test.length != data.length) {
+			return false;
+		}
+		
+		for(int i = 0; i < data.length; i++) {
+			if(test[i] != data[i]) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	static boolean send(Event event, String mail, String title, String text) throws Event, Exception {
 		try {
 			eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title);
