@@ -567,7 +567,7 @@ public class User extends Node {
 		return new String(shift(data), "UTF-8");
 	}
 
-	private static String SECRET = "MephutrEwEpRUd6U";
+	private static String secret = "MephutrEwEpRUd6U";
 	
 	private byte[] shift(byte[] data) throws Exception {
 		String key = meta(USER_KEY).getString();
@@ -576,14 +576,18 @@ public class User extends Node {
 			throw new Exception("KEY is not 16 digits.");
 		}
 		
-		int length = 16;
+		return shift(data, getId(), key, false);
+	}
+	
+	private static byte[] shift(byte[] data, long id, String key, boolean debug) throws Exception {
+		Random random = new Random(id);
 		
-		Random random = new Random(getId());
-
 		for(int i = 0; i < data.length; i++) {
-			int r = random.nextInt(length);
-			int s = SECRET.charAt(r);
-			int k = key.charAt(s % length);
+			int r = random.nextInt(16);
+			int s = secret.charAt(r);
+			int k = key.charAt(s % 16);
+			
+			if(debug) System.out.println(i + " " + r + " " + s + " " + k);
 			
 			data[i] ^= k;
 		}
@@ -591,6 +595,25 @@ public class User extends Node {
 		return data;
 	}
 
+	public static void main(String[] args) {
+		String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		
+		try {
+			byte[] d = shift(s.getBytes(), 1234, "MT4VGTBF38TTW8Q7", true);
+			
+			for(int i = 0; i < d.length; i++) {
+				System.out.println(s.charAt(i) + "(" + (int) s.charAt(i) + ")=" + d[i]);
+			}
+			
+			System.out.println(new String(shift(d, 1234, "MT4VGTBF38TTW8Q7", true)));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.exit(1);
+	}
+	
 	public boolean verify(String pass, byte[] data) throws Exception {
 		byte[] test = bitwise(pass);
 		
@@ -632,13 +655,22 @@ public class User extends Node {
 
 				if(mail.length() > 0) {
 					User user = new User();
-					if(user.query(USER_MAIL, mail)) {
+					boolean found;
+					
+					if(mail.indexOf('@') > 0) {
+						found = user.query(USER_MAIL, mail);
+					}
+					else {
+						found = user.query(USER_NAME, mail);
+					}
+					
+					if(found) {
 						user.meta();
 
 						String copy = remind.replaceAll("@@name@@", user.meta(USER_NAME).getString());
 						copy = copy.replaceAll("@@pass@@", user.meta(USER_PASS).getString());
 
-						if(send(event, mail, Sprout.i18n("Reminder!"), copy)) {
+						if(send(event, user.safe(USER_MAIL), Sprout.i18n("Reminder!"), copy)) {
 							event.query().put("error", Sprout.i18n("Reminder sent!"));
 						}
 						else {
@@ -646,7 +678,7 @@ public class User extends Node {
 						}
 					}
 					else {
-						event.query().put("error", Sprout.i18n("eMail not found!"));
+						event.query().put("error", Sprout.i18n("User not found!"));
 					}
 				}
 

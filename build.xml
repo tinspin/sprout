@@ -122,6 +122,10 @@
 		</java>
 	</target>
 	
+	<target name="test" depends="build">
+		<java fork="yes" classname="se.rupy.sprout.User" classpath="bin/${name}.jar:${lib}"/>
+	</target>
+	
 	<!-- requires manual flush on unix -->
 	<target name="flush" unless="unix">
 		<exec executable="${db}">
