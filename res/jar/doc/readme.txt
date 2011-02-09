@@ -30,6 +30,10 @@ build any site. Now works with PostgreSQL
      # where XXX should be replaced with your user and YYY with 
      # your password.
   
+   Build sprout. You need to run ant twice the first time since it 
+   generates dependencies the first time.
+  
+     > ant
      > ant
 
    Then simply create a database like this:
