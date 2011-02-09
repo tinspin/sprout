@@ -30,8 +30,9 @@ build any site. Now works with PostgreSQL
      # where XXX should be replaced with your user and YYY with 
      # your password.
   
-   Build sprout. You need to run ant twice the first time since it 
-   generates dependencies the first time.
+   Build sprout. You need to run ant twice when building from 
+   scratch, since it generates dependencies that won't be in the 
+   classpath during the first build.
   
      > ant
      > ant
