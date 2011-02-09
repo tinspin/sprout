@@ -25,6 +25,6 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 
 [http://www.sofreeto.com Sofreeto] _is Hilario's design portolio._
 
-  * Production: Hilario installed the XSS chat in 30 minutes without ANY programming knowledge.
+  * Production: Hilario installed the XDR chat in 30 minutes without ANY programming knowledge.
 
-  You only need to know how to copy files to your webserver to be able to use the XSS chat.
+  You only need to know how to copy files to your webserver to be able to use the XDR chat.
