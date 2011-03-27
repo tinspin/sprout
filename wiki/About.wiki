@@ -28,3 +28,7 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
   * Production: Hilario installed the XDR chat in 30 minutes without ANY programming knowledge.
 
   You only need to know how to copy files to your webserver to be able to use the XDR chat.
+
+[http://www.pixboom.com Pixboom] _An image tagging solution._
+
+[http://www.crimeville.com Crimeville] _A MMO game for kids._
