@@ -101,10 +101,12 @@ public class content extends Sprout {
 				} else if(type.equals("AUDIO") && !audio) {
 					String path = "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + ".mp3"; ]]
 
-          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" type="application/x-shockwave-flash" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ path ]]&color=E4E4E4"/>
-            <param name="wmode" value="opaque"/>
-            <embed src="audio.swf?audio_file=[[ path ]]&color=E4E4E4" wmode="opaque" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/>
+            <param name="wmode" value="normal"/><!-- should be opaque so flash doesen't go ontop of everything, 
+            										 but webkit doesen't let click events down to the 
+            										 flash object in that case for some reason :( -->
+            <embed src="audio.swf?audio_file=[[ path ]]&color=E4E4E4" wmode="normal" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/>
           </object>
 
 [[					audio = true;
