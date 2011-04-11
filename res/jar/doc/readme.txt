@@ -11,7 +11,7 @@ build any site. Now works with PostgreSQL
 
 1. Quick Tutorial:
 
-   You will need Mysql 4.0, Java 1.4 or later and 
+   You will need Mysql 4.0, Java 1.5 or later and 
    Ant added to the path to build and run Sprout.
 
    Run the server with run.bat or run.sh depending 
@@ -51,6 +51,14 @@ build any site. Now works with PostgreSQL
 ----------------------------------------------
 
 2. Setting up a live sprout instance:
+
+   ##IMPORTANT##
+
+   Since NIO has been very unstable from 
+   1.6.0_00 until 1.6.0_18 with Selector bugs 
+   ranging from 100% CPU to thread deadlock; 
+   you should use 1.5 or 1.6.0_18 and later 
+   on your live server.
 
    A. Databases
 
@@ -235,6 +243,10 @@ build any site. Now works with PostgreSQL
    0.2.3 Rupy Stable Release
    
       - Now Rupy is Industrial Strength.
+      
+   0.2.4 Rupy Fix Release
+   
+      - Fixed file-descriptor leak in Rupy.
       
 ----------------------------------------------
 
