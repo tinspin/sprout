@@ -24,10 +24,11 @@ The easiest way to get this cheaply is to buy a Virtual Private Server (VPS) sol
 || [http://www.solarvps.com/linux-vps.php SolarVPS] || 40$ || 300 GB || 15 GB || USA || 10/4-09 ||
 || [http://www.wiredtree.com/managedvps/ WiredTree] || 44$ || 600 GB || 40 GB || USA || 10/4-09 ||
 
-It's recommended that you use linux and front the sprout/rupy server with an Apache, so then it makes sense if you know:
+It's recommended that you use linux ~~and front the sprout/rupy server with an Apache~~, so then it makes sense if you know:
 
   # SSH
-  # Apache (with mod_proxy)
+  # ~~Apache (with mod_proxy)~~
+  # HAProxy, to loadbalance or proxy your site.
 
 Observe that OpenVZ does have it's fair share of issues with virtual memory and therefore you will not be able to compile on the host machine; so it's great that rupy can hot deploy directly to the host from the development machine remotely via HTTP.
 
