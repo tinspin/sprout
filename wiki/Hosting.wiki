@@ -34,15 +34,6 @@ Observe that OpenVZ does have it's fair share of issues with virtual memory and 
 
 Rupy works great on the free AWS (Amazon Web Services) micro instance with MySQL installed on the same machine. Try it out, it's free!
 
-~~If you want to host multiple sites on one machine, you have to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] your domain with Apache, by entering the following into the apache config, the port number (XXXX below) should be assigned for each instance so that you can run sprout on that port:
-{{{
-NameVirtualHost *:80
-<VirtualHost *:80>
-    ServerName yourdomain.com
-    ServerAlias www.yourdomain.com
-    ProxyPass / http://localhost:XXXX/
-    ProxyPassReverse / http://localhost:XXXX/
-</VirtualHost>
-}}}~~
+If you want to host multiple sites on one machine or host one site on multiple machines, you have to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] or loadbalance your domain with Apache or HAProxy.
 
 *Dependencies:* _Sprout uses [http://rupy.googlecode.com rupy], a "tiny footprint" embedded HTTP server that uses below 1 MB in heap, it's not a problem to run one rupy instance per 32 MB of RAM, which means that on any VPS account you will be able to run at least 4 instances, since the smallest amount of guaranteed RAM is 128 MB in the solutions above._
