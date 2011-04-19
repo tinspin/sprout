@@ -1,6 +1,8 @@
 #summary What do I need to use sprout.
 #labels Featured
 
+Rupy works great on the free AWS (Amazon Web Services) micro instance with MySQL installed on the same machine. Try it out, it's free!
+
 There are 2 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
 
   # Java (1.5 or later)
@@ -31,8 +33,6 @@ It's recommended that you use linux ~~and front the sprout/rupy server with an A
   # HAProxy, to loadbalance or proxy your site.
 
 Observe that OpenVZ does have it's fair share of issues with virtual memory and therefore you will not be able to compile on the host machine; so it's great that rupy can hot deploy directly to the host from the development machine remotely via HTTP.
-
-Rupy works great on the free AWS (Amazon Web Services) micro instance with MySQL installed on the same machine. Try it out, it's free!
 
 If you want to host multiple sites on one machine or host one site on multiple machines, you have to [http://code.google.com/p/rupy/wiki/VirtualHostProxy VirtualHostProxy] or loadbalance your domain with Apache or HAProxy.
 
