@@ -1,7 +1,7 @@
 #summary What do I need to use sprout.
 #labels Featured
 
-Rupy works great on the free AWS (Amazon Web Services) micro instance with MySQL installed on the same machine. Try it out, it's free!
+*_Rupy works great on the free AWS (Amazon Web Services) micro instance with MySQL installed on the same machine. Try it out, it's free!_*
 
 There are 2 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
 
