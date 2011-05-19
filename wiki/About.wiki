@@ -25,4 +25,10 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 
 [http://www.pixboom.com Pixboom] _An image tagging solution._
 
+  * Production: Three people for a month full-time.
+  * Statistics: ~30000 hits per day and growing, see [http://pixboom.com/graph graph].
+  * Performance: Load average is 0.0% on an AWS small EC2.
+
 [http://www.crimeville.com Crimeville] _A MMO game for kids._
+
+  * Will post details soon.
