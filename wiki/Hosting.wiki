@@ -1,9 +1,9 @@
 #summary What do I need to use sprout.
 #labels Featured
 
-<font color="red">*_Try our hosting solution: [http://host.rupy.se host.rupy.se], it's free!_*</font>
+<font color="red">*_NEW_*</font> Try our hosting solution: [http://host.rupy.se host.rupy.se], it's free!
 
-<font color="orange">*_Rupy works great on the AWS (Amazon Web Services) micro instance._*</font>
+<font color="orange">*_NEW_*</font> Rupy works great on the AWS (Amazon Web Services) micro instance.
 
 There are 2 things your hosting has to provide and that you need to know how to use for you to be able to take advantage of sprout:
 
