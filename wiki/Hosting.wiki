@@ -1,7 +1,7 @@
 #summary What do I need to use sprout.
 #labels Featured
 
-<font color="red">*_NEW_*</font> Try our hosting solution: [http://host.rupy.se host.rupy.se], it's free!
+<font color="red">*_NEW_*</font> Try our hosting solution: [http://host.rupy.se host.rupy.se]!
 
 <font color="orange">*_NEW_*</font> Rupy works great on the AWS (Amazon Web Services) micro instance.
 
