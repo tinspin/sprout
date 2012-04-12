@@ -26,7 +26,10 @@ public class Node extends NodeBean implements Type {
 	public final static byte CHILD = 1 << 1;
 	public final static byte META = 1 << 2;
 	public final static byte POLL = 1 << 3;
-
+	
+	// I have no idea where or why this came from!
+	//public final static byte ALL = PARENT | CHILD | META | POLL;
+	
 	static Format time = new SimpleDateFormat("d'&nbsp;'MMM'&nbsp;'yy");
 	static Format date = new SimpleDateFormat("yy/MM/dd");
 
@@ -514,6 +517,8 @@ public class Node extends NodeBean implements Type {
 	}
 
 	protected boolean link(int type, int start, int limit) throws SQLException {
+		//System.out.println(id + " " + link.size());
+		
 		if(id > 0 && link.size() == 0) {
 			link.setParent(this);
 			link.setType(type);

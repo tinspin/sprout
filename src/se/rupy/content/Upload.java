@@ -121,18 +121,25 @@ public class Upload extends Sprout {
 		
 		boolean delete = false;
 		
-		if(item.name.endsWith(".jpeg") || item.name.endsWith(".jpg") || item.name.endsWith(".bmp")) {
+		if(item.name.toLowerCase().endsWith(".jpeg") || 
+		   item.name.toLowerCase().endsWith(".jpg") || 
+		   item.name.toLowerCase().endsWith(".bmp")) {
 			resize(item, file, 200);
 			file.add(File.type("IMAGE"));
 			delete = true;
 		}
-		else if(item.name.endsWith(".avi") || item.name.endsWith(".mov") || item.name.endsWith(".wmv") || item.name.endsWith(".mp4") || item.name.endsWith(".mkv")) {
+		else if(item.name.toLowerCase().endsWith(".avi") || 
+				 item.name.toLowerCase().endsWith(".mov") || 
+				 item.name.toLowerCase().endsWith(".wmv") || 
+				 item.name.toLowerCase().endsWith(".mp4") || 
+				 item.name.toLowerCase().endsWith(".mkv")) {
 			video(item, file);
 			file.add(File.type("VIDEO"));
 			delete = true;
 		}
-		else if(item.name.endsWith(".mp3") || item.name.endsWith(".wav")) {
-			if(item.name.endsWith(".wav")) {
+		else if(item.name.toLowerCase().endsWith(".mp3") || 
+				 item.name.toLowerCase().endsWith(".wav")) {
+			if(item.name.toLowerCase().endsWith(".wav")) {
 				audio(item, file);
 			}
 			else {

@@ -1,5 +1,5 @@
 body { background-color: #eee; }
-a, td, select, input, textarea { font-family: 'lucida sans unicode', 'lucida grande'; }
+a, td, select, input, textarea { font-family: 'lucida sans unicode', 'lucida grande', 'helvetica'; }
 a:link, a:hover, a:active, a:visited { color: #000; }
 select, input, textarea { font-size: 1.0em; }
 table { border: 0px; }
@@ -70,6 +70,9 @@ h2 {
 	visibility: hidden;
 	-webkit-border-radius: 4px;
     -moz-border-radius: 4px;
+    -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, .1);
+	-webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .1);
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, .1);
 }
 
 .single {
