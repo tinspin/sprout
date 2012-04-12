@@ -294,6 +294,8 @@ public class User extends Node {
 			Session session = event.session();
 			kill(session.get("key"));
 			session.remove("key");
+			//session.key("", host, System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 30);
+			//event.output().println("<script>document.location='/';</script>");
 			Sprout.redirect(event);
 		}
 	}

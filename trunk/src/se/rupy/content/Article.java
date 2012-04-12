@@ -39,7 +39,7 @@ public class Article extends Node {
 	public final static byte NO = 0;
 	public final static byte USER = 1 << 0;
 	public final static byte ADMIN = 1 << 1;
-	public final static byte ALL = PARENT | CHILD | META | POLL;
+	public final static byte WILDCARD = PARENT | CHILD | META | POLL;
 	public final static int MAX_POST_SIZE = 1024 * 1024; // 1MB
 
 	public static long MAX = 0;
@@ -394,7 +394,12 @@ public class Article extends Node {
 				Article article = new Article();
 
 				article.copy(node);
+				
+				//System.out.println(article);
+				
 				article.fill(10, 0, 100);
+				
+				//System.out.println(article);
 
 				cache1.put(new Long(article.getId()), article);
 
@@ -488,7 +493,7 @@ public class Article extends Node {
 						throw new Exception(Sprout.i18n("You are not authorized!"));
 					}
 
-					article.delete(ALL);
+					article.delete(WILDCARD);
 
 					cache1.remove(new Long(id));
 					cache2.clear();

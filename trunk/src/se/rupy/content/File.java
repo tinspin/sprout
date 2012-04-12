@@ -31,22 +31,22 @@ public class File extends Node {
 	}
 	
 	public static String name(String name) {
-		if(name.endsWith(".jpeg") || 
-			name.endsWith(".jpg") || 
-			name.endsWith(".bmp")) {
+		if(name.toLowerCase().endsWith(".jpeg") || 
+			name.toLowerCase().endsWith(".jpg") || 
+			name.toLowerCase().endsWith(".bmp")) {
 			return name.substring(0, name.indexOf('.'));
 		}
 		
-		if(name.endsWith(".avi") || 
-			name.endsWith(".mov") || 
-			name.endsWith(".wmv") || 
-			name.endsWith(".mp4") || 
-			name.endsWith(".mkv")) {
+		if(name.toLowerCase().endsWith(".avi") || 
+			name.toLowerCase().endsWith(".mov") || 
+			name.toLowerCase().endsWith(".wmv") || 
+			name.toLowerCase().endsWith(".mp4") || 
+			name.toLowerCase().endsWith(".mkv")) {
 			return name.substring(0, name.indexOf('.'));
 		}
 		
-		if(name.endsWith(".mp3") || 
-			name.endsWith(".wav")) {
+		if(name.toLowerCase().endsWith(".mp3") || 
+			name.toLowerCase().endsWith(".wav")) {
 			return name.substring(0, name.indexOf('.'));
 		}
 		
