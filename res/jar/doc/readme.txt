@@ -197,7 +197,7 @@ build any site. Now works with PostgreSQL
 
 ----------------------------------------------
 
-5. Version:
+4. Version:
 
    0.1 Alpha
   
