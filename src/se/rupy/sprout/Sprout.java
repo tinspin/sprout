@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Properties;
 
-import Router.SQL;
 import se.rupy.http.Daemon;
 import se.rupy.http.Event;
 import se.rupy.http.Service;
