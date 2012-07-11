@@ -13,6 +13,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Properties;
+
+import Router.SQL;
+import se.rupy.http.Daemon;
 import se.rupy.http.Event;
 import se.rupy.http.Service;
 import se.rupy.memory.Base;
@@ -25,16 +28,35 @@ import se.rupy.util.Log;
 public abstract class Sprout extends Service implements Type {
 	public static String ROOT = "app/content";
 	private static Base BASE;
+	private static Pool POOL;
 	private static Properties I18N;
 	private static boolean TRANSLATE;
 	public static SQL SQL;
 
-	static {
-		BASE = new Base();
-		SQL = new SQL();
-		
+	/*
+	public void create(Daemon daemon) {
 		try {
-			BASE.init(new Pool(SQL, SQL));
+			SQL sql = new SQL();
+			POOL = new Pool(sql, sql);
+			BASE = new Base();
+			BASE.init(POOL);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	*/
+
+	public void destroy() {
+		POOL.close();
+	}
+		
+	static {
+		try {
+			SQL = new SQL();
+			POOL = new Pool(SQL, SQL);
+			BASE = new Base();
+			BASE.init(POOL);
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
