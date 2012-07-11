@@ -178,6 +178,8 @@ public abstract class Sprout extends Service implements Type {
 
 		public SQL() {
 			try {
+				// If you are using host.rupy.se
+				// out = new PrintStream(new FileOutputStream("app/your.domain.name/log.txt", true));
 				out = new PrintStream(new FileOutputStream("log.txt", true));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -185,24 +187,32 @@ public abstract class Sprout extends Service implements Type {
 		}
 
 		public String driver() {
+			// If you are using host.rupy.se
+			// return "com.mysql.jdbc.Driver";
 			return System.getProperty("dbdriver", "com.mysql.jdbc.Driver");
 			//return System.getProperty("dbdriver", "org.postgresql.Driver");
 			//return System.getProperty("dbdriver", "oracle.jdbc.OracleDriver");
 		}
 
 		public String url() {
+			// If you are using host.rupy.se
+			// return "jdbc:mysql://localhost/your_domain_name";
 			return System.getProperty("dburl", "jdbc:mysql://localhost/sprout");
 			//return System.getProperty("dburl", "jdbc:postgresql:sprout");
 			//return System.getProperty("dburl", "jdbc:oracle:thin:@localhost:1521:xe");
 		}
 
 		public String user() {
+			// If you are using host.rupy.se
+			// return "your_domain_name";
 			return System.getProperty("dbuser", "root");
 			//return System.getProperty("dbuser", "postgres");
 			//return System.getProperty("dbuser", "sprout");
 		}
 
 		public String pass() {
+			// If you are using host.rupy.se
+			// return "Y0URP4SS";
 			return System.getProperty("dbpass", "");
 			//return System.getProperty("dbpass", "postgres");
 			//return System.getProperty("dbpass", "sprout");
