@@ -172,8 +172,9 @@ build any site. Now works with PostgreSQL
       Sprout.SQL following the instructions in the class file.
       
       You also need to deploy the jar as your.domain.name.jar which 
-      means changing name property to your.domain.name in build.xml and 
-      renaming the res/sprout.xml file to res/your.domain.name.xml
+      means changing the name property from sprout to your.domain.name 
+      in build.xml and renaming the res/sprout.xml file to 
+      res/your.domain.name.xml
 
 ----------------------------------------------
 
