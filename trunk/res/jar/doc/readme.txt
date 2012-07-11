@@ -173,7 +173,7 @@ build any site. Now works with PostgreSQL
       
       You also need to deploy the jar as your.domain.name.jar which 
       means changing name property to your.domain.name in build.xml and 
-      renaming the res/sprout.xml file to your.domain.name.xml
+      renaming the res/sprout.xml file to res/your.domain.name.xml
 
 ----------------------------------------------
 
