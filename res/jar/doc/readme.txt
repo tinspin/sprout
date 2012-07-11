@@ -165,6 +165,15 @@ build any site. Now works with PostgreSQL
          properties in the run.sh (or add and alter them to run.bat 
          if you run your live server on windows) file to match your 
          site.
+         
+   C. host.rupy.se
+   
+      If you are using our integrated hosting service you need to edit
+      Sprout.SQL following the instructions in the class file.
+      
+      You also need to deploy the jar as your.domain.name.jar which 
+      means changing name property to your.domain.name in build.xml and 
+      renaming the res/sprout.xml file to your.domain.name.xml
 
 ----------------------------------------------
 
