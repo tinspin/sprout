@@ -6,17 +6,20 @@ With a node-graph data model you only store, send and present nodes. The hierarc
 
 So all the code to store, present, modify, search, etc. the nodes is the same. And if you improve some part of the code, it can more often than not, be reused on other nodes with a few generalisations.
 
-Strongly Typed Data (Type -> Hierarchy):
+  _Strongly Typed Data (Type -> Hierarchy):_
+
 || Pro || Con ||
 || You can add more "junior" developers to the project with linearly increased productivity. || You write alot of typed code that can't be reused. ||
 || You can replace developers "quickly". || API grows linearly with number of objects. ||
 
-Hierarchical Node Data (Hierarchy -> Type):
+  _Hierarchical Node Data (Hierarchy -> Type):_
 
 || Pro || Con ||
 || API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info). || You should use a SOA architecture with few, preferrably one, developer(s) per service. ||
 || Lots of methods become generic and reuse is inherently encouraged. || Demands alot from the programmer. ||
 || You can easily alter/hotdeploy the *_whole_* system in realtime without interruption. || ||
+
+The arguments will always be pro _type_ in a big corporation and pro _hierarchy_ in a smaller startup, also the bridge to scalable key/value storage is faster with node-graph since the node-graph *IS* a hierachical key/value store.
 
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
