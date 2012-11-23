@@ -21,7 +21,7 @@ So all the code to store, present, modify, search, etc. the nodes is the same. A
 
 The arguments will always be pro _type_ in a big corporation and pro _hierarchy_ in a smaller startup, also the bridge to scalable key/value storage is faster with node-graph since the node-graph *IS* a hierachical key/value store.
 
-IMPORTANT: The problem that managers or "people with ties that decide stuff" (non math/physics/chemistry/biology people in general like politicians, economists, lawyers, etc. more emotional than rational individuals if you will) have is that they overestimate the modularity of humans. Efficiency of replacing developers is far behind adding a developer, and that can be a couple of percent up *if you are lucky with your recruitment* and have alot of time.
+IMPORTANT: The problem that managers or "people with ties that decide stuff" (non math/physics/chemistry/biology people in general like politicians, economists, lawyers, etc. more emotional than rational individuals if you will) have is that they overestimate the modularity of humans (specially rational humans). Efficiency of replacing developers is far behind adding a developer, and that can be a couple of percent up *if you are lucky with your recruitment* and have alot of time.
 
 *It's always more efficient to rewrite the projects of a employee that gets fired or quits.* This is the main reason why modularity is crucial to all software development.
 
