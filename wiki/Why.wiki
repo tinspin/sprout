@@ -23,6 +23,8 @@ The arguments will always be pro _type_ in a big corporation and pro _hierarchy_
 
 IMPORTANT: The problem that managers or "people with ties that decide stuff" (non math/physics/chemistry/biology people in general like politicians, economists, lawyers, etc.) have is that they overestimate the modularity of humans. Efficiency of replacing developers is far behind adding a developer, and that can be a couple of percent up *if you are lucky with your recruitment* and have alot of time.
 
+*It's always more efficient to rewrite the projects of a employee that gets fired or quits.* This is the main reason why modularity is crucial to all software development.
+
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
 For example for the search below the structure looks like this:
