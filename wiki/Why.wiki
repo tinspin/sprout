@@ -7,18 +7,16 @@ With a node-graph data model you only store, send and present nodes. The hierarc
 So all the code to store, present, modify, search, etc. the nodes is the same. And if you improve some part of the code, it can more often than not, be reused on other nodes with a few generalisations.
 
 Strongly Typed Data (Type -> Hierarchy):
-
-  * You can add more developers to the project with linearly increased productivity.
-  * You write alot of typed code that can't be reused.
-  * API grows linearly with number of objects.
+|| Pro || Con ||
+|| You can add more developers to the project with linearly increased productivity. || You write alot of typed code that can't be reused. ||
+|| || API grows linearly with number of objects. ||
 
 Hierarchical Node Data (Hierarchy -> Type):
 
-  * API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info).
-  * Lots of methods become generic and reuse is inherently encouraged.
-  * You can easily alter/hotdeploy the *_whole_* system in realtime without interruption.
-  * You should use a SOA architecture with few, preferrably one, developer(s) per service.
-  * Demands alot from the programmer.
+|| Pro || Con ||
+|| API stays the same (insert, update, delete and select node, see [http://rupy.se/sprout/se/rupy/sprout/Node.html Node] javadoc for more info). || You should use a SOA architecture with few, preferrably one, developer(s) per service. ||
+|| Lots of methods become generic and reuse is inherently encouraged. || Demands alot from the programmer. ||
+|| You can easily alter/hotdeploy the *_whole_* system in realtime without interruption. || ||
 
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
