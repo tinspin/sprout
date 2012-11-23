@@ -21,6 +21,8 @@ So all the code to store, present, modify, search, etc. the nodes is the same. A
 
 The arguments will always be pro _type_ in a big corporation and pro _hierarchy_ in a smaller startup, also the bridge to scalable key/value storage is faster with node-graph since the node-graph *IS* a hierachical key/value store.
 
+IMPORTANT: The problem that managers or "people with ties that decide stuff" (non math/physics/chemistry/biology people in general like politicians, economists, lawyers, etc.) have is that they overestimate the modularity of humans. Efficiency of replacing developers is far behind adding a developer, and that can be a couple of percent up *if you are lucky with your recruitment*.
+
 *The only real problem with node graph databases is that you have to describe the hierarchy of the nodes so that other people can work on your data.*
 
 For example for the search below the structure looks like this:
