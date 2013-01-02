@@ -17,7 +17,7 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 
   The production value on this project is high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boliga.se Boliga].
 
-[http://www.facebook.com/apps/application.php?id=28010374714 Tentacle] _is a social bookmarking application._
+[http://www.facebook.com/pages/Tentacle/300241690023333 Tentacle] _is a social bookmarking application._
 
   * Production: One person for four weeks full-time.
 
