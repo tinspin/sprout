@@ -134,7 +134,7 @@ public class User extends Node {
 		}
 
 		host = System.getProperty("host", "localhost:9000");
-		mail = System.getProperty("mail", "mail1.comhem.se");
+		mail = System.getProperty("mail", "smtprelay1.telia.com");
 
 		content = read(Sprout.ROOT + java.io.File.separator + "mail.txt");
 		remind = read(Sprout.ROOT + java.io.File.separator + "remind.txt");
@@ -634,13 +634,24 @@ public class User extends Node {
 	
 	static boolean send(Event event, String mail, String title, String text) throws Event, Exception {
 		try {
-			eMail email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title);
+			String pass = System.getProperty("pass", null);
+			String auth = System.getProperty("auth", null);
+						
+			eMail email = null;
+			
+			if(pass == null) {
+				email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title);
+			}
+			else {
+				email = Post.create(User.mail, System.getProperty("address", "sprout@rupy.se"), title, auth, pass);
+			}
+			
 			email.addRecipient(eMail.TO, mail);
 			email.send(text);
 		}
 		catch(Exception e) {
 			event.query().put("error", Sprout.i18n("That's not an eMail!"));
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 
