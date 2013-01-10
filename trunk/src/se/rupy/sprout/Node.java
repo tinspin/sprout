@@ -476,7 +476,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Fills the node with meta-data and children nodes.
-	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
+	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(long)} first.
 	 * Only fetches data from the database the first time.
 	 * @param depth
 	 * @param start
@@ -505,7 +505,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Fills the node with children nodes.
-	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
+	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(long)} first.
 	 * Only fetches data from the database the first time.
 	 * @param start
 	 * @param limit
@@ -544,7 +544,7 @@ public class Node extends NodeBean implements Type {
 
 	/**
 	 * Fills the node with meta-data.
-	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(Node)} first.
+	 * Call {@link #query(short, Object)}, {@link #query(Data)} or {@link #query(long)} first.
 	 * Only fetches data from the database the first time.
 	 * @return
 	 * @throws SQLException
@@ -639,22 +639,22 @@ public class Node extends NodeBean implements Type {
 	/**
 	 * Return the first child that contains the meta-data.
 	 * Call {@link #fill(int, int, int)} or {@link #link(int, int)} first.
-	 * @param link The node type.
-	 * @param meta The data type.
+	 * @param type The node type.
+	 * @param data The data type.
 	 * @param value
 	 * @return
 	 * @throws SQLException
 	 */
-	public Node child(int link, short meta, String value) throws SQLException {
-		Iterator it = this.link.iterator();
+	public Node child(int type, short data, String value) throws SQLException {
+		Iterator it = link.iterator();
 
 		while(it.hasNext()) {
 			Node node = (Node) it.next();
 
-			if(node.getType() == link) {
+			if(node.getType() == type) {
 				node.meta();
 
-				if(node.meta(meta).getString().equals(value)) {
+				if(node.meta(data).getString().equals(value)) {
 					return node;
 				}
 			}
