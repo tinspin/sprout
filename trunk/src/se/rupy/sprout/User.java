@@ -451,9 +451,8 @@ public class User extends Node {
 							verify = true;
 						}
 						else {
-							event.query().put("mail", old_mail);
-							
 							if(old_mail.length() > 0) {
+								event.query().put("mail", old_mail);
 								user.add(USER_MAIL, old_mail);
 								user.add(USER_KEY, old_key);
 							}
