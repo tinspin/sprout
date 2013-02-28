@@ -29,6 +29,7 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
   * Statistics: ~40000 hits per day and growing.
   * Performance: Load average is 0.0% on an AWS small EC2.
 
-[http://www.crimeville.com Crimeville] _A MMO game for kids._
+[http://www.huxville.com Huxville] _A MMO game for kids._
 
-  * Will post details soon.
+  * Runs rupy 0.4.4 standalone on a cluster of 10 independent servers.
+  * Serves the ~50MB large flash 3D client to ~200 users with ~10%CPU as fast as the customers connection can deliver it with a AWS micro instance.
