@@ -104,25 +104,25 @@ public class Ping extends Node {
 						int code = conn.getResponseCode();
 
 						if(code == 200) {
+							out = new ByteArrayOutputStream();
 							Deploy.pipe(conn.getInputStream(), out);
+							body = new String(out.toByteArray(), "UTF-8");
+							String title = find("title", body);
+
+							if(title.length() > 0 && body.indexOf(to) > -1) {
+								Ping ping = new Ping();
+								ping.add(PING_TITLE, title);
+								ping.add(PING_URL, from);
+								ping.add(Data.cache(PING, "SHOW"));
+								article.add(ping);
+
+								System.out.println("Pingback '" + title + "' added!");
+							}
+							else {
+								System.out.println("URL not found!");
+							}
 						} else {
 							System.out.println("Code: " + code);
-						}
-
-						body = new String(out.toByteArray(), "UTF-8");
-						String title = find("title", body);
-
-						if(title.length() > 0 && body.indexOf(to) > -1) {
-							Ping ping = new Ping();
-							ping.add(PING_TITLE, title);
-							ping.add(PING_URL, from);
-							ping.add(Data.cache(PING, "SHOW"));
-							article.add(ping);
-
-							System.out.println("Pingback '" + title + "' added!");
-						}
-						else {
-							System.out.println("URL not found!");
 						}
 					}
 				}
