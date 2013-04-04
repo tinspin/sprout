@@ -32,6 +32,6 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 [http://www.huxville.com Huxville] _A MMO game for kids._
 
   * Runs rupy 0.4.4 standalone on a cluster of 10 independent servers with 50 threads.
-  * Serves the ~50MB large flash 3D client to ~200 concurrent users with ~10% CPU as fast as the customers connection can deliver it with a AWS micro instance.
+  * Each node serves the ~50MB large flash 3D client to ~200 concurrent users with ~10% CPU as fast as the customers connection can deliver it with a AWS micro instance.
   * *CPU IO wait is _none_ for the rupy process.*
   * *Memory usage is really low ~32MB!*
