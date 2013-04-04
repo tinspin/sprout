@@ -36,3 +36,5 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
   * *CPU IO wait is _none_ for the rupy process.*
   * *Memory usage is really low ~64MB of which ~1MB heap and doesn't leak.*
   * *Neither file or socket FD leak.*
+
+  * _Rupy is now guaranteed stable._
