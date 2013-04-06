@@ -5,7 +5,7 @@
 	
 	<property name="db" value="mysql"/><!-- also oracle or postgresql -->
 	<property name="name" value="sprout"/>
-	<property name="port" value="19000"/>
+	<property name="port" value="9000"/>
 	<property name="pass" value="secret"/>
 	
 	<condition property="unix">

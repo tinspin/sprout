@@ -250,13 +250,18 @@ build any site. Now works with PostgreSQL
       - Fixed resource upload order, first you insert an article then you can add 
         resources to it!
         
-   0.2.3 Rupy Stable Release
+   0.2.3 Rupy "Stable" Release
    
       - Now Rupy is Industrial Strength.
       
    0.2.4 Rupy Fix Release
    
-      - Fixed file-descriptor leak in Rupy.
+      - Fixed socket file-descriptor leak in Rupy.
+      
+   0.2.5 Rupy Fix Release
+   
+      - Fixed file file-descriptor leak in Rupy.
+      - Java 1.7 removes com.sun.image.codec.jpeg
       
 ----------------------------------------------
 

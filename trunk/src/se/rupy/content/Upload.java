@@ -1,31 +1,33 @@
 package se.rupy.content;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 
-import se.rupy.http.Deploy;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
+
 import se.rupy.http.Event;
 import se.rupy.http.Input;
 import se.rupy.http.Output;
 import se.rupy.http.Query;
-import se.rupy.sprout.Data;
+
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGEncodeParam;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /*
  * This service only supports one file at the time.
@@ -180,17 +182,38 @@ public class Upload extends Sprout {
 		
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.createGraphics();
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, width, height);
+		//g.setColor(Color.WHITE);
+		//g.fillRect(0, 0, width, height);
 		g.drawImage(small, 0, 0, null);
 		g.dispose();
-
+		
 		FileOutputStream out = new FileOutputStream(file);
+		
+		/*
 		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
 		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image);
 		param.setQuality(1, true);
 		encoder.setJPEGEncodeParam(param);
 		encoder.encode(image);
+		 */
+
+		ImageWriter writer = (ImageWriter) ImageIO.getImageWritersByFormatName("jpg").next();
+		ImageOutputStream stream = ImageIO.createImageOutputStream(file);
+		writer.setOutput(stream);
+
+		IIOImage iio = new IIOImage(image, null, null); 
+
+		ImageWriteParam params = writer.getDefaultWriteParam();
+		params.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+		params.setCompressionQuality(1.0f);
+
+		writer.write(null, iio, params);
+
+		stream.close();
+		writer.dispose();
+		
+		// ImageIO.write(image, "jpeg", out);
+		
 		out.flush();
 		out.close();
 	}
