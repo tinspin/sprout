@@ -734,7 +734,7 @@ public class User extends Node {
 
 		public void filter(Event event) throws Event, Exception {
 			event.reply().header("Cache-Control", "no-cache");
-			event.reply().header("X-UA-Compatible", "IE=7");
+			//event.reply().header("X-UA-Compatible", "IE=7");
 
 			HashMap post = (HashMap) event.session().get("post");
 
