@@ -1,7 +1,7 @@
 #summary What do I need to use sprout.
 #labels Featured
 
-<font color="red">*_NEW_*</font> There are FREE Raspberry Pi colocations popping up everywhere, Rupy/Sprout runs really well on these!
+<font color="red">*_NEW_*</font> There are FREE raspberry pi colocations popping up everywhere, rupy/sprout runs really well on these!
 
 || Country || Speed || Volume || Comment || Date ||
 || [http://www.edis.at/en/server/colocation/austria/raspberrypi Austria] || 100Mb || 100GB || Out of stock || 2/5-13 ||
