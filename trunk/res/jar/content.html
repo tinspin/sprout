@@ -58,7 +58,7 @@ public class content extends Sprout {
         <tr>
           <td colspan="2">
 
-[[ print(article, out); ]]
+[[ print(article, event); ]]
 
           </td>
         </tr>
@@ -90,7 +90,8 @@ public class content extends Sprout {
 [[ 		} ]]
 
 [[	}
-	static void print(Article article, Output out) throws Exception {
+	static void print(Article article, Event event) throws Exception {
+		Output out = event.output();
 		Iterator it = article.child(FILE).iterator();
 		boolean image = false;
 		boolean audio = false;

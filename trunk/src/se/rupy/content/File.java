@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
 import se.rupy.http.Deploy;
+import se.rupy.http.Event;
 import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
@@ -38,6 +40,26 @@ public class File extends Node {
 		return "file" + file.path() + "/" + name.getString() + suffix;
 	}
 
+	//"file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + ".flv";
+	//"file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + ".mp3";
+	
+	public static String filepath(Event event, Node file, Data name, String suffix) throws Exception {
+		/*
+		 * If file was stored on cluster append hostname.
+		 */
+		Data host = file.meta(FILE_HOST);
+
+		if(host != null) {
+			String domain = event.daemon().properties().getProperty("domain", "host.rupy.se");
+			
+			return "http://" + host.getString() + "." + domain.substring(domain.indexOf('.')) + "/" + User.host + "/file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + suffix;
+		}
+		
+		return "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + suffix;
+		
+
+	}
+	
 	public static Data type(String value) {
 		return Data.cache(FILE, value);
 	}
