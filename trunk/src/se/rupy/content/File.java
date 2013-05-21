@@ -23,6 +23,15 @@ public class File extends Node {
 	}
 
 	public static String path(Node file, Data name, String suffix) {
+		/*
+		 * If file was stored on cluster append hostname.
+		 */
+		Data host = file.meta(FILE_HOST);
+
+		if(host != null) {
+			return "http://" + host.getString() + ".sprout.rupy.se/file" + file.path() + "/" + name.getString() + suffix;
+		}
+		
 		return "file" + file.path() + "/" + name.getString() + suffix;
 	}
 

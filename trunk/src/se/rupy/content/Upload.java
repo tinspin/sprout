@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.InetAddress;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -22,6 +23,7 @@ import se.rupy.http.Input;
 import se.rupy.http.Output;
 import se.rupy.http.Query;
 
+import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
 
@@ -115,6 +117,13 @@ public class Upload extends Sprout {
 		file.add(FILE_NAME, name);
 
 		if(old == null) {
+			/*
+			 * Distributed storage on cluster.
+			 */
+			if(event.daemon().properties().containsKey("host")) {
+				Data.cache(FILE, new Data(FILE_HOST, InetAddress.getLocalHost().getHostName()));
+			}
+			
 			article.add(file);
 		}
 		else {
