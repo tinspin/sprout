@@ -120,7 +120,7 @@ public class Upload extends Sprout {
 			/*
 			 * Distributed storage on cluster.
 			 */
-			if(event.daemon().properties().containsKey("host")) {
+			if(event.daemon().properties().containsKey("multi")) {
 				Data.cache(FILE, new Data(FILE_HOST, InetAddress.getLocalHost().getHostName()));
 			}
 			

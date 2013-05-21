@@ -10,6 +10,7 @@ import se.rupy.http.Deploy;
 import se.rupy.sprout.Data;
 import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
+import se.rupy.sprout.User;
 
 public class File extends Node {
 	static {
@@ -22,14 +23,16 @@ public class File extends Node {
 		super(FILE);
 	}
 
-	public static String path(Node file, Data name, String suffix) {
+	public static String path(Event event, Node file, Data name, String suffix) {
 		/*
 		 * If file was stored on cluster append hostname.
 		 */
 		Data host = file.meta(FILE_HOST);
 
 		if(host != null) {
-			return "http://" + host.getString() + ".sprout.rupy.se/file" + file.path() + "/" + name.getString() + suffix;
+			String domain = event.daemon().properties().getProperty("domain", "host.rupy.se");
+			
+			return "http://" + host.getString() + "." + domain.substring(domain.indexOf('.')) + "/" + User.host + "/file" + file.path() + "/" + name.getString() + suffix;
 		}
 		
 		return "file" + file.path() + "/" + name.getString() + suffix;
