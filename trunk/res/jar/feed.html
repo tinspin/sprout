@@ -41,7 +41,7 @@ public class feed extends Sprout {
 		<link href="http://[[ User.host ]]/article?id=[[ article.getId() ]]" />
 		<id>urn:uuid:[[ article.getId() ]]</id>
 		<updated>[[ clean(article.time()) ]]</updated>
-		<summary>[[ print(User.host, article, out); ]]</summary>
+		<summary>[[ print(event, User.host, article, out); ]]</summary>
 	</entry>
 
 [[ 			} ]]
@@ -62,7 +62,7 @@ public class feed extends Sprout {
     <item>
       <title>[[ clean(article.meta(ARTICLE_TITLE).getString()) ]]</title>
       <link>http://[[ User.host ]]/article?id=[[ article.getId() ]]</link>
-      <description>[[ print(User.host, article, out); ]]</description>
+      <description>[[ print(event, User.host, article, out); ]]</description>
       <pubDate>[[ clean(article.time()) ]]</pubDate>
     </item>
 
@@ -86,7 +86,7 @@ public class feed extends Sprout {
 [[		}
 	}
 
-	static void print(String host, Article article, Output out) throws Exception {
+	static void print(Event event, String host, Article article, Output out) throws Exception {
 		Iterator it = article.child(FILE).iterator();
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
@@ -94,7 +94,7 @@ public class feed extends Sprout {
 			Data type = file.meta(FILE_TYPE);
             
             if(type != null && type.equals("IMAGE")) {
-				out.println(clean("<img src=\"http://" + host + "/" + File.path(file, name, "-200.jpeg") + "\" align=\"right\"/>"));
+				out.println(clean("<img src=\"http://" + host + "/" + File.path(event, file, name, "-200.jpeg") + "\" align=\"right\"/>"));
 				break;
 			}
 		}
