@@ -139,30 +139,30 @@ public class publish extends Sprout {
 				if(type != null) {
 					if(type.equals("IMAGE")) { ]]
 
-            <a href="[[ File.path(file, name, "-400.jpeg") ]]">
-              <img src="res/file/image.gif" alt="[[ File.path(file, name, "-400.jpeg") ]]"/>
+            <a href="[[ File.path(event, file, name, "-400.jpeg") ]]">
+              <img src="res/file/image.gif" alt="[[ File.path(event, file, name, "-400.jpeg") ]]"/>
             </a>
 
 [[ 					}
 					else if(type.equals("VIDEO")) { ]]
 
-            <a href="[[ File.path(file, name, ".flv") ]]">
-              <img src="res/file/video.gif" alt="[[ File.path(file, name, ".flv") ]]"/>
+            <a href="[[ File.path(event, file, name, ".flv") ]]">
+              <img src="res/file/video.gif" alt="[[ File.path(event, file, name, ".flv") ]]"/>
             </a>
 
 [[ 					}
 					else if(type.equals("AUDIO")) { ]]
 
-            <a href="[[ File.path(file, name, ".mp3") ]]">
-              <img src="res/file/audio.gif" alt="[[ File.path(file, name, ".mp3") ]]"/>
+            <a href="[[ File.path(event, file, name, ".mp3") ]]">
+              <img src="res/file/audio.gif" alt="[[ File.path(event, file, name, ".mp3") ]]"/>
             </a>
 
 [[					}
 				}
 				else { ]]
 
-            <a href="[[ File.path(file, name, "") ]]">
-              <img src="res/file/binary.gif" alt="[[ File.path(file, name, "") ]]"/>
+            <a href="[[ File.path(event, file, name, "") ]]">
+              <img src="res/file/binary.gif" alt="[[ File.path(event, file, name, "") ]]"/>
             </a>
 
 [[				}
