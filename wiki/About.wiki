@@ -38,3 +38,8 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
   * *Neither file or socket FD leak.*
 
   * _Rupy is now guaranteed stable._
+
+[http://bitcoinbankbook.com BitcoinBankBook] _Bitcoin client in GWT._
+
+  * Runs on a cluster of Raspberry Pi's
+  * 2 weeks development time.
