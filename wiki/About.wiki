@@ -13,7 +13,7 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 
 [http://www.hemlistan.se Hemlistan] _is a real-estate scraper/spider/crawler that aggregates swedens monopoly housing site [http://www.hemnet.se Hemnet]._
 
-  * Production: One person for one week full-time.
+  * Production: Two man weeks.
 
   The production value on this project is high, it took me one week to build something that others have built companies around: [http://www.bovision.se Bovision], [http://www.booli.se Booli], [http://www.boliga.se Boliga].
 
@@ -36,4 +36,4 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 [http://bitcoinbankbook.com BitcoinBankBook] _GWT Bitcoin client._
 
   * Runs on a cluster of Raspberry Pi's
-  * 2 weeks development time.
+  * Production: One man week.
