@@ -35,5 +35,5 @@ Singel _was a valentines day campaign site for Swedish match-making site [http:/
 
 [http://bitcoinbankbook.com BitcoinBankBook] _GWT bitcoin bank._
 
-  * Runs on a cluster of Raspberry Pi's
+  * Runs on a Raspberry Pi's
   * Production: One man week.
