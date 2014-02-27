@@ -483,6 +483,41 @@ public class Article extends Node {
 		return columns;
 	}
 
+	static String trim(String html) {
+		StringBuffer buffer = new StringBuffer();
+
+		int start = html.indexOf('<');
+		int stop = html.indexOf('>');
+
+		if(start > stop) {
+			stop = html.indexOf('>', stop) + 1;
+		}
+		else {
+			stop = 0;
+		}
+
+		try {
+			while(start > -1 && stop > -1) {
+				buffer.append(html.substring(stop, start));
+
+				start = html.indexOf('<', start + 1);
+				stop = html.indexOf('>', stop) + 1;
+
+				if(html.indexOf("!--", start) == start + 1) {
+					int index = html.indexOf("-->", stop + 1);
+					start = index;
+					stop = index;
+				}
+			}
+		}
+		catch(IndexOutOfBoundsException e) {
+			System.out.println(e + " " + html + " " + start + " " + stop);
+			return "";
+		}
+
+		return buffer.toString();
+	}
+	
 	public static class Delete extends Service {
 		public String path() { return "/delete"; }
 		public void filter(Event event) throws Event, Exception {
