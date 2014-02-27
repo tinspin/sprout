@@ -119,7 +119,7 @@ public class article extends Sprout {
 			while(it.hasNext()) {
 				String column = (String) it.next(); ]]
 
-          <div class="column">[[ column ]]<span><img src="/res/continue.gif"></span></div>
+          <div class="[[ column.indexOf("<pre>") > -1 ? "table" : "column" ]]">[[ column ]]<span><img src="/res/continue.gif"></span></div>
 
 [[			} ]]
 
