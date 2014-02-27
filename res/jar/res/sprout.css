@@ -1,3 +1,4 @@
+html { -webkit-text-size-adjust: none; }
 body { background-color: #eee; }
 a, td, select, input, textarea { font-family: 'lucida sans unicode', 'lucida grande', 'helvetica'; }
 a:link, a:hover, a:active, a:visited { color: #000; }
