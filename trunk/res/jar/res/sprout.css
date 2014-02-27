@@ -17,6 +17,7 @@ select.country { width: 84px; }
 select.label { width: 100px; }
 textarea.large { width: 195px; }
 td { font-size: 0.6em; cursor: default; }
+pre { font-family: 'consolas', 'monospace'; }
 
 .white { background-color: #fff; }
 
@@ -55,6 +56,12 @@ h2 {
 	float: left;
 	margin: 5px;
 	width: 190px;
+}
+
+.table {
+	float: left;
+	margin: 5px;
+	width: 315px;
 }
 
 .big {

@@ -446,7 +446,7 @@ public class Article extends Node {
 			columns = new LinkedList();
 			String column = "", text = safe(ARTICLE_BODY);
 			int length = 0, begin = 0, end = COLUMN_WIDTH / CHARACTER_WIDTH;
-
+			
 			// loop until all overflowing data has been columnized
 			while(end < text.length() - COLUMN_WIDTH / CHARACTER_WIDTH) {
 
@@ -454,8 +454,14 @@ public class Article extends Node {
 				while(length < COLUMN_WIDTH) {
 					end = text.indexOf(" ", end) + 1;
 					column = text.substring(begin, end);
+					
+					if(column.indexOf("<pre>") > -1) {
+						end = text.indexOf("</pre>", end) + 6;
+						column = text.substring(begin, end);
+					}
+					
 					length = metric.stringWidth(column);
-
+					
 					//System.out.print(".");
 
 					if(end >= text.lastIndexOf(" ")) {
