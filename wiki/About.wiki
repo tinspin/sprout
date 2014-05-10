@@ -23,7 +23,7 @@ Pixboom _was an image tagging solution._
   * Statistics: ~40000 hits per day and growing.
   * Performance: Load average is 0.0% on an AWS small EC2.
 
-[http://www.huxville.com Huxville] _A MMO game for kids._
+[http://www.huxville.com Huxville] _is a MMO game for kids._
 
   * Runs rupy 1.1 standalone on a cluster of 10 independent servers.
   * Each node serves the ~50MB large flash 3D client to ~200 concurrent users with ~10% CPU as fast as the customers connection can deliver it with a AWS micro instance.
