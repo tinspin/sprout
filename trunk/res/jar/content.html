@@ -104,7 +104,8 @@ public class content extends Sprout {
 			if(type != null) {
 				if(type.equals("IMAGE") && !image) { ]]
 
-          <div><a class="title" href="article?id=[[ article.getId() ]]"><img class="rounded" src="[[ File.path(event, file, name, "-200.jpeg") ]]" /></a></div>
+          <!--div><a class="title" href="article?id=[[ article.getId() ]]"><img class="rounded" src="[[ File.path(event, file, name, "-200.jpeg") ]]" /></a></div-->
+          <div><img class="rounded" src="[[ File.path(event, file, name, "-200.jpeg") ]]" /></div>
 
 [[					image = true;
 				} else if(type.equals("AUDIO") && !audio) {

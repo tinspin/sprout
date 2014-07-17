@@ -24,7 +24,7 @@ import se.rupy.pool.Pool;
 import se.rupy.pool.Settings;
 import se.rupy.util.Log;
 
-public abstract class Sprout extends Service implements Type {
+public class Sprout extends Service implements Type {
 	public static String ROOT = "app/content";
 	private static Base BASE;
 	private static Pool POOL;
@@ -46,6 +46,14 @@ public abstract class Sprout extends Service implements Type {
 	}
 	*/
 
+	public String path() {
+		return "/sprout";
+	}
+	
+	public void filter(Event event) throws Exception {
+		event.output().print("Hello");
+	}
+	
 	public void destroy() {
 		POOL.close();
 	}
