@@ -38,7 +38,8 @@ Pixboom _was an image tagging solution._
   * Runs on a Raspberry Pi.
   * Production: One man week.
 
-[http://aeonalpha.com Aeon Alpha] _Realtime MMO Virtual Reality Space Shooter._
+[http://aeonalpha.com Aeon Alpha] _Realtime Multiplayer Online Space Shooter._
 
+  * Compatible with Oculus Rift DK1 and DK2.
   * Runs on a cluster of Raspberry Pi's.
   * Production: 1/2 man years.
