@@ -1,6 +1,6 @@
 #summary Why the Node-Graph data model is good.
 
-<font color="red">*_NEW_*</font> [https://code.google.com/p/rupy/wiki/Process Process] is a new way of server development.
+<font color="red">*_NEW_*</font> [https://code.google.com/p/rupy/wiki/Process Process] is the new way of server development.
 
 Because a big part of what programmers do is to imagine typed data hierarchies that they then store with SQL, wrap in XML or JSON and send around; which in it's turn gets unwrapped and presented in a similar but often separate implementation on the other end. That data is then modified and sent all the way back to be stored again.
 
