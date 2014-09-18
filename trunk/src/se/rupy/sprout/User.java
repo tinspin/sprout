@@ -267,7 +267,7 @@ public class User extends Node {
 				else {
 					String referer = event.query().header("referer");
 					
-					if(referer.endsWith("/login")) {
+					if(referer.endsWith("/login") && event.query().string("error").length() == 0) {
 						Sprout.redirect(event, "/");
 					}
 					else {
