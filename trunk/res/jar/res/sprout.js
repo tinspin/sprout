@@ -33,14 +33,7 @@ function ajaxPost(id) {
 }
 function ajaxNick() {
 	_query('post', '/nick', 'ajax=true&name=' + document.getElementById('name').value);
-}
-function remind() {
-  if(document.getElementById('mail').value != '') {
-    document.getElementById('login').action = 'remind';
-    document.getElementById('login').submit();
-  }
-  return false;
-}							
+}						
 function columnize(push) {
   var content = document.getElementById("content");
   var parent = document.getElementById("page");
