@@ -220,7 +220,9 @@ public class User extends Node {
 				String mail = event.string("mail").toLowerCase();
 				String pass = event.string("pass");
 
-				if(mail.length() > 0 && pass.length() > 0) {
+				boolean bother = mail.length() > 0 && pass.length() > 0;
+				
+				if(bother) {
 					User user = new User();
 					if(user.query(USER_MAIL, mail) || user.query(USER_NAME, mail)) {
 						user.fill(10, 0, 10);
@@ -267,7 +269,7 @@ public class User extends Node {
 				else {
 					String referer = event.query().header("referer");
 					
-					if(referer.endsWith("/login") && event.query().string("error").length() == 0) {
+					if(referer.endsWith("/login") && event.query().string("error").length() == 0 && bother) {
 						Sprout.redirect(event, "/");
 					}
 					else {
