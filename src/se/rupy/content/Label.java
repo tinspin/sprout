@@ -11,7 +11,7 @@ import se.rupy.sprout.Node;
 import se.rupy.sprout.Sprout;
 import se.rupy.sprout.User;
 
-public abstract class Label extends Sprout {
+public class Label {
 	public static class Permit extends Service {
 		public int index() { return 2; }
 		public String path() { return "/label"; }

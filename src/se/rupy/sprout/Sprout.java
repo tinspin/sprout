@@ -50,7 +50,7 @@ public class Sprout extends Service implements Type {
 		return "/sprout";
 	}
 	
-	public void filter(Event event) throws Exception {
+	public void filter(Event event) throws Event, Exception {
 		event.output().print("Hello");
 	}
 	
