@@ -9,7 +9,17 @@ public class login extends Sprout {
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output(); ]]
 
-    <form name="login" action="login" method="post">
+    <script>
+    function remind() {
+      if(document.getElementById('mail').value != '') {
+        alert(document.getElementById('mail').value);
+        document.getElementById('login').action = 'remind';
+        document.getElementById('login').submit();
+      }
+      return false;
+    }
+    </script>
+    <form id="login" name="login" action="login" method="post">
       <table border="0" width="100">
         <tr>
           <td colspan="2">
@@ -47,14 +57,14 @@ public class login extends Sprout {
           <td valign="top">
             <input id="remember" type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
           </td>
-          <td>
+          <td align="right">
             <a href="" class="arrow" onclick="if (typeof ajaxLogin == 'function') { ajaxLogin(); } else { document.login.submit(); } return false;">
               <span>[[ i18n("Login") ]]</span>
             </a>
           </td>
         </tr>
         <tr>
-          <td colspan="2">
+          <td align="right" colspan="2">
             <a href="/register" class="button">
               <span>[[ i18n("Register") ]]</span>
             </a>
