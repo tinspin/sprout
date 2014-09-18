@@ -26,7 +26,6 @@ public class login extends Sprout {
         </tr>
         <tr>
           <td colspan="2">
-            <!--input id="mail" type="text" class="small" name="mail" tabindex="1" style="text-transform: lowercase;"/-->
             <input id="mail" type="text" class="small" name="mail" value="[[ event.string("mail") ]]" tabindex="1"/>
           </td>
         </tr>
@@ -49,10 +48,7 @@ public class login extends Sprout {
             <input id="remember" type="checkbox" name="remember"[[ event.bit("remember") ? " CHECKED" : "" ]]/>
           </td>
           <td>
-            <!--a href="" class="arrow" onclick="document.login.submit(); return false;">
-              <span>[[ i18n("Login") ]]</span>
-            </a-->
-            <a href="" class="arrow" onclick="ajaxLogin(); return false;">
+            <a href="" class="arrow" onclick="if (typeof ajaxLogin == 'function') { ajaxLogin(); } else { document.login.submit(); } return false;">
               <span>[[ i18n("Login") ]]</span>
             </a>
           </td>

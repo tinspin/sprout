@@ -265,7 +265,14 @@ public class User extends Node {
 					throw event;
 				}
 				else {
-					Sprout.redirect(event);
+					String referer = event.query().header("referer");
+					
+					if(referer.endsWith("/login")) {
+						Sprout.redirect(event, "/");
+					}
+					else {
+						Sprout.redirect(event);
+					}
 				}
 			}
 			else if(event.query().method() == Query.GET) {
