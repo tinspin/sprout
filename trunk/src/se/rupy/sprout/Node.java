@@ -21,6 +21,7 @@ import se.rupy.pool.*;
  */
 public class Node extends NodeBean implements Type {
 	public static HashMap cache = new HashMap();
+	public static HashMap nodes = new HashMap();
 
 	public final static byte PARENT = 1 << 0;
 	public final static byte CHILD = 1 << 1;
@@ -493,10 +494,15 @@ public class Node extends NodeBean implements Type {
 
 			while(it.hasNext()) {
 				Node node = (Node) it.next();
-
-				// TODO: Cache
-
-				link = node.fill(--depth, start, limit);
+				Long id = new Long(node.id);
+				
+				if(nodes.containsKey(id)) {
+					node = (Node) nodes.get(id);
+				}
+				else {
+					link = node.fill(--depth, start, limit);
+					nodes.put(id, node);
+				}
 			}
 		}
 
