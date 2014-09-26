@@ -184,7 +184,10 @@ public class article extends Sprout {
             boolean show = (state == null ? false : state.equals("SHOW"));
             
             if(ip == null) {
-            	ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
+                try {
+                    ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
+                }
+                catch(NoSuchElementException e) {}
             } ]]
       
 [[			if(permit > 0) { ]]
