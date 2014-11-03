@@ -796,7 +796,7 @@ public class User extends Node {
 			if(user.query(USER_NAME, event.query().path().substring(1))) {
 				user.fill(10, 0, 10);
 				
-				event.daemon().chain("/header").filter(event);
+				event.daemon().chain(event, "/header").filter(event);
 				
 				Output out = event.output();
 				
