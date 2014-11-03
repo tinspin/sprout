@@ -101,21 +101,21 @@ public class index extends Sprout {
   <div style="float: right;">
 
 [[ if(key == null) {
-	event.daemon().chain("/login").filter(event);
+	event.daemon().chain(event, "/login").filter(event);
 }
 else {
-	event.daemon().chain("/publish").filter(event);
+	event.daemon().chain(event, "/publish").filter(event);
 } ]]
 
   </div>
   <div id="content" onResize="size();">
 
-[[ event.daemon().chain("/content").filter(event); ]]
+[[ event.daemon().chain(event, "/content").filter(event); ]]
 
   </div>
   <span class="clear"></span>
 
-[[ event.daemon().chain("/footer").filter(event); ]]
+[[ event.daemon().chain(event, "/footer").filter(event); ]]
 
 </div>
 

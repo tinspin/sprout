@@ -18,6 +18,11 @@ public class article extends Sprout {
 		Object key = event.session().get("key");
 		Article article = Article.find(event.big("id"));
 		
+		if(article == null) {
+			out.println("Article [" + event.big("id") + "] not found!");
+			throw event;
+		}
+		
 		LinkedList users = article.child(USER);
 		
 		if(users.size() == 0) {

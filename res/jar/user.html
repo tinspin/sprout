@@ -20,7 +20,7 @@ public class user extends Sprout {
 			country = "";
 		}
 
-		event.daemon().chain("/header").filter(event); ]]
+		event.daemon().chain(event, "/header").filter(event); ]]
 
   <table border="0">
     <form name="user" action="[[ event.query().path() ]]" method="post">
