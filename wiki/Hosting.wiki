@@ -4,9 +4,9 @@
 <font color="red">*_NEW_*</font> There are FREE raspberry pi colocations popping up everywhere, rupy/sprout runs really well on these!
 
 || Country || Speed || Volume || Comment || Date ||
-|| [http://www.edis.at/en/server/colocation/austria/raspberrypi Austria] || 100Mb || 100GB || Out of stock || 2/5-13 ||
-|| [http://raspberrycolocation.com Netherlands] || 100Mb || 500MB || Out of stock || 2/5-13 ||
-|| [https://fsdata.se/server/raspberry-pi-colocation Sweden] || 1Mb || 200GB || Out of stock || 2/5-13 ||
+|| [http://www.edis.at/en/server/colocation/austria/raspberrypi Austria] || 100Mb || 100GB || Out of stock || 5/11-14 ||
+|| [http://raspberrycolocation.com Netherlands] || 100Mb || 500MB || Out of stock || 5/11-14 ||
+|| [https://fsdata.se/server/raspberry-pi-colocation Sweden] || 1Mb || ~ || Out of stock || 5/11-14 ||
 
 <font color="orange">*_NEW_*</font> Try our hosting solution: [http://host.rupy.se host.rupy.se]!
 
