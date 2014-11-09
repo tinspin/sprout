@@ -5,8 +5,8 @@
 
 || Country || Speed || Volume || Comment || Date ||
 || [http://www.edis.at/en/server/colocation/austria/raspberrypi Austria] || 100Mb || 100GB || Out of stock || 2/5-13 ||
-|| [http://raspberrycolocation.com Netherlands] || 100Mb || 500MB || 60 days delay || 2/5-13 ||
-|| [https://fsdata.se/server/raspberry-pi-colocation Sweden] || 1Mb || 200GB || Only Swedes || 2/5-13 ||
+|| [http://raspberrycolocation.com Netherlands] || 100Mb || 500MB || Out of stock || 2/5-13 ||
+|| [https://fsdata.se/server/raspberry-pi-colocation Sweden] || 1Mb || 200GB || Out of stock || 2/5-13 ||
 
 <font color="orange">*_NEW_*</font> Try our hosting solution: [http://host.rupy.se host.rupy.se]!
 
