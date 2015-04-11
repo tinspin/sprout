@@ -38,7 +38,7 @@ It's recommended that you use linux ~~and front the sprout/rupy server with an A
 
   1. SSH
   1. ~~Apache (with mod\_proxy)~~
-  1. HAProxy, to loadbalance or proxy your site.
+  1. ~~HAProxy, to loadbalance or proxy your site.~~
 
 Observe that OpenVZ does have it's fair share of issues with virtual memory and therefore you will not be able to compile on the host machine; so it's great that rupy can hot deploy directly to the host from the development machine remotely via HTTP.
 
