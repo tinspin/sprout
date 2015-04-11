@@ -42,6 +42,8 @@ It's recommended that you use linux ~~and front the sprout/rupy server with an A
 
 Observe that OpenVZ does have it's fair share of issues with virtual memory and therefore you will not be able to compile on the host machine; so it's great that rupy can hot deploy directly to the host from the development machine remotely via HTTP.
 
-If you want to host multiple sites on one machine or host one site on multiple machines, you have to [VirtualHostProxy](http://code.google.com/p/rupy/wiki/VirtualHostProxy) or loadbalance your domain with Apache or HAProxy.
+~~If you want to host multiple sites on one machine or host one site on multiple machines, you have to [VirtualHostProxy](http://code.google.com/p/rupy/wiki/VirtualHostProxy) or loadbalance your domain with Apache or HAProxy.~~
+
+NEW: Rupy now has hosted mode!
 
 **Dependencies:** _Sprout uses [rupy](http://rupy.googlecode.com), a "tiny footprint" embedded HTTP server that uses below 1 MB in heap, it's not a problem to run one rupy instance per 32 MB of RAM, which means that on any VPS account you will be able to run at least 4 instances, since the smallest amount of guaranteed RAM is 128 MB in the solutions above._
