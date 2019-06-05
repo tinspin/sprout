@@ -2,7 +2,9 @@
 
 import java.util.*;
 
-import se.rupy.http.*;
+import se.rupy.http.Event;
+import se.rupy.http.Reply;
+import se.rupy.http.Output;
 import se.rupy.memory.*;
 import se.rupy.sprout.*;
 import se.rupy.content.*;
@@ -11,15 +13,42 @@ public class feed extends Sprout {
 	public String path() { return "/feed"; }
 	public void filter(Event event) throws Event, Exception {
 		event.query().parse();
-		event.reply().type("text/xml");
-		Output out = event.output();
 		Object key = event.session().get("key");
 		LinkedList list = Article.get("article", 0, 5);
-		Iterator it = list.iterator(); ]]
+		Iterator it = list.iterator(); 
+		
+		if(event.bit("json")) {
+			event.reply().type("application/json");
+			Output out = event.output(); ]]
+		
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Sprout",
+    "home_page_url": "http://sprout.rupy.se",
+    "feed_url": "http://sprout.rupy.se/feed?json",
+    "items": [
+
+[[			while(it.hasNext()) {
+				Article article = (Article) it.next(); ]]
+        {
+            "id": "[[ article.getId() ]]",
+            "content_text": "[[ print(event, User.host, article, out); ]]",
+            "url": "http://[[ User.host ]]/article?id=[[ article.getId() ]]"
+        }[[ if(it.hasNext())
+					out.println(",");
+			}
+			out.println(""); ]]
+		
+    ]
+}
+		
+[[		} else {
+			event.reply().type("text/xml");
+			Output out = event.output(); ]]
 
 <?xml version="1.0" encoding="utf-8"?>
 
-[[		if(event.bit("atom")) { ]]
+[[			if(event.bit("atom")) { ]]
 
 <feed xmlns="http://www.w3.org/2005/Atom">
 	<title>Sprout</title>
@@ -33,8 +62,8 @@ public class feed extends Sprout {
 		<email></email>
 	</author>
 
-[[			while(it.hasNext()) {
-				Article article = (Article) it.next(); ]]
+[[				while(it.hasNext()) {
+					Article article = (Article) it.next(); ]]
 
 	<entry>
 		<title>[[ clean(article.meta(ARTICLE_TITLE).getString()) ]]</title>
@@ -44,11 +73,11 @@ public class feed extends Sprout {
 		<summary>[[ print(event, User.host, article, out); ]]</summary>
 	</entry>
 
-[[ 			} ]]
+[[ 				} ]]
 
 </feed>
 
-[[		} else if(event.bit("rss")) { ]]
+[[			} else if(event.bit("rss")) { ]]
 
 <rss version="2.0">
   <channel>
@@ -56,8 +85,8 @@ public class feed extends Sprout {
     <link>http://[[ User.host ]]</link>
     <description>Sprout</description>
     
-[[			while(it.hasNext()) {
-				Article article = (Article) it.next(); ]]
+[[				while(it.hasNext()) {
+					Article article = (Article) it.next(); ]]
 		
     <item>
       <title>[[ clean(article.meta(ARTICLE_TITLE).getString()) ]]</title>
@@ -66,24 +95,25 @@ public class feed extends Sprout {
       <pubDate>[[ clean(article.time()) ]]</pubDate>
     </item>
 
-[[ 			} ]]
+[[ 				} ]]
 
   </channel>
 </rss>
 
-[[		} else { ]]
+[[			} else { ]]
 
 <data>
   <host>[[ User.host ]]</host>
 
-[[			while(it.hasNext()) {
-				Article article = (Article) it.next();
-				out.print(article.toXML(1));
- 			} ]]
+[[				while(it.hasNext()) {
+					Article article = (Article) it.next();
+					out.print(article.toXML(1));
+ 				} ]]
 
 </data>
 
-[[		}
+[[			}
+		}
 	}
 
 	static void print(Event event, String host, Article article, Output out) throws Exception {

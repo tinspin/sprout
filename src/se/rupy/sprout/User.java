@@ -824,8 +824,8 @@ public class User extends Node {
 			}
 			else {
 				event.reply().code("404 Not Found");
-				event.reply().output().print(
-						"<pre>'" + event.query().path() + "' was not found.</pre>");
+				event.reply().output().print(Event.warn(
+						"<pre>'" + event.query().path() + "' was not found.</pre>"));
 			}
 		}
 	}

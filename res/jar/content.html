@@ -102,10 +102,11 @@ public class content extends Sprout {
 			Data type = file.meta(FILE_TYPE);
 			
 			if(type != null) {
-				if(type.equals("IMAGE") && !image) { ]]
+				if(type.equals("IMAGE") && !image) {
+                    String small = File.path(event, file, name, "-200.jpeg"); ]]
 
           <!--div><a class="title" href="article?id=[[ article.getId() ]]"><img class="rounded" src="[[ File.path(event, file, name, "-200.jpeg") ]]" /></a></div-->
-          <div><img class="rounded" src="[[ File.path(event, file, name, "-200.jpeg") ]]" /></div>
+          <div><img class="rounded" src="[[ out.print(small.substring(0, small.indexOf(".")) + ".gif"); ]]" /></div>
 
 [[					image = true;
 				} else if(type.equals("AUDIO") && !audio) {

@@ -14,7 +14,7 @@ public class publish extends Sprout {
 		Output out = event.output();
 		Object key = event.session().get("key");
 		Article article = Article.get(key);
-		User user = User.get(key);
+		se.rupy.sprout.User user = se.rupy.sprout.User.get(key);
 		
 		Calendar date = Calendar.getInstance();
 		
@@ -90,7 +90,7 @@ public class publish extends Sprout {
             
 [[		for(int i = 1; i < 13; i++) { ]]
 
-              <option value="[[ i ]]"[[ event.medium("month") == i ? " selected" : "" ]]>[[ i18n(User.month[i - 1]) ]]</option>
+              <option value="[[ i ]]"[[ event.medium("month") == i ? " selected" : "" ]]>[[ i18n(se.rupy.sprout.User.month[i - 1]) ]]</option>
 
 [[		} ]]
 
