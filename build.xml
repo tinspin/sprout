@@ -85,7 +85,7 @@
 	<target name="build" depends="page, util, memory, http, create, check" unless="required">
 		<echo>Building (${name})</echo>
 		<mkdir dir="bin"/>
-		<javac srcdir="src" target="1.4" source="1.4" destdir="bin" nowarn="on" debug="on" deprecation="off" classpath="src;${lib}" encoding="UTF-8"/>
+		<javac srcdir="src" target="1.6" source="1.6" destdir="bin" nowarn="on" debug="on" deprecation="off" classpath="src;${lib}" encoding="UTF-8"/>
 		<mkdir dir="tmp"/>
 		<copy todir="tmp">
 			<fileset dir="bin" includes="**/*.class"/>
@@ -94,7 +94,7 @@
 			<arg line="bin/${name}.jar"/>
 			<arg line="res/jar"/>
 		</java>
-		<javac srcdir="res/jar" target="1.4" source="1.4" destdir="res/jar" nowarn="on" debug="on" deprecation="off" classpath="${lib};bin"/>
+		<javac srcdir="res/jar" target="1.6" source="1.6" destdir="res/jar" nowarn="on" debug="on" deprecation="off" classpath="${lib};bin"/>
 		<copy todir="tmp">
 			<fileset dir="res/jar"/>
 		</copy>
