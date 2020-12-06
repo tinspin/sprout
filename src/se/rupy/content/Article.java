@@ -446,23 +446,15 @@ public class Article extends Node {
 			columns = new LinkedList();
 			String column = "", text = safe(ARTICLE_BODY);
 			int length = 0, begin = 0, end = COLUMN_WIDTH / CHARACTER_WIDTH;
-			
 			// loop until all overflowing data has been columnized
-			while(end < text.length() - COLUMN_WIDTH / CHARACTER_WIDTH) {
+			while(end < text.replaceAll("\\<.*?\\>", "").length() - COLUMN_WIDTH / CHARACTER_WIDTH) {
 
 				// loop until the column is full
 				while(length < COLUMN_WIDTH) {
 					end = text.indexOf(" ", end) + 1;
 					column = text.substring(begin, end);
-					
-					if(column.indexOf("<pre>") > -1) {
-						end = text.indexOf("</pre>", end) + 6;
-						column = text.substring(begin, end);
-					}
-					
-					length = metric.stringWidth(column);
-					
-					//System.out.print(".");
+
+                    length = metric.stringWidth(column.replaceAll("\\<.*?\\>", ""));
 
 					if(end >= text.lastIndexOf(" ")) {
 						break;
@@ -712,7 +704,7 @@ public class Article extends Node {
 						try {
 							from = ((Node) child.child(USER).getFirst()).meta(USER_NAME);
 						}
-						catch(SQLException e) {
+						catch(Exception e) {
 							e.printStackTrace();
 						}
 					}
@@ -721,8 +713,10 @@ public class Article extends Node {
 					buffer.append("<post>\n");
 					padding(buffer, level + 2);
 					buffer.append("<body>" + child.safe(COMMENT_BODY) + "</body>\n");
-					padding(buffer, level + 2);
-					buffer.append("<from>" + from.getString() + "</from>\n");
+					if(from != null) {
+                        padding(buffer, level + 2);
+                        buffer.append("<from>" + from.getString() + "</from>\n");
+                    }
 					padding(buffer, level + 2);
 					buffer.append("<date>" + child.getDate() + "</date>\n");
 					padding(buffer, level + 1);

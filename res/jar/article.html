@@ -206,17 +206,18 @@ public class article extends Sprout {
         </td>
         <td>
 
-[[				try {
+[[				/*try {
 					String address = ip.getString();
 					int index = address.indexOf(",");
 					
 					if(index > 0) {
-						address = address.substring(index + 1).trim();
+						address = address.substring(0, index).trim();
 					} ]]
           [[ Ip.reverse(address) ]]
 [[				} catch(Exception e) { ]]
           [[ e.getMessage() ]]
-[[				} ]]
+[[				}*/ ]]
+          [[ ip ]]
 
         </td>
       </tr>
