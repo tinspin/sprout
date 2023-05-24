@@ -581,7 +581,7 @@ public class Article extends Node {
 
 					Article.invalidate(article);
 					cache3.remove(key);
-					Ping.call(article);
+					//Ping.call(article);
 
 					Sprout.redirect(event, "/");
 				}

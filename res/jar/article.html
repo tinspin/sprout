@@ -192,7 +192,7 @@ public class article extends Sprout {
                 try {
                     ip = ((Node) comment.child(USER).getFirst()).meta(USER_IP);
                 }
-                catch(NoSuchElementException e) {}
+                catch(Exception e) {}
             } ]]
       
 [[			if(permit > 0) { ]]

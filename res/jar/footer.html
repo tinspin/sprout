@@ -16,6 +16,7 @@ public class footer extends Sprout {
 		int page = event.query().medium("page", 0);
 		String query = event.string("query");
 		boolean most = event.bit("most");
+        String color = event.query().bit("color", true) ? "&color" : "";
 		
 		if(most) {
 			max = Article.max(ARTICLE_READ);
@@ -65,7 +66,7 @@ public class footer extends Sprout {
 
 			if(first > 0) { ]]
 
-              <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=0" title="[[ Sprout.i18n("First Page") ]]">&laquo;</a>
+              <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=0[[ color ]]" title="[[ Sprout.i18n("First Page") ]]">&laquo;</a>
 
 [[			}
 			for(int j = start; j < length; j++) {
@@ -76,13 +77,13 @@ public class footer extends Sprout {
 [[				}
 				else { ]]
 
-              <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ j ]]" title="[[ Sprout.i18n("Go to page") ]]&nbsp;[[ j + 1 ]]">[[ (j + 1) ]]</a>
+              <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ j ]][[ color ]]" title="[[ Sprout.i18n("Go to page") ]]&nbsp;[[ j + 1 ]]">[[ (j + 1) ]]</a>
 
 [[				}
 			}
 			if(last > length) { ]]
 
-              <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ (last - 1) ]]" title="[[ Sprout.i18n("Last page") ]]">&raquo;</a>
+              <a href="/?query=[[ URLEncoder.encode(query, "UTF-8") ]]&page=[[ (last - 1) ]][[ color ]]" title="[[ Sprout.i18n("Last page") ]]">&raquo;</a>
 
 [[			}
 		} ]]

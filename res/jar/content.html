@@ -95,20 +95,26 @@ public class content extends Sprout {
 		Iterator it = article.child(FILE).iterator();
 		boolean image = false;
 		boolean audio = false;
-		
+		boolean color = event.query().bit("color", true);
+
 		while(it.hasNext()) {
 			Node file = (Node) it.next();
 			Data name = file.meta(FILE_NAME);
 			Data type = file.meta(FILE_TYPE);
-			
+
 			if(type != null) {
 				if(type.equals("IMAGE") && !image) {
-                    String small = File.path(event, file, name, "-200.jpeg"); ]]
+                    String small = File.path(event, file, name, "-200.jpeg");
+					if(color) { ]]
+<!--a class="title" href="article?id=[[ article.getId() ]]"-->
+          <div><img class="rounded" src="[[ small ]]" /></div>
 
-          <!--div><a class="title" href="article?id=[[ article.getId() ]]"><img class="rounded" src="[[ File.path(event, file, name, "-200.jpeg") ]]" /></a></div-->
+[[ 					} else { ]]
+
           <div><img class="rounded" src="[[ out.print(small.substring(0, small.indexOf(".")) + ".gif"); ]]" /></div>
 
-[[					image = true;
+[[					}
+					image = true;
 				} else if(type.equals("AUDIO") && !audio) {
 					String path = "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + ".mp3"; ]]
 

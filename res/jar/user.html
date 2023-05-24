@@ -12,10 +12,11 @@ public class user extends Sprout {
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 		String country = event.string("country");
-		
-		if(country.length() == 0) {
-			country = User.lookup.getCountry(event.remote()).getCode();
-		}
+
+        // This stopped working
+		//if(country.length() == 0) {
+		//	country = User.lookup.getCountry(event.remote()).getCode();
+		//}
 		
 		if(country.equals("--")) {
 			country = "";
