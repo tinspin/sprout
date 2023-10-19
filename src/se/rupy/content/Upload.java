@@ -143,8 +143,9 @@ public class Upload extends Sprout {
 		else if(item.name.toLowerCase().endsWith(".avi") || 
 				 item.name.toLowerCase().endsWith(".mov") || 
 				 item.name.toLowerCase().endsWith(".wmv") || 
-				 item.name.toLowerCase().endsWith(".mp4") || 
-				 item.name.toLowerCase().endsWith(".mkv")) {
+				 item.name.toLowerCase().endsWith(".mp4") ||
+				item.name.toLowerCase().endsWith(".flv") ||
+				item.name.toLowerCase().endsWith(".mkv")) {
 			video(item, file);
 			file.add(File.type("VIDEO"));
 			delete = true;
@@ -327,7 +328,7 @@ public class Upload extends Sprout {
 			String line;
 			File.path(Sprout.ROOT + "/file" + file.path());
 			String path = Sprout.ROOT + "/" + item.path + "/";
-			String to = Sprout.ROOT + "/file" + file.path() + "/" + name + ".flv";
+			String to = Sprout.ROOT + "/file" + file.path() + "/" + name + ".mp4";
 			File.delete(to);
 			Process p = Runtime.getRuntime().exec("ffmpeg -i " + path + item.name + " -deinterlace -y -b 1024k -ac 2 -ar 22050 -s 320x240 " + to);
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));

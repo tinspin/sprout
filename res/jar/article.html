@@ -95,25 +95,34 @@ public class article extends Sprout {
 
 [[ 					}
 					else if(type.equals("VIDEO")) {
-						String path = File.filepath(event, file, name, ".flv"); ]]
+						String path = File.filepath(event, file, name, ".mp4"); ]]
 
-          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
+            <video width="620" height="350" controls="controls">
+                <source src="[[ path ]]" type="video/mp4">
+            </video>
+
+          <!--object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="320" height="280" id="player" align="middle">
             <param name="allowScriptAccess" value="sameDomain"/>
             <param name="allowFullScreen" value="true"/>
             <param name="movie" value="video.swf?source=[[ path ]]"/>
             <param name="quality" value="high"/>
             <param name="bgcolor" value="#ffffff"/>
             <embed src="video.swf?source=[[ path ]]" quality="high" bgcolor="#ffffff" width="320" height="280" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/>
-          </object>
+          </object-->
 
 [[					}
 					else if(type.equals("AUDIO")) {
 						String path = File.filepath(event, file, name, ".mp3"); ]]
 
-          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
+            <audio controls>
+                <source src="[[ path ]]" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+          <!--object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" height="30" width="200">
             <param name="movie" value="audio.swf?audio_file=[[ path ]]&color=E4E4E4"/>
             <embed src="audio.swf?audio_file=[[ path ]]&color=E4E4E4" height="30" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"/>
-          </object>
+          </object-->
 
 [[					}
 				}

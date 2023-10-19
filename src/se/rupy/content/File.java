@@ -55,9 +55,9 @@ public class File extends Node {
 			return "http://" + host.getString() + "." + domain.substring(domain.indexOf('.')) + "/" + User.host + "/file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + suffix;
 		}
 		
-		return "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + suffix;
-		
-
+		//return "file" + file.encoded() + URLEncoder.encode("/" + name.getString(), "UTF-8") + suffix;
+		// for some reason URL encoded does not work in Firefox now. I give up.
+		return "file" + file.path() + "/" + URLEncoder.encode(name.getString(), "UTF-8") + suffix;
 	}
 	
 	public static Data type(String value) {
@@ -74,7 +74,8 @@ public class File extends Node {
 		if(name.toLowerCase().endsWith(".avi") || 
 			name.toLowerCase().endsWith(".mov") || 
 			name.toLowerCase().endsWith(".wmv") || 
-			name.toLowerCase().endsWith(".mp4") || 
+			name.toLowerCase().endsWith(".mp4") ||
+			name.toLowerCase().endsWith(".flv") ||
 			name.toLowerCase().endsWith(".mkv")) {
 			return name.substring(0, name.indexOf('.'));
 		}
