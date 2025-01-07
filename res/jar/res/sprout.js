@@ -92,7 +92,7 @@ function _reply(data) {
     self.location.href = data.url;
   }
   if(data.error) {
-    document.getElementById('error').innerHTML = '<font color="red"><i>' + data.error + '</i></font>';
+    document.getElementById('error').innerHTML = '<font color="#ff0000"><i>' + data.error + '</i></font>';
   }
   if(data.remind) {
     document.getElementById('remind').style.display = 'block';

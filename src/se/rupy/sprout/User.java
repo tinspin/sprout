@@ -400,6 +400,10 @@ public class User extends Node {
 						user.add(USER_LAST_NAME, event.string("last"));
 					}
 
+					if(event.string("site").length() > 0) {
+						user.add(USER_SITE, event.string("site"));
+					}
+
 					String show = "";
 
 					for(int i = 0; i < User.show.length; i++) {
@@ -525,6 +529,7 @@ public class User extends Node {
 				event.query().put("gender", user.safe(USER_GENDER).toLowerCase());
 				event.query().put("pass", user.safe(USER_PASS));
 				event.query().put("word", user.safe(USER_PASS));
+				event.query().put("site", user.safe(USER_SITE));
 
 				String birthday = user.safe(USER_BIRTHDAY);
 
@@ -810,15 +815,17 @@ public class User extends Node {
 					out.println("<tr><td colspan=\"2\"><img src=\"/file" + user.path() + "/picture.jpeg?time=" + System.currentTimeMillis() + "\">");
 				}
 				
-				out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("Nickname") + ":&nbsp;&nbsp;</td><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + user.safe(USER_NAME) + "</td></tr>");
+				out.println("<tr><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + Sprout.i18n("Nickname") + ":&nbsp;&nbsp;</td><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + user.safe(USER_NAME) + "</td></tr>");
 				
-				out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("First&nbsp;Name") + ":&nbsp;&nbsp;</td><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + user.safe(USER_FIRST_NAME) + "</td></tr>");
+				out.println("<tr><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + Sprout.i18n("First&nbsp;Name") + ":&nbsp;&nbsp;</td><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + user.safe(USER_FIRST_NAME) + "</td></tr>");
 
-				out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("Last&nbsp;Name") + ":&nbsp;&nbsp;</td><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + user.safe(USER_LAST_NAME) + "</td></tr>");
+				out.println("<tr><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + Sprout.i18n("Last&nbsp;Name") + ":&nbsp;&nbsp;</td><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + user.safe(USER_LAST_NAME) + "</td></tr>");
+
+				out.println("<tr><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\">" + Sprout.i18n("Site") + ":&nbsp;&nbsp;</td><td><font color=\"#" + (dark ? "ffffff" : "000000") + "\"><a href=\"" + user.safe(USER_SITE) + "\">" + user.safe(USER_SITE) + "</a></td></tr>");
 
 				for(int i = 0; i < User.countryCode.length; i++) {
 					if(User.countryCode[i].equals(user.safe(USER_COUNTRY))) {
-						out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("Country") + ":&nbsp;&nbsp;</td><td><img src=\"res/flag/" + User.countryCode[i].toLowerCase() + ".png\" style=\"vertical-align: middle;\"/></td></tr>");
+						out.println("<tr><td><font color=\"" + (dark ? "ffffff" : "000000") + "\">" + Sprout.i18n("Country") + ":&nbsp;&nbsp;</td><td><img src=\"res/flag/" + User.countryCode[i].toLowerCase() + ".png\" style=\"vertical-align: middle;\"/></td></tr>");
 					}
 				}
 				

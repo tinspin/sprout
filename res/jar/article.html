@@ -43,7 +43,7 @@ public class article extends Sprout {
 <head>
   <title>[[ article.meta(ARTICLE_TITLE) ]]</title>
     <style>
-        a:link, a:hover, a:active, a:visited { color: #[[ dark ? "FFFFFF" : "000000" ]]; }
+        a:link, a:hover, a:active, a:visited { color: #[[ dark ? "ffffff" : "000000" ]]; }
     </style>
   <link rel="stylesheet" type="text/css" href="res/sprout.css">
   
@@ -73,13 +73,13 @@ public class article extends Sprout {
 </head>
 <body style="background-color: #[[ dark ? "333333" : "EEEEEE" ]];">
 <div id="page">
-  <div style="background-color: #[[ dark ? "222222" : "FFFFFF" ]];" class="single">
+  <div style="background-color: #[[ dark ? "222222" : "ffffff" ]];" class="single">
     <table>
       <tr>
         <td colspan="2"><h2>[[ article.meta(ARTICLE_TITLE) ]]</h2></td>
       </tr>
       <tr>
-        <td colspan="2"><i><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ article.time() ]]</font></i></td>
+        <td colspan="2"><i><font color="#[[ dark ? "ffffff" : "000000" ]]">[[ article.time() ]]</font></i></td>
       </tr>
       <tr>
         <td colspan="2">
@@ -138,14 +138,14 @@ public class article extends Sprout {
 			while(it.hasNext()) {
 				String column = (String) it.next(); ]]
 
-          <div class="[[ column.indexOf("<pre>") > -1 ? "table" : "column" ]]"><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ column ]]</font><span><img src="/res/continue.gif"></span></div>
+          <div class="[[ column.indexOf("<pre>") > -1 ? "table" : "column" ]]"><font color="#[[ dark ? "ffffff" : "000000" ]]">[[ column ]]</font><span><img src="/res/continue.gif"></span></div>
 
 [[			} ]]
 
         </td>
       </tr>
       <tr>
-        <td colspan="2"><font color="[[ dark ? "FFFFFF" : "000000" ]]">/</font><a href="/[[ user.meta(USER_NAME) ]]">[[ user.meta(USER_NAME) ]]</a></td>
+        <td colspan="2"><font color="#[[ dark ? "ffffff" : "000000" ]]">/</font><a href="/[[ user.meta(USER_NAME) ]]">[[ user.meta(USER_NAME) ]]</a></td>
       </tr>
       
 [[		LinkedList pings = article.child(PING); ]]
@@ -212,14 +212,14 @@ public class article extends Sprout {
 [[			if(permit > 0) { ]]
 
       <tr>
-        <td><img src="res/quote[[dark ? "_dark" : ""]].gif">&nbsp;<font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ body ]]</font></td>
+        <td><img src="res/quote[[dark ? "_dark" : ""]].gif">&nbsp;<font color="#[[ dark ? "ffffff" : "000000" ]]">[[ body ]]</font></td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
             <span style="color: #000000;">[[ i18n(show ? "Hide" : "Show") ]]</span>
           </a>
         </td>
         <td>
-            <font color="[[ dark ? "FFFFFF" : "000000" ]]">
+            <font color="#[[ dark ? "ffffff" : "000000" ]]">
 [[				try {
                     [[ ip ]]
 [[				} catch(Exception e) { ]]
@@ -232,7 +232,7 @@ public class article extends Sprout {
 [[			} else if(show) { ]]
 
       <tr>
-        <td colspan="2"><img src="res/quote[[dark ? "_dark" : ""]].gif">&nbsp;<font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ body ]]</font></td>
+        <td colspan="2"><img src="res/quote[[dark ? "_dark" : ""]].gif">&nbsp;<font color="#[[ dark ? "ffffff" : "000000" ]]">[[ body ]]</font></td>
       </tr>
       
 [[			}
@@ -249,7 +249,7 @@ public class article extends Sprout {
 
         <tr>
           <td colspan="2">
-            <font color="red"><i>[[ event.string("error") ]]</i></font>
+            <font color="#ff0000"><i>[[ event.string("error") ]]</i></font>
           </td>
         </tr>
 

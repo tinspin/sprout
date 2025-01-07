@@ -54,6 +54,7 @@ Last&nbsp;Name = Efternamn
 Gender = Kön
 Female = Flicka
 Male = Pojke
+Site = Hemsida
 
 Show eMail? = Visa ePost?
 Show birthday? = Visa födelsedag?

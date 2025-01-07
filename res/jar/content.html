@@ -54,18 +54,18 @@ public class content extends Sprout {
           <td colspan="2"><a href="article?id=[[ article.getId() ]]"><h2><center>[[ article.meta(ARTICLE_TITLE) ]]</center></h2></a></td>
         </tr>
         <tr>
-          <td><i><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ article.time() ]]</font></i></td>
-          <td align="right">[[ if(article.comments > 0) { ]]<i style="vertical-align: top;"><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ article.comments ]]</font></i>&nbsp;[[ } ]]<a href="article?id=[[ article.getId() ]]"><img src="res/comment[[dark ? "_dark" : ""]].gif" alt="[[ i18n("Comment") ]]"/></a></td>
+          <td><i><font color="#[[ dark ? "ffffff" : "000000" ]]">[[ article.time() ]]</font></i></td>
+          <td align="right">[[ if(article.comments > 0) { ]]<i style="vertical-align: top;"><font color="#[[ dark ? "ffffff" : "000000" ]]">[[ article.comments ]]</font></i>&nbsp;[[ } ]]<a href="article?id=[[ article.getId() ]]"><img src="res/comment[[dark ? "_dark" : ""]].gif" alt="[[ i18n("Comment") ]]"/></a></td>
         </tr>
         <tr>
           <td colspan="2">
 
-			  <font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ print(article, event); ]]</font>
+			  <font color="#[[ dark ? "ffffff" : "000000" ]]">[[ print(article, event); ]]</font>
 
           </td>
         </tr>
         <tr>
-          <td colspan="2"><font color="[[ dark ? "FFFFFF" : "000000" ]]">/</font><a href="/[[ node.safe(USER_NAME) ]]"><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ node.safe(USER_NAME) ]]</font></a></td>
+          <td colspan="2"><font color="#[[ dark ? "ffffff" : "000000" ]]">/</font><a href="/[[ node.safe(USER_NAME) ]]"><font color="#[[ dark ? "ffffff" : "000000" ]]">[[ node.safe(USER_NAME) ]]</font></a></td>
         </tr>
         
 [[			if(permit > 0) { ]]

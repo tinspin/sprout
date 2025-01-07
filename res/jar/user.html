@@ -31,21 +31,21 @@ public class user extends Sprout {
 
       <tr>
         <td colspan="5">
-          <font color="red"><i>[[ event.string("error") ]]</i></font>
+          <font color="#ff0000"><i>[[ event.string("error") ]]</i></font>
         </td>
       </tr>
 
 [[		} ]]
 
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("eMail") ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#F88017") ]]">[[ i18n("eMail") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="3">
           <input type="text" class="mail" name="mail" value="[[ event.string("mail") ]]" style="text-transform: lowercase;" tabindex="1"/>
           <input type="checkbox" title="[[ i18n("Show eMail?") ]]" name="show_mail"[[ event.string("show_mail").equals("on") ? " checked" : "" ]]/>
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Birthday") ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#F88017") ]]">[[ i18n("Birthday") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="3">
           <!-- // ISO 8601 -->
           <select name="year" class="year" tabindex="2">
@@ -79,7 +79,7 @@ public class user extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Nickname") ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#F88017") ]]">[[ i18n("Nickname") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
           <input id="name" type="text" class="small" name="name" value="[[ event.string("name") ]]" style="text-transform: lowercase;" onblur="ajaxNick(); return false;" tabindex="5"/>
         </td>
@@ -108,19 +108,19 @@ public class user extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Password") ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#F88017") ]]">[[ i18n("Password") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
           <input type="password" class="small" name="pass" value="[[ event.string("pass") ]]" tabindex="6"/>
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#F88017") ]]">[[ i18n("Confirm") ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#F88017") ]]">[[ i18n("Confirm") ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
           <input type="password" class="small" name="word" value="[[ event.string("word") ]]" onkeypress="return myKeyPressed(event)" tabindex="7"/>
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ i18n("Country") ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#3B9C9C") ]]">[[ i18n("Country") ]]</font>&nbsp;&nbsp;</td>
         <td>
           <img id="flag" src="res/[[ out.print(country.length() > 0 ? "flag/" + country.toLowerCase() + ".png" : "pixel.gif"); ]]" align="right" style="vertical-align: middle;[[ out.print(country.length() == 0 ? " display: none;" : ""); ]]"/>
         </td>
@@ -141,7 +141,7 @@ public class user extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ out.print(i18n("First&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#3B9C9C") ]]">[[ out.print(i18n("First&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
           <input type="text" class="small" name="first" value="[[ event.string("first") ]]" tabindex="9"/>
         </td>
@@ -150,13 +150,20 @@ public class user extends Sprout {
         </td>
       </tr>
       <tr>
-        <td colspan="2" align="right"><font color="[[ i18n("#3B9C9C") ]]">[[ out.print(i18n("Last&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2" align="right"><font color="#[[ i18n("#3B9C9C") ]]">[[ out.print(i18n("Last&nbsp;Name")); ]]</font>&nbsp;&nbsp;</td>
         <td colspan="2">
           <input type="text" class="small" name="last" value="[[ event.string("last") ]]" tabindex="10"/>
         </td>
         <td>
           <input type="checkbox" title="[[ i18n("Show last name?") ]]" name="show_last_name"[[ event.string("show_last_name").equals("on") ? " checked" : "" ]]/>
         </td>
+      </tr>
+      <tr>
+        <td colspan="2" align="right"><font color="#[[ i18n("#3B9C9C") ]]">[[ out.print(i18n("Site")); ]]</font>&nbsp;&nbsp;</td>
+        <td colspan="2">
+          <input type="text" class="small" name="site" value="[[ event.string("site") ]]" tabindex="10"/>
+        </td>
+        <td></td>
       </tr>
       <input type="hidden" name="picture" value="[[ out.print(event.string("picture").length() > 0 ? event.string("picture") : ""); ]]">
     </form>
