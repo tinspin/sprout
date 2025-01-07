@@ -797,26 +797,28 @@ public class User extends Node {
 				user.fill(10, 0, 10);
 				
 				event.daemon().chain(event, "/header").filter(event);
-				
+
+				boolean dark = !event.session().bit("light", false);
+
 				Output out = event.output();
 				
 				out.println("<table>");
-				
+
 				Node node = user.child(FILE, FILE_TYPE, "IMAGE");
 				
 				if(node != null) {
 					out.println("<tr><td colspan=\"2\"><img src=\"/file" + user.path() + "/picture.jpeg?time=" + System.currentTimeMillis() + "\">");
 				}
 				
-				out.println("<tr><td>" + Sprout.i18n("Nickname") + ":&nbsp;&nbsp;</td><td>" + user.safe(USER_NAME) + "</td></tr>");
+				out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("Nickname") + ":&nbsp;&nbsp;</td><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + user.safe(USER_NAME) + "</td></tr>");
 				
-				out.println("<tr><td>" + Sprout.i18n("First&nbsp;Name") + ":&nbsp;&nbsp;</td><td>" + user.safe(USER_FIRST_NAME) + "</td></tr>");
-				
-				out.println("<tr><td>" + Sprout.i18n("Last&nbsp;Name") + ":&nbsp;&nbsp;</td><td>" + user.safe(USER_LAST_NAME) + "</td></tr>");
-				
+				out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("First&nbsp;Name") + ":&nbsp;&nbsp;</td><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + user.safe(USER_FIRST_NAME) + "</td></tr>");
+
+				out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("Last&nbsp;Name") + ":&nbsp;&nbsp;</td><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + user.safe(USER_LAST_NAME) + "</td></tr>");
+
 				for(int i = 0; i < User.countryCode.length; i++) {
 					if(User.countryCode[i].equals(user.safe(USER_COUNTRY))) {
-						out.println("<tr><td>" + Sprout.i18n("Country") + ":&nbsp;&nbsp;</td><td><img src=\"res/flag/" + User.countryCode[i].toLowerCase() + ".png\" style=\"vertical-align: middle;\"/></td></tr>");
+						out.println("<tr><td><font color=\"" + (dark ? "FFFFFF" : "000000") + "\">" + Sprout.i18n("Country") + ":&nbsp;&nbsp;</td><td><img src=\"res/flag/" + User.countryCode[i].toLowerCase() + ".png\" style=\"vertical-align: middle;\"/></td></tr>");
 					}
 				}
 				

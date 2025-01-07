@@ -219,20 +219,13 @@ public class article extends Sprout {
           </a>
         </td>
         <td>
-
-[[				/*try {
-					String address = ip.getString();
-					int index = address.indexOf(",");
-					
-					if(index > 0) {
-						address = address.substring(0, index).trim();
-					} ]]
-          [[ Ip.reverse(address) ]]
+            <font color="[[ dark ? "FFFFFF" : "000000" ]]">
+[[				try {
+                    [[ ip ]]
 [[				} catch(Exception e) { ]]
-          [[ e.getMessage() ]]
-[[				}*/ ]]
-          [[ ip ]]
-
+                    NULL
+[[				} ]]
+            </font>
         </td>
       </tr>
 
