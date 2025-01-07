@@ -29,6 +29,7 @@ public interface Type {
 	public final static short USER_GENDER     = 112;
 	public final static short USER_SHOW       = 113;
 	public final static short USER_SITE       = 114;
+	public final static short USER_DARK       = 115;
 	
 	public final static short ARTICLE_TITLE   = 200;
 	public final static short ARTICLE_BODY    = 201;

@@ -11,16 +11,42 @@ public class index extends Sprout {
 		Output out = event.output();
         event.query().parse();
         boolean dark = !event.session().bit("light", false);
-System.out.println(dark + " dark " + event.query().bit("light", false) + " dark " + event.query().bit("light", true));
+        Object key = event.session().get("key");
+        se.rupy.sprout.User user = null;
+        if(key != null) {
+            user = se.rupy.sprout.User.get(key);
+            if(user != null) {
+                String safe = user.safe(USER_DARK);
+                if(safe.equals("true")) {
+                    event.session().put("light", false);
+                    dark = true;
+                }
+                else if(safe.equals("false")) {
+                    event.session().put("light", true);
+                    dark = false;
+                }
+                //else {
+                //    user.add(USER_DARK, "true");
+                //    user.update();
+                //}
+            }
+        }
         if(event.query().bit("light", true)) {
+            if(user != null) {
+                user.add(USER_DARK, "false");
+                user.update();
+            }
             event.session().put("light", true);
             dark = false;
         }
         if(event.query().bit("dark", true)) {
+            if(user != null) {
+                user.add(USER_DARK, "true");
+                user.update();
+            }
             event.session().put("light", false);
             dark = true;
-        }
-		String key = (String) event.session().get("key"); ]]
+        } ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">

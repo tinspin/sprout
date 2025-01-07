@@ -15,7 +15,8 @@ public class publish extends Sprout {
 		Object key = event.session().get("key");
 		Article article = Article.get(key);
 		se.rupy.sprout.User user = se.rupy.sprout.User.get(key);
-		
+        boolean dark = !event.session().bit("light", false);
+
 		Calendar date = Calendar.getInstance();
 		
 		int day = event.medium("day");
@@ -168,6 +169,11 @@ public class publish extends Sprout {
 [[				}
  			} ]]
 
+          </td>
+        </tr>
+        <tr>
+          <td align="right" colspan="3">
+            <a href="[[ dark ? "?light=true" : "?dark=true" ]]">[[ dark ? i18n("light") : i18n("dark") ]]</a>
           </td>
         </tr>
 
