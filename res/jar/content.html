@@ -22,6 +22,8 @@ public class content extends Sprout {
 		Object key = event.session().get("key");
 		String query = event.string("query");
 		boolean most = event.bit("most");
+		//boolean dark = !event.bit("light");
+		boolean dark = !event.session().bit("light", false);
 
 		if(most) {
             articles = Article.most(ARTICLE_READ, page, total).iterator();
@@ -46,24 +48,24 @@ public class content extends Sprout {
 			
 			int permit = article.permit(key); ]]
 
-    <div class="article">
+    <div class="article" style="background-color: #[[ dark ? "222222" : "ffffff" ]];">
       <table width="100">
         <tr>
           <td colspan="2"><a href="article?id=[[ article.getId() ]]"><h2><center>[[ article.meta(ARTICLE_TITLE) ]]</center></h2></a></td>
         </tr>
         <tr>
-          <td><i>[[ article.time() ]]</i></td>
-          <td align="right">[[ if(article.comments > 0) { ]]<i style="vertical-align: top;">[[ article.comments ]]</i>&nbsp;[[ } ]]<a href="article?id=[[ article.getId() ]]"><img src="res/comment.gif" alt="[[ i18n("Comment") ]]"/></a></td>
+          <td><i><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ article.time() ]]</font></i></td>
+          <td align="right">[[ if(article.comments > 0) { ]]<i style="vertical-align: top;"><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ article.comments ]]</font></i>&nbsp;[[ } ]]<a href="article?id=[[ article.getId() ]]"><img src="res/comment[[dark ? "_dark" : ""]].gif" alt="[[ i18n("Comment") ]]"/></a></td>
         </tr>
         <tr>
           <td colspan="2">
 
-[[ print(article, event); ]]
+			  <font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ print(article, event); ]]</font>
 
           </td>
         </tr>
         <tr>
-          <td colspan="2">/<a href="/[[ node.safe(USER_NAME) ]]">[[ node.safe(USER_NAME) ]]</a></td>
+          <td colspan="2"><font color="[[ dark ? "FFFFFF" : "000000" ]]">/</font><a href="/[[ node.safe(USER_NAME) ]]"><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ node.safe(USER_NAME) ]]</font></a></td>
         </tr>
         
 [[			if(permit > 0) { ]]
@@ -72,11 +74,11 @@ public class content extends Sprout {
           <td colspan="2">
 
             <a href="/edit?id=[[ article.getId() ]]" class="button">
-              <span>[[ i18n("Edit") ]]</span>
+              <span style="color: #000000;">[[ i18n("Edit") ]]</span>
             </a>
 
             <a href="/delete?id=[[ article.getId() ]]" class="button" onclick="return confirm('[[ i18n("Are you sure you want to delete the article?") ]]');">
-              <span>[[ i18n("Delete") ]]</span>
+              <span style="color: #000000;">[[ i18n("Delete") ]]</span>
             </a>
             
           </td>

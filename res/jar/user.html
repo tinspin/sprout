@@ -12,7 +12,7 @@ public class user extends Sprout {
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
 		String country = event.string("country");
-
+        boolean dark = !event.session().bit("light", false);
         // This stopped working
 		//if(country.length() == 0) {
 		//	country = User.lookup.getCountry(event.remote()).getCode();
@@ -165,7 +165,7 @@ public class user extends Sprout {
         <td colspan="4">
           <a class="button overflow">
             <input name="file" type="file" class="file" style="left: 5px;" tabindex="-1" onchange="document.upload.submit()"/>
-            <span>[[ out.println(i18n("Profile&nbsp;Picture")); ]]</span>
+            <span style="color: #000000;">[[ out.println(i18n("Profile&nbsp;Picture")); ]]</span>
           </a>
         </td>
         <td rowspan="2" valign="middle">
@@ -176,7 +176,7 @@ public class user extends Sprout {
     <tr>
       <td colspan="4">
         <a href="" class="arrow" onclick="document.user.submit(); return false;">
-          <span>[[ event.query().path().equals("/user") ? i18n("Save") : i18n("Create") ]]</span>
+          <span style="color: #000000;">[[ event.query().path().equals("/user") ? i18n("Save") : i18n("Create") ]]</span>
         </a>
       </td>
     </tr>

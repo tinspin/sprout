@@ -39,17 +39,17 @@ public class publish extends Sprout {
         <tr>
           <td colspan="3">
             <a href="/logout" class="button">
-              <span>[[ i18n("Logout") ]]</span>
+              <span style="color: #000000;">[[ i18n("Logout") ]]</span>
             </a>
 
             <a href="/user" class="button">
-              <span>[[ i18n("Profile") ]]</span>
+              <span style="color: #000000;">[[ i18n("Profile") ]]</span>
             </a>
 
 [[		if(user != null && user.permit("ADMIN")) { ]]
 
             <a href="/label" class="button">
-              <span>[[ i18n("Labels") ]]</span>
+              <span style="color: #000000;">[[ i18n("Labels") ]]</span>
             </a>
 
 [[		} ]]
@@ -120,7 +120,7 @@ public class publish extends Sprout {
           </td>
           <td>
             <a href="" class="button" onclick="addLabel(); return false;">
-              <span>[[ i18n("Add") ]]</span>
+              <span style="color: #000000;">[[ i18n("Add") ]]</span>
             </a>
           </td>
         </tr>
@@ -176,7 +176,7 @@ public class publish extends Sprout {
         <tr>
           <td colspan="3">
             <a href="" class="arrow" onclick="document.article.submit(); return false;">
-              <span>[[ i18n("Publish") ]]</span>
+              <span style="color: #000000;">[[ i18n("Publish") ]]</span>
             </a>
           </td>
         </tr>
@@ -189,7 +189,7 @@ public class publish extends Sprout {
           <td colspan="3">
             <a class="button overflow">
               <input name="file" type="file" class="file" style="right: 25px;" onchange="document.upload.submit()"/>
-              <span>[[ i18n("Upload") ]]</span>
+              <span style="color: #000000;">[[ i18n("Upload") ]]</span>
             </a>
           </td>
         </tr>

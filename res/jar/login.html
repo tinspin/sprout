@@ -7,6 +7,8 @@ public class login extends Sprout {
 	public int index() { return 2; }
 	public String path() { return "/login"; }
 	public void filter(Event event) throws Event, Exception {
+        //boolean dark = !event.bit("light");
+        boolean dark = !event.session().bit("light", false);
 		Output out = event.output(); ]]
 
     <script>
@@ -57,15 +59,20 @@ public class login extends Sprout {
           </td>
           <td align="right">
             <a href="" class="arrow" onclick="if (typeof ajaxLogin == 'function') { ajaxLogin(); } else { document.login.submit(); } return false;">
-              <span>[[ i18n("Login") ]]</span>
+              <span style="color: #000000;">[[ i18n("Login") ]]</span>
             </a>
           </td>
         </tr>
         <tr>
           <td align="right" colspan="2">
             <a href="/register" class="button">
-              <span>[[ i18n("Register") ]]</span>
+              <span style="color: #000000;">[[ i18n("Register") ]]</span>
             </a>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" colspan="2">
+             <a href="[[ dark ? "?light=true" : "?dark=true" ]]">[[ dark ? i18n("light") : i18n("dark") ]]</a>
           </td>
         </tr>
       </table>

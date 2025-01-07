@@ -9,12 +9,26 @@ public class index extends Sprout {
 	public String path() { return "/"; }
 	public void filter(Event event) throws Event, Exception {
 		Output out = event.output();
+        event.query().parse();
+        boolean dark = !event.session().bit("light", false);
+System.out.println(dark + " dark " + event.query().bit("light", false) + " dark " + event.query().bit("light", true));
+        if(event.query().bit("light", true)) {
+            event.session().put("light", true);
+            dark = false;
+        }
+        if(event.query().bit("dark", true)) {
+            event.session().put("light", false);
+            dark = true;
+        }
 		String key = (String) event.session().get("key"); ]]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>Sprout</title>
+    <style>
+        a:link, a:hover, a:active, a:visited { color: #[[ dark ? "FFFFFF" : "000000" ]]; }
+    </style>
   <link rel="stylesheet" type="text/css" href="res/sprout.css"/>
   <link rel="alternate" type="application/rss+xml" href="feed?rss=true"/>
   <link rel="alternate" type="application/atom+xml" href="feed?atom=true"/>
@@ -87,13 +101,13 @@ public class index extends Sprout {
 
 <!-- copy this --><!-- start -->
 
-<body onload="talk();" onbeforeunload="stop();">
+<body style="background-color: #[[ dark ? "333333" : "EEEEEE" ]];" onload="talk();" onbeforeunload="stop();">
 
 <!-- stop --><!-- copy this -->
 
 [[ } else { ]]
 
-<body onload="init();">
+<body style="background-color: #[[ dark ? "333333" : "EEEEEE" ]];" onload="init();">
 
 [[ } ]]
 

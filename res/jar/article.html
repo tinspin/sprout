@@ -30,7 +30,9 @@ public class article extends Sprout {
 			event.reply().output().print("<pre>'" + event.query().path() + "' was not found.</pre>");
 			throw event;
 		}
-		
+
+        //boolean dark = !event.bit("light");
+        boolean dark = !event.session().bit("light", false);
 		Node user = (Node) users.getFirst();
 		boolean edit = user.meta(USER_KEY).equals(key);
 		int permit = article.permit(key);
@@ -40,6 +42,9 @@ public class article extends Sprout {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>[[ article.meta(ARTICLE_TITLE) ]]</title>
+    <style>
+        a:link, a:hover, a:active, a:visited { color: #[[ dark ? "FFFFFF" : "000000" ]]; }
+    </style>
   <link rel="stylesheet" type="text/css" href="res/sprout.css">
   
 [[ String analytics = System.getProperty("analytics");
@@ -66,7 +71,7 @@ public class article extends Sprout {
     Cufon.replace('h2');
   </script>
 </head>
-<body>
+<body style="background-color: #[[ dark ? "333333" : "EEEEEE" ]];">
 <div id="page">
   <div class="single">
     <table>
@@ -74,7 +79,7 @@ public class article extends Sprout {
         <td colspan="2"><h2>[[ article.meta(ARTICLE_TITLE) ]]</h2></td>
       </tr>
       <tr>
-        <td colspan="2"><i>[[ article.time() ]]</i></td>
+        <td colspan="2"><i><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ article.time() ]]</font></i></td>
       </tr>
       <tr>
         <td colspan="2">
@@ -133,14 +138,14 @@ public class article extends Sprout {
 			while(it.hasNext()) {
 				String column = (String) it.next(); ]]
 
-          <div class="[[ column.indexOf("<pre>") > -1 ? "table" : "column" ]]">[[ column ]]<span><img src="/res/continue.gif"></span></div>
+          <div class="[[ column.indexOf("<pre>") > -1 ? "table" : "column" ]]"><font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ column ]]</font><span><img src="/res/continue.gif"></span></div>
 
 [[			} ]]
 
         </td>
       </tr>
       <tr>
-        <td colspan="2">/<a href="/[[ user.meta(USER_NAME) ]]">[[ user.meta(USER_NAME) ]]</a></td>
+        <td colspan="2"><font color="[[ dark ? "FFFFFF" : "000000" ]]">/</font><a href="/[[ user.meta(USER_NAME) ]]">[[ user.meta(USER_NAME) ]]</a></td>
       </tr>
       
 [[		LinkedList pings = article.child(PING); ]]
@@ -168,7 +173,7 @@ public class article extends Sprout {
         <td><a href="[[ url ]]">[[ title ]]</a></td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&ping=[[ ping.getId() ]]" class="button">
-            <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
+            <span style="color: #000000;">[[ i18n(show ? "Hide" : "Show") ]]</span>
           </a>
         </td>
       </tr>
@@ -185,7 +190,7 @@ public class article extends Sprout {
 [[		LinkedList comments = article.child(COMMENT); ]]
       
       <tr>
-        <td colspan="2"><img src="res/comment.gif" alt="[[ i18n("Comments") ]]"/></td>
+        <td colspan="2"><img src="res/comment[[dark ? "_dark" : ""]].gif" alt="[[ i18n("Comments") ]]"/></td>
       </tr>
       
 [[		it = comments.iterator();
@@ -207,10 +212,10 @@ public class article extends Sprout {
 [[			if(permit > 0) { ]]
 
       <tr>
-        <td><img src="res/quote.gif">&nbsp;[[ body ]]</td>
+        <td><img src="res/quote[[dark ? "_dark" : ""]].gif">&nbsp;<font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ body ]]</font></td>
         <td>
           <a href="/[[ show ? "hide" : "show" ]]?id=[[ article.getId() ]]&comment=[[ comment.getId() ]]" class="button">
-            <span>[[ i18n(show ? "Hide" : "Show") ]]</span>
+            <span style="color: #000000;">[[ i18n(show ? "Hide" : "Show") ]]</span>
           </a>
         </td>
         <td>
@@ -234,7 +239,7 @@ public class article extends Sprout {
 [[			} else if(show) { ]]
 
       <tr>
-        <td colspan="2"><img src="res/quote.gif">&nbsp;[[ body ]]</td>
+        <td colspan="2"><img src="res/quote[[dark ? "_dark" : ""]].gif">&nbsp;<font color="[[ dark ? "FFFFFF" : "000000" ]]">[[ body ]]</font></td>
       </tr>
       
 [[			}
@@ -265,7 +270,7 @@ public class article extends Sprout {
         <tr>
           <td colspan="2">
             <a href="" class="arrow" onclick="ajaxPost([[ article.getId() ]]); return false;">
-              <span>[[ i18n("Post") ]]</span>
+              <span style="color: #000000;">[[ i18n("Post") ]]</span>
             </a>
           </td>
         </tr>

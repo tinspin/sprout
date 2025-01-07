@@ -1,7 +1,5 @@
 html { -webkit-text-size-adjust: none; }
-body { background-color: #eee; }
 a, td, select, input, textarea { font-family: 'lucida sans unicode', 'lucida grande', 'helvetica'; }
-a:link, a:hover, a:active, a:visited { color: #000; }
 select, input, textarea { font-size: 1.0em; }
 table { border: 0px; }
 input.tiny { width: 45px; }
@@ -73,7 +71,6 @@ h2 {
 
 .article {
 	position: absolute;
-	background-color: #fff;
 	padding: 5px;
 	margin: 5px;
 	visibility: hidden;
@@ -87,7 +84,6 @@ h2 {
 }
 
 .single {
-	background-color: #fff;
 	padding: 10px;
 	margin: 5px 10px 10px 5px;
 }
