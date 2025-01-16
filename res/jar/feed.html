@@ -124,7 +124,7 @@ public class feed extends Sprout {
 			Data type = file.meta(FILE_TYPE);
             
             if(type != null && type.equals("IMAGE")) {
-				out.println(clean("<img src=\"http://" + host + "/" + File.path(event, file, name, "-200.jpeg") + "\" align=\"right\"/>"));
+				out.print(clean("<img src=\"http://" + host + "/" + File.path(event, file, name, "-200.jpeg") + "\" align=\"right\"/>"));
 				break;
 			}
 		}
@@ -135,10 +135,10 @@ public class feed extends Sprout {
 			String column = (String) it.next();
             out.print(clean(column));
 			if(columns.size() > 1) {
-				out.println("&#8230;");
+				out.print("&#8230;");
 			}
 			else {
-				out.println("");
+				out.print("");
 			}
 		}
 	}
